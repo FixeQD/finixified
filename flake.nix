@@ -141,6 +141,7 @@
     {
       nixosConfigurations = {
         hp-zbook = mkHost { hostname = "hp-zbook"; };
+         thinkpad-t470 = mkHost { hostname = "thinkpad-t470"; };
         wifi-chan = mkHost { hostname = "wifi-chan"; };
       };
 

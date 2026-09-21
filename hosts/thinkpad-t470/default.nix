@@ -28,9 +28,8 @@
     ../../modules/firewall/default.nix
   ];
 
-  networking.hostName = "HP-ZBook";
+  networking.hostName = "thinkpad-t470";
 
-  # Shit...
   services.sysklogd.enable = true;
 
   modules = {
@@ -41,7 +40,7 @@
     cloudflared.enable = true;
     cloudflared.tokenFile = config.sops.secrets.cloudflared_tunnel_token.path;
     desktop.enable = true;
-    desktop.nvidia.enable = true;
+    desktop.nvidia.enable = false;
     locale.enable = true;
     mdevd.enable = true;
     network.enable = true;
@@ -51,8 +50,6 @@
     network.openssh.permitRootLogin = "no";
 
     nix-ld.enable = true;
-    nyth.enable = false;
-
     nix-ld.libraries = with pkgs; [
       stdenv.cc.cc.lib
       icu
@@ -68,9 +65,6 @@
       curl
       libepoxy
       fontconfig
-
-      cudaPackages.cuda_cudart
-      nvidia-container-toolkit
     ];
 
     performance.enable = true;
@@ -85,7 +79,7 @@
 
   networking.hosts = {
     "127.0.0.1" = [ "localhost" ];
-    "127.0.0.2" = [ "HP-ZBook" ];
+    "127.0.0.2" = [ "thinkpad-t470" ];
   };
 
   services.hardware.openrgb = {

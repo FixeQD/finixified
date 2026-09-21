@@ -3,6 +3,7 @@ with lib;
 let cfg = config.modules.desktop; in
 {
   options.modules.desktop.enable = mkEnableOption "niri desktop and seatd";
+  options.modules.desktop.nvidia.enable = mkEnableOption "NVIDIA desktop environment variables";
 
   config = mkIf cfg.enable {
     services.seatd.enable = true;
@@ -22,15 +23,16 @@ let cfg = config.modules.desktop; in
     environment = {
       variables = {
         WLR_NO_HARDWARE_CURSORS             = "1";
-        LIBVA_DRIVER_NAME                   = "nvidia";
-        GBM_BACKEND                         = "nvidia-drm";
-        __GLX_VENDOR_LIBRARY_NAME           = "nvidia";
-        NVD_BACKEND                         = "direct";
         NIXOS_OZONE_WL                      = "1";
         MOZ_ENABLE_WAYLAND                  = "1";
         QT_QPA_PLATFORM                     = "wayland";
         QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
         ELECTRON_OZONE_PLATFORM_HINT        = "auto";
+      } // mkIf cfg.nvidia.enable {
+        LIBVA_DRIVER_NAME         = "nvidia";
+        GBM_BACKEND               = "nvidia-drm";
+        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+        NVD_BACKEND               = "direct";
       };
 
       systemPackages = with pkgs; [
