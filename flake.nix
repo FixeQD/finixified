@@ -148,6 +148,9 @@
       apps.x86_64-linux.install = mkInstallApp { hostname = "hp-zbook"; };
       apps.x86_64-linux.resume-install = mkInstallApp { hostname = "hp-zbook"; resume = true; };
 
+      apps.x86_64-linux.install-thinkpad = mkInstallApp { hostname = "thinkpad-t470"; };
+      apps.x86_64-linux.resume-install-thinkpad = mkInstallApp { hostname = "thinkpad-t470"; resume = true; };
+
       apps.x86_64-linux.install-wifi-chan = mkInstallApp { hostname = "wifi-chan"; requireSops = false; };
       apps.x86_64-linux.resume-install-wifi-chan = mkInstallApp { hostname = "wifi-chan"; resume = true; requireSops = false; };
     };
