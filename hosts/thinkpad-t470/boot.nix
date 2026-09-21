@@ -92,7 +92,7 @@ let
 
     echo "==> Creating new primary entry: $DESCRIPTION (timestamp $TIMESTAMP)"
     NEW_ID=$("$EFISTUBMGR" create "${efiMount}" \
-      '\EFI\nixos\kernel-''$TIMESTAMP''.efi' \
+      '\EFI\nixos\kernel-'"$TIMESTAMP"'.efi' \
       "$DESCRIPTION" \
       "initrd=\EFI\nixos\initrd-$TIMESTAMP init=$INIT $PARAMS" \
       --timestamp "$TIMESTAMP")
