@@ -1,4 +1,4 @@
-{ config, zen-browser, spicetify-nix, nyth, noctalia, pkgs, nixcord, ... }:
+{ config, zen-browser, spicetify-nix, noctalia, pkgs, nixcord, ... }:
 {
   imports = [
     ./hardware.nix
@@ -18,7 +18,6 @@
     ../../modules/desktop/desktop.nix
     ../../modules/desktop/bluetooth.nix
     ../../modules/desktop/nix-ld.nix
-    ../../modules/desktop/nyth.nix
     ../../modules/desktop/virt.nix
 
     ../../modules/services/ollama.nix
@@ -46,8 +45,6 @@
     network.openssh.permitRootLogin = "no";
 
     nix-ld.enable = true;
-    nyth.enable = false;
-
     nix-ld.libraries = with pkgs; [
       stdenv.cc.cc.lib
       icu
@@ -88,14 +85,13 @@
 
   home-manager.users.${config.modules.user.name} = {
     _module.args = {
-      inherit zen-browser spicetify-nix nyth noctalia;
+      inherit zen-browser spicetify-nix noctalia;
       username = config.modules.user.name;
     };
 
     imports = [
       ../../home/default.nix
       spicetify-nix.homeManagerModules.default
-      nyth.homeManagerModules.default
       noctalia.homeModules.default
       nixcord.homeModules.nixcord
     ];

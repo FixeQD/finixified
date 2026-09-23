@@ -14,11 +14,6 @@
 
     nixcord.url = "github:4evy/nixcord";
 
-    nyth = {
-      url = "github:FixeQD/nyth";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -48,7 +43,6 @@
       disko,
       zen-browser,
       spicetify-nix,
-      nyth,
       noctalia,
       nixcord,
       efistubmgr,
@@ -77,7 +71,7 @@
           inherit (pkgs) lib;
           modules = [
             { nixpkgs.pkgs = nixpkgs.lib.mkDefault pkgs; }
-            { _module.args = { inherit zen-browser spicetify-nix nyth noctalia nixcord; }; }
+            { _module.args = { inherit zen-browser spicetify-nix noctalia nixcord; }; }
             disko.nixosModules.disko
             community-modules.nixosModules.home-manager
             community-modules.nixosModules.tailscale

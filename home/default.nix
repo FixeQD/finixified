@@ -10,7 +10,6 @@
     ./zed.nix
     ./dotfiles.nix
     ./spicetify.nix
-    ./nyth.nix
     ./noctalia.nix
     ./nixcord.nix
     ./gh.nix
