@@ -21,8 +21,6 @@ let
   keepGenerations = 3;
 
   # ── EFISTUB install hook ───────────────────────────────────────────────────
-  # Identical to hosts/hp-zbook/boot.nix - kept host-local instead of shared so
-  # each host can tweak label/pruning independently later.
 
     efistubHook = pkgs.writeShellScript "efistub-install" ''
       set -euo pipefail

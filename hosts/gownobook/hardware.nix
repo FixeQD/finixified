@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 let
   btrfsOpts = [
@@ -11,11 +11,12 @@ let
 in
 {
   disko.devices.disk.main = {
-    device = "/dev/nvme0n1";
+    device = "/dev/sda";
     type = "disk";
     content = {
       type = "gpt";
       partitions = {
+
         ESP = {
           size = "512M";
           type = "EF00";
@@ -40,16 +41,18 @@ in
           size = "100%";
           content = {
             type = "btrfs";
-            extraArgs = [ "-L" "ThinkPadFS" "-f" ];
+            extraArgs = [ "-L" "GownoFS" "-f" ];
             subvolumes = {
               "@"           = { mountpoint = "/";           mountOptions = btrfsOpts; };
               "@home"       = { mountpoint = "/home";       mountOptions = btrfsOpts; };
               "@opt"        = { mountpoint = "/opt";        mountOptions = btrfsOpts; };
               "@var_log"    = { mountpoint = "/var/log";    mountOptions = btrfsOpts; };
               "@nix"        = { mountpoint = "/nix";        mountOptions = btrfsOpts; };
+#              "@snapshots"  = { mountpoint = "/.snapshots"; mountOptions = btrfsOpts; };
             };
           };
         };
+
       };
     };
   };
@@ -62,6 +65,13 @@ in
     options = [ "rw" "nosuid" "nodev" "relatime" "size=4G" "mode=1777" ];
   };
 
+  programs.modprobe.blacklist = [
+#    "fjes"
+#    "spi_nor"
+  ];
+
+  # ── GPU: Intel Arc Graphics (Meteor Lake, integrated only) ──────────────────
+
   programs.zzz.enable = true;
 
   hardware.cpu.intel.updateMicrocode = true;
@@ -69,7 +79,7 @@ in
   hardware.firmware = [ pkgs.sof-firmware pkgs.alsa-firmware ];
 
   hardware.graphics = {
-    enable = true;
+    enable    = true;
     enable32Bit = true;
     extraPackages = with pkgs; [
       intel-media-driver

@@ -213,23 +213,12 @@ in
     supportedFilesystems.btrfs.enable = true;
   };
 
-  boot.kernelModules = [
-    "kvm-intel"
-    "nvidia"
-    "nvidia_modeset"
-    "nvidia_uvm"
-    "nvidia_drm"
-  ];
-
-  environment.etc."modprobe.d/nvidia.conf".text = ''
-    options nvidia NVreg_PreserveVideoMemoryAllocations=1
-  '';
+  boot.kernelModules = [ "kvm-intel" ];
 
   boot.kernelParams = [
     "rootflags=subvol=${rootSubvol}"
     "rootfstype=${rootFsType}"
     "zswap.enabled=0"
-    "nvidia-drm.modeset=1"
     "snd_intel_dspcfg.dsp_driver=1"
   ];
 }

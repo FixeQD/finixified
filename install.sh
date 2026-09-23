@@ -7,7 +7,7 @@ set -euo pipefail
 : "${SBCTL_BIN:?SBCTL_BIN must be set}"
 : "${MKPASSWD_BIN:?MKPASSWD_BIN must be set}"
 : "${PRIMARY_USER:?PRIMARY_USER must be set}"
-: "${FLAKE_HOST:=hp-zbook}"
+: "${FLAKE_HOST:=gownobook}"
 : "${DISKO_MODE:=destroy,format,mount}"
 : "${REQUIRE_SOPS:=true}"
 

@@ -28,8 +28,9 @@
     ../../modules/firewall/default.nix
   ];
 
-  networking.hostName = "thinkpad-t470";
+  networking.hostName = "gownobook";
 
+  # Shit...
   services.sysklogd.enable = true;
 
   modules = {
@@ -50,6 +51,8 @@
     network.openssh.permitRootLogin = "no";
 
     nix-ld.enable = true;
+    nyth.enable = false;
+
     nix-ld.libraries = with pkgs; [
       stdenv.cc.cc.lib
       icu
@@ -79,7 +82,7 @@
 
   networking.hosts = {
     "127.0.0.1" = [ "localhost" ];
-    "127.0.0.2" = [ "thinkpad-t470" ];
+    "127.0.0.2" = [ "gownobook" ];
   };
 
   services.hardware.openrgb = {
