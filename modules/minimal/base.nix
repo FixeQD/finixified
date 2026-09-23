@@ -44,6 +44,8 @@ let cfg = config.modules.base; in
 
     services.bootchart.enable = true;
     services.bootchart.stop.conditions = [ "service/sddm/ready" ];
+    
+    services.getty.enable = true;
 
     services.nix-daemon = {
       enable = true;

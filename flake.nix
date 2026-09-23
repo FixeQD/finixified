@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    finix.url = "github:FixeQD/finix/0dbbc77498386cf444affe9d4fc710d43e23fcd8";
+    finix.url = "github:finix-community/finix";
     community-modules.url = "github:finix-community/community-modules";
 
     efistubmgr = {

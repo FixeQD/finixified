@@ -10,12 +10,7 @@ let cfg = config.modules.mdevd; in
       nlgroups = 4;
     };
 
-    services.gardendevd.enable = true;
-    services.gardendevd.debug = true;
-
-    environment.systemPackages = with pkgs; [
-      mdevd
-      gardendevd
-    ];
+    services.gardendevd.enable = false;
+    services.gardendevd.debug = false;
   };
 }
