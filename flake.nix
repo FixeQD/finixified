@@ -24,11 +24,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -51,7 +46,6 @@
       finix,
       community-modules,
       disko,
-      sops-nix,
       zen-browser,
       spicetify-nix,
       nyth,
@@ -72,7 +66,6 @@
             inherit system;
             config.allowUnfree = true;
             overlays = [
-              sops-nix.overlays.default
               (import ./pkgs)
               (final: prev: {
                 efistubmgr = efistubmgr.packages.${system}.default;
@@ -93,7 +86,6 @@
             community-modules.nixosModules.nix-ld
             community-modules.nixosModules.openrgb
             community-modules.nixosModules.fastfetch
-            ./modules/sops
             finix.nixosModules.bluetooth
             finix.nixosModules.docker
             finix.nixosModules.getty

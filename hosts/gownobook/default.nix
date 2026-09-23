@@ -21,9 +21,6 @@
     ../../modules/desktop/nyth.nix
     ../../modules/desktop/virt.nix
 
-    ../../modules/services/cloudflared.nix
-    ../../modules/services/secrets.nix
-    ../../modules/services/yggdrasil.nix
     ../../modules/services/ollama.nix
     ../../modules/firewall/default.nix
   ];
@@ -38,8 +35,6 @@
     base.enable = true;
     bluetooth.enable = true;
     cron.enable = true;
-    cloudflared.enable = true;
-    cloudflared.tokenFile = config.sops.secrets.cloudflared_tunnel_token.path;
     desktop.enable = true;
     desktop.nvidia.enable = false;
     locale.enable = true;
@@ -75,7 +70,6 @@
     user.enable = true;
     user.name = "fixeq";
     virt.enable = true;
-    yggdrasil.enable = true;
     zram.enable = true;
     ollama.enable = true;
   };

@@ -1,4 +1,4 @@
-{ config, osConfig, ... }:
+{ ... }:
 {
   programs.zed-editor = {
     enable = true;
@@ -98,44 +98,6 @@
           ];
         };
 
-        "Nvidia NIM" = {
-          api_url = "https://integrate.api.nvidia.com/v1";
-          api_key_path = "${osConfig.sops.secrets.nvidia_nim_api_key.path}";
-          available_models = [
-            {
-              name = "qwen/qwen3-coder-480b-a35b-instruct";
-              max_tokens = 32000; max_output_tokens = 32000; max_completion_tokens = 32000;
-              capabilities = {
-                tools = true; images = true; parallel_tool_calls = true;
-                prompt_cache_key = false; chat_completions = true;
-              };
-            }
-            {
-              name = "stepfun-ai/step-3.5-flash";
-              max_tokens = 8000; max_output_tokens = 8000; max_completion_tokens = 8000;
-              capabilities = {
-                tools = true; images = true; parallel_tool_calls = false;
-                prompt_cache_key = false; chat_completions = true;
-              };
-            }
-            {
-              name = "minimaxai/minimax-m2.7";
-              max_tokens = 200000; max_output_tokens = 40000; max_completion_tokens = 200000;
-              capabilities = {
-                tools = true; images = true; parallel_tool_calls = false;
-                prompt_cache_key = false; chat_completions = true;
-              };
-            }
-            {
-              name = "mistralai/mistral-large-3-675b-instruct-2512";
-              max_tokens = 128000; max_output_tokens = 128000; max_completion_tokens = 128000;
-              capabilities = {
-                tools = true; images = false; parallel_tool_calls = false;
-                prompt_cache_key = false; chat_completions = true; interleaved_reasoning = false;
-              };
-            }
-          ];
-        };
       };
 
       telemetry = {
