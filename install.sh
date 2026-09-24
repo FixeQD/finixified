@@ -9,7 +9,8 @@ set -euo pipefail
 : "${PRIMARY_USER:?PRIMARY_USER must be set}"
 : "${FLAKE_HOST:=gownobook}"
 : "${DISKO_MODE:=destroy,format,mount}"
-# : "${REQUIRE_SOPS:=true}"
+: "${REQUIRE_SOPS:=true}"
+: "${RESUME_INSTALL:=false}"
 
 FLAKE_DIR="$(pwd)"
 
@@ -18,10 +19,7 @@ echo "==> [1/5] disko (mode: $DISKO_MODE) for host '$FLAKE_HOST'"
   --mode "$DISKO_MODE" \
   --flake "$FLAKE_DIR#$FLAKE_HOST"
 
-echo "==> [2/5] passwords: setting passwords for $PRIMARY_USER and root"
 PASSWD_DIR="/mnt/etc/nixos-passwords"
-mkdir -p "$PASSWD_DIR"
-chmod 700 "$PASSWD_DIR"
 
 read_password_masked() {
   local prompt="$1" password="" char=""
@@ -84,69 +82,90 @@ ask_password() {
   done
 }
 
-(
-  umask 077
-  for label_user in "$PRIMARY_USER" "root"; do
-    password="$(ask_password "$label_user")"
-    "$MKPASSWD_BIN" -m sha-512 -s <<< "$password" > "$PASSWD_DIR/$label_user"
-    chmod 600 "$PASSWD_DIR/$label_user"
-    unset password
-  done
-)
+passwords_exist=true
+for label_user in "$PRIMARY_USER" "root"; do
+  if [ ! -s "$PASSWD_DIR/$label_user" ]; then
+    passwords_exist=false
+    break
+  fi
+done
 
-# if [ "$REQUIRE_SOPS" = "true" ]; then
-#   echo "==> [3/5] sops: installing age key"
-#   AGE_KEY_DIR="/mnt/etc/sops/age"
-#   mkdir -p "$AGE_KEY_DIR"
-#   chmod 700 "$AGE_KEY_DIR"
-#
-#   run_sops() {
-#     if command -v sops >/dev/null 2>&1; then
-#       sops "$@"
-#     else
-#       nix --extra-experimental-features 'nix-command flakes' run nixpkgs#sops -- "$@"
-#     fi
-#   }
-#
-#   DEFAULT_KEY_PATH="$HOME/.config/sops/age/keys.txt"
-#   printf '    path to age key file [%s]: ' "$DEFAULT_KEY_PATH" >&2
-#   read -r KEY_PATH
-#   KEY_PATH="${KEY_PATH:-$DEFAULT_KEY_PATH}"
-#
-#   (
-#     umask 077
-#     if [ -f "$KEY_PATH" ]; then
-#       cp "$KEY_PATH" "$AGE_KEY_DIR/keys.txt"
-#       echo "    copied from $KEY_PATH"
-#     else
-#       echo "    '$KEY_PATH' not found - falling back to manual paste"
-#       printf  "    Paste age private key, then Ctrl+D: "
-#       stty -echo
-#       trap 'stty echo' EXIT
-#       : > "$AGE_KEY_DIR/keys.txt"
-#       while IFS= read -r line; do
-#         printf '*'
-#         printf '%s\n' "$line" >> "$AGE_KEY_DIR/keys.txt"
-#       done
-#       stty echo
-#       trap - EXIT
-#       echo
-#       echo "    ($(wc -l < "$AGE_KEY_DIR/keys.txt") lines written)"
-#     fi
-#     chmod 600 "$AGE_KEY_DIR/keys.txt"
-#   )
-#
-#   echo "    verifying key by decrypting home/secrets.yaml..."
-#   if SOPS_AGE_KEY_FILE="$AGE_KEY_DIR/keys.txt" run_sops -d "$FLAKE_DIR/home/secrets.yaml" >/dev/null; then
-#     echo "    OK - key decrypts secrets.yaml successfully."
-#   else
-#     echo "    FAILED - this key cannot decrypt $FLAKE_DIR/home/secrets.yaml" >&2
-#     rm -f "$AGE_KEY_DIR/keys.txt"
-#     exit 1
-#   fi
-# else
-#   echo "==> [3/5] sops: skipped (REQUIRE_SOPS=false, host has no sops secrets)"
-# fi
+if [ "$RESUME_INSTALL" = "true" ] && [ "$passwords_exist" = "true" ]; then
+  echo "==> [2/5] passwords: existing password files found, skipping"
+else
+  echo "==> [2/5] passwords: setting passwords for $PRIMARY_USER and root"
+  mkdir -p "$PASSWD_DIR"
+  chmod 700 "$PASSWD_DIR"
+
+  (
+    umask 077
+    for label_user in "$PRIMARY_USER" "root"; do
+      password="$(ask_password "$label_user")"
+      "$MKPASSWD_BIN" -m sha-512 -s <<< "$password" > "$PASSWD_DIR/$label_user"
+      chmod 600 "$PASSWD_DIR/$label_user"
+      unset password
+    done
+  )
+fi
+
+if [ "$REQUIRE_SOPS" = "true" ]; then
+  AGE_KEY_DIR="/mnt/etc/sops/age"
+  installed_age_key=false
+
+  if [ "$RESUME_INSTALL" = "true" ] && [ -s "$AGE_KEY_DIR/keys.txt" ]; then
+    echo "==> [3/5] sops: age key already present, skipping installation"
+  else
+    echo "==> [3/5] sops: installing age key"
+    installed_age_key=true
+    mkdir -p "$AGE_KEY_DIR"
+    chmod 700 "$AGE_KEY_DIR"
+
+    DEFAULT_KEY_PATH="$HOME/.config/sops/age/keys.txt"
+    printf '    path to age key file [%s]: ' "$DEFAULT_KEY_PATH" >&2
+    read -r KEY_PATH
+    KEY_PATH="${KEY_PATH:-$DEFAULT_KEY_PATH}"
+
+    (
+      umask 077
+      if [ -f "$KEY_PATH" ]; then
+        cp "$KEY_PATH" "$AGE_KEY_DIR/keys.txt"
+        echo "    copied from $KEY_PATH"
+      else
+        echo "    '$KEY_PATH' not found - falling back to manual paste"
+        printf  "    Paste age private key, then Ctrl+D: "
+        stty -echo
+        trap 'stty echo' EXIT
+        : > "$AGE_KEY_DIR/keys.txt"
+        while IFS= read -r line; do
+          printf '*'
+          printf '%s\n' "$line" >> "$AGE_KEY_DIR/keys.txt"
+        done
+        stty echo
+        trap - EXIT
+        echo
+        echo "    ($(wc -l < "$AGE_KEY_DIR/keys.txt") lines written)"
+      fi
+      chmod 600 "$AGE_KEY_DIR/keys.txt"
+    )
+  fi
+
+  run_sops() {
+    nix --extra-experimental-features 'nix-command flakes' run nixpkgs#sops -- "$@"
+  }
+
+  echo "    verifying key by decrypting home/secrets.yaml..."
+  if SOPS_AGE_KEY_FILE="$AGE_KEY_DIR/keys.txt" run_sops -d "$FLAKE_DIR/home/secrets.yaml" >/dev/null; then
+    echo "    OK - key decrypts secrets.yaml successfully."
+  else
+    echo "    FAILED - this key cannot decrypt $FLAKE_DIR/home/secrets.yaml" >&2
+    if [ "$installed_age_key" = "true" ]; then
+      rm -f "$AGE_KEY_DIR/keys.txt"
+    fi
+    exit 1
+  fi
+else
+  echo "==> [3/5] sops: skipped (REQUIRE_SOPS=false, host has no sops secrets)"
+fi
 
 echo "==> [4/5] nixos-install"
 nixos-install \

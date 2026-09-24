@@ -1,0 +1,8 @@
+keys:
+  - &fixeq age1xmssaykpccrc5d9n4ajcxk55hh4kmeaxrcq295nnh0rzj83w29zq8g5ecl
+
+creation_rules:
+  - path_regex: home/secrets\.yaml$
+    key_groups:
+      - age:
+          - *fixeq

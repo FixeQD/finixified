@@ -75,17 +75,16 @@
     },
     "finix": {
       "locked": {
-        "lastModified": 1787433965,
-        "narHash": "sha256-uBIcNZWTg1AVuwznKpVagwMBy/6DTwkXTbMPt9cl+lE=",
-        "owner": "FixeQD",
+        "lastModified": 1789785348,
+        "narHash": "sha256-zz+eqC+AhSIDSSToDcAZp6bZyGtSs9D59K6Jjh+82n4=",
+        "owner": "finix-community",
         "repo": "finix",
-        "rev": "0dbbc77498386cf444affe9d4fc710d43e23fcd8",
+        "rev": "bb5965afe646b8c1055be3646b6df39e754d03a3",
         "type": "github"
       },
       "original": {
-        "owner": "FixeQD",
+        "owner": "finix-community",
         "repo": "finix",
-        "rev": "0dbbc77498386cf444affe9d4fc710d43e23fcd8",
         "type": "github"
       }
     },
@@ -250,6 +249,7 @@
         "nixcord": "nixcord",
         "nixpkgs": "nixpkgs_2",
         "noctalia": "noctalia",
+        "sops-nix": "sops-nix",
         "spicetify-nix": "spicetify-nix",
         "zen-browser": "zen-browser"
       }
@@ -272,6 +272,26 @@
       "original": {
         "owner": "oxalica",
         "repo": "rust-overlay",
+        "type": "github"
+      }
+    },
+    "sops-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789890976,
+        "narHash": "sha256-GKwH3zpy7tartuJMG0Rv/xUsdetG1QLmTVv8UKgJLmA=",
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "rev": "7214124c20c1542c90deb54af50e2f53ae02711f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mic92",
+        "repo": "sops-nix",
         "type": "github"
       }
     },

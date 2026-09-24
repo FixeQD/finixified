@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, osConfig, pkgs, ... }:
 
 {
   programs.ssh = {
@@ -38,14 +38,12 @@
     maxCacheTtl = 7200;
   };
 
-  # home.activation.importGpgKey = config.lib.dag.entryAfter [ "writeBoundary" ] ''
-  #   if [ -r "${osConfig.sops.secrets.auth_key_3.path}" ]; then
-  #     ${pkgs.gnupg}/bin/gpg --import "${osConfig.sops.secrets.auth_key_3.path}" 2>/dev/null || true
-  #   fi
-  #   if [ -r "${osConfig.sops.secrets.auth_key_4.path}" ]; then
-  #     ${pkgs.gnupg}/bin/gpg --import "${osConfig.sops.secrets.auth_key_4.path}" 2>/dev/null || true
-  #   fi
-  # '';
+  home.activation.importGpgKey = config.lib.dag.entryAfter [ "writeBoundary" ] ''
+    if [ -r "${osConfig.sops.secrets.gh_gpg.path}" ]; then
+      ${pkgs.gnupg}/bin/gpg --batch --import "${osConfig.sops.secrets.gh_gpg.path}" 2>/dev/null || true
+      ${pkgs.gnupg}/bin/gpg --batch --export 14B42F47A55383DE | ${pkgs.gnupg}/bin/gpg --batch --import 2>/dev/null || true
+    fi
+  '';
 
   home.activation.fixGnupgPerms = config.lib.dag.entryAfter [ "writeBoundary" ] ''
     if [ -d "${config.home.homeDirectory}/.gnupg" ]; then
@@ -55,9 +53,9 @@
     fi
   '';
 
-  # programs.git.settings = {
-  #   user.signingKey = "F869D8453D757219";
-  #   commit.gpgsign = true;
-  #   tag.gpgsign = true;
-  # };
+  programs.git.settings = {
+    user.signingKey = "14B42F47A55383DE";
+    commit.gpgsign = true;
+    tag.gpgsign = true;
+  };
 }

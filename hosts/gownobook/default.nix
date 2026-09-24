@@ -21,6 +21,7 @@
     ../../modules/desktop/virt.nix
 
     ../../modules/services/ollama.nix
+    ../../modules/services/secrets.nix
     ../../modules/firewall/default.nix
   ];
 
