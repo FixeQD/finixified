@@ -1,7 +1,9 @@
-{ lib, config, ... }:
+{ lib, config, community-modules, ... }:
 with lib;
 let cfg = config.modules.nix-ld; in
 {
+  imports = [ community-modules.nixosModules.nix-ld ];
+
   options.modules.nix-ld = {
     enable = mkEnableOption "nix-ld (community-modules programs.nix-ld)";
 

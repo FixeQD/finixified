@@ -1,7 +1,15 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, disko, community-modules, finix, ... }:
 with lib;
 let cfg = config.modules.base; in
 {
+  imports = [
+    disko.nixosModules.disko
+    community-modules.nixosModules.bootchart
+    finix.nixosModules.getty
+    finix.nixosModules.nix-daemon
+    finix.nixosModules.sysklogd
+  ];
+
   options.modules.base.enable = mkEnableOption "core packages and Nix settings";
 
   config = mkIf cfg.enable {
@@ -44,8 +52,10 @@ let cfg = config.modules.base; in
 
     services.bootchart.enable = true;
     services.bootchart.stop.conditions = [ "service/sddm/ready" ];
-    
+
     services.getty.enable = true;
+
+    services.sysklogd.enable = true;
 
     services.nix-daemon = {
       enable = true;

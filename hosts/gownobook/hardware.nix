@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, community-modules, ... }:
 
 let
   btrfsOpts = [
@@ -10,6 +10,8 @@ let
   ];
 in
 {
+  imports = [ community-modules.nixosModules.openrgb ];
+
   disko.devices.disk.main = {
     device = "/dev/sda";
     type = "disk";
@@ -72,11 +74,14 @@ in
 
   # ── GPU: Intel Arc Graphics (Meteor Lake, integrated only) ──────────────────
 
-  programs.zzz.enable = true;
-
   hardware.cpu.intel.updateMicrocode = true;
 
   hardware.firmware = [ pkgs.sof-firmware pkgs.alsa-firmware ];
+
+  services.hardware.openrgb = {
+    enable = true;
+    motherboard = "intel";
+  };
 
   hardware.graphics = {
     enable    = true;

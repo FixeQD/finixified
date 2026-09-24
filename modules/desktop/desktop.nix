@@ -1,7 +1,17 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, community-modules, finix, ... }:
 with lib;
 let cfg = config.modules.desktop; in
 {
+  imports = [
+    community-modules.nixosModules.fastfetch
+    finix.nixosModules.niri
+    finix.nixosModules.xwayland-satellite
+    finix.nixosModules.sddm
+    finix.nixosModules.zzz
+    finix.nixosModules.brightnessctl
+    finix.nixosModules.upower
+  ];
+
   options.modules.desktop.enable = mkEnableOption "niri desktop and seatd";
   options.modules.desktop.nvidia.enable = mkEnableOption "NVIDIA desktop environment variables";
 
@@ -15,6 +25,8 @@ let cfg = config.modules.desktop; in
     services.upower.enable = true;
 
     programs.brightnessctl.enable = true;
+
+    programs.zzz.enable = true;
 
     programs.xwayland-satellite.enable = true;
 

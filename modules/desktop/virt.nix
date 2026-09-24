@@ -1,7 +1,9 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, finix, ... }:
 with lib;
 let cfg = config.modules.virt; in
 {
+  imports = [ finix.nixosModules.docker ];
+
   options.modules.virt.enable = mkEnableOption "Docker and libvirt";
 
   config = mkIf cfg.enable {

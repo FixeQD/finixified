@@ -57,7 +57,7 @@
     let
       mkHost =
         {
-          hostname,
+          host,
           system ? "x86_64-linux",
           extraModules ? [ ],
         }:
@@ -73,59 +73,42 @@
               })
             ];
           };
+          hostConfig = (import host) {
+            inherit pkgs nixpkgs finix community-modules disko zen-browser spicetify-nix noctalia nixcord;
+          };
         in
         finix.lib.finixSystem {
           inherit (pkgs) lib;
+          inherit (hostConfig) specialArgs;
           modules = [
             { nixpkgs.pkgs = nixpkgs.lib.mkDefault pkgs; }
-            { _module.args = { inherit zen-browser spicetify-nix noctalia nixcord; }; }
-            disko.nixosModules.disko
-            community-modules.nixosModules.home-manager
-            community-modules.nixosModules.tailscale
-            finix.nixosModules.pipewire
-            finix.nixosModules.wireplumber
-            community-modules.nixosModules.nix-ld
-            community-modules.nixosModules.openrgb
-            community-modules.nixosModules.fastfetch
-            ./modules/sops
-            finix.nixosModules.bluetooth
-            finix.nixosModules.docker
-            finix.nixosModules.getty
-            finix.nixosModules.openssh
-            finix.nixosModules.hyprland
-            finix.nixosModules.niri
-            community-modules.nixosModules.bootchart
-            finix.nixosModules.xwayland-satellite
-            finix.nixosModules.nix-daemon
-            finix.nixosModules.sudo
-            finix.nixosModules.sysklogd
-            finix.nixosModules.iwd
-            finix.nixosModules.dhcpcd
-            finix.nixosModules.sddm
-            finix.nixosModules.zzz
-            finix.nixosModules.brightnessctl
-            finix.nixosModules.fwupd
-            finix.nixosModules.upower
-            ./hosts/${hostname}/default.nix
           ]
+          ++ hostConfig.modules
           ++ extraModules;
         };
 
+      hostConfigurations = {
+        wifi-chan = mkHost { host = ./hosts/wifi-chan/default.nix; };
+        gownobook = mkHost { host = ./hosts/gownobook/default.nix; };
+      };
+
       mkInstallApp =
-        { hostname, resume ? false, requireSops ? true }:
+        { config, resume ? false }:
         let
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          hostname = config.networking.hostName;
+          system = config.nixpkgs.pkgs.stdenv.hostPlatform.system;
+          pkgs = nixpkgs.legacyPackages.${system};
         in
         {
           type = "app";
           program = toString (
             pkgs.writeShellScript "${if resume then "resume-" else ""}install-${hostname}" ''
-              export DISKO_BIN="${disko.packages.x86_64-linux.disko}/bin/disko"
+              export DISKO_BIN="${disko.packages.${system}.disko}/bin/disko"
               export SBCTL_BIN="${pkgs.sbctl}/bin/sbctl"
               export MKPASSWD_BIN="${pkgs.mkpasswd}/bin/mkpasswd"
               export FLAKE_HOST="${hostname}"
-              export PRIMARY_USER="fixeq"
-              export REQUIRE_SOPS="${if requireSops then "true" else "false"}"
+              export PRIMARY_USER="${config.modules.user.name}"
+              export REQUIRE_SOPS="${if config.modules.installer.requireSops then "true" else "false"}"
               export RESUME_INSTALL="${if resume then "true" else "false"}"
               ${if resume then ''export DISKO_MODE="mount"'' else ""}
               source ${./install.sh}
@@ -134,15 +117,12 @@
         };
     in
     {
-      nixosConfigurations = {
-        wifi-chan = mkHost { hostname = "wifi-chan"; };
-        gownobook = mkHost { hostname = "gownobook"; };
-      };
+      nixosConfigurations = hostConfigurations;
 
-      apps.x86_64-linux.install-wifi-chan = mkInstallApp { hostname = "wifi-chan"; requireSops = false; };
-      apps.x86_64-linux.resume-install-wifi-chan = mkInstallApp { hostname = "wifi-chan"; resume = true; requireSops = false; };
+      apps.x86_64-linux.install-wifi-chan = mkInstallApp { config = hostConfigurations.wifi-chan.config; };
+      apps.x86_64-linux.resume-install-wifi-chan = mkInstallApp { config = hostConfigurations.wifi-chan.config; resume = true; };
 
-      apps.x86_64-linux.install-gownobook = mkInstallApp { hostname = "gownobook"; };
-      apps.x86_64-linux.resume-install-gownobook = mkInstallApp { hostname = "gownobook"; resume = true; };
+      apps.x86_64-linux.install-gownobook = mkInstallApp { config = hostConfigurations.gownobook.config; };
+      apps.x86_64-linux.resume-install-gownobook = mkInstallApp { config = hostConfigurations.gownobook.config; resume = true; };
     };
 }

@@ -2,6 +2,7 @@
   pkgs,
   lib,
   config,
+  finix,
   ...
 }:
 with lib;
@@ -10,6 +11,8 @@ let
   runtimeDirCmd = "/run/user/$(${pkgs.coreutils}/bin/id -u ${cfg.name})";
 in
 {
+  imports = [ finix.nixosModules.sudo ];
+
   options.modules.user = {
     enable = mkEnableOption "primary user and sudo";
     name = mkOption {

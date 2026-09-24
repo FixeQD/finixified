@@ -1,7 +1,14 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, community-modules, finix, ... }:
 with lib;
 let cfg = config.modules.network; in
 {
+  imports = [
+    community-modules.nixosModules.tailscale
+    finix.nixosModules.iwd
+    finix.nixosModules.dhcpcd
+    finix.nixosModules.openssh
+  ];
+
   options.modules.network = {
     enable = mkEnableOption "iwd and dhcpcd networking";
 
@@ -41,6 +48,11 @@ let cfg = config.modules.network; in
 
   config = mkIf cfg.enable {
     services.iwd.enable = true;
+
+    networking.hosts = {
+      "127.0.0.1" = [ "localhost" ];
+      "127.0.0.2" = [ config.networking.hostName ];
+    };
 
     services.dhcpcd.enable = true;
     services.dhcpcd.settings = {

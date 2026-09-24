@@ -1,7 +1,12 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, config, finix, ... }:
 with lib;
 let cfg = config.modules.audio; in
 {
+  imports = [
+    finix.nixosModules.pipewire
+    finix.nixosModules.wireplumber
+  ];
+
   options.modules.audio.enable = mkEnableOption "PipeWire audio (finix programs.pipewire/wireplumber)";
 
   config = mkIf cfg.enable {

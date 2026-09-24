@@ -3,6 +3,8 @@ let
   user = config.modules.user.name;
 in
 {
+  imports = [ ../sops ];
+
   sops.age.keyFile = "/etc/sops/age/keys.txt";
   sops.defaultSopsFile = ../../home/secrets.yaml;
 
