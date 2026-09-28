@@ -1,0 +1,96 @@
+{
+  pkgs,
+  inputs,
+  ...
+}:
+let
+  inherit (pkgs) stdenv;
+  zen = inputs.zen-browser.packages.${stdenv.hostPlatform.system}.default;
+in
+{
+  packages =
+    with pkgs;
+    [
+      p7zip
+      unrar
+      unzip
+      zip
+      easyeffects
+      helvum
+      calf
+      lsp-plugins
+      zen
+      xdg-utils
+      cliphist
+      wl-clipboard
+      playerctl
+      pamixer
+      libnotify
+      kdePackages.polkit-kde-agent-1
+      kdePackages.kdeconnect-kde
+      zed-editor
+      mitmproxy
+      android-tools
+      opencode
+      opencode-desktop
+      lmstudio
+      gnumake
+      perl
+      antigravity-ide
+      nvidia-container-toolkit
+      proton-vpn
+      protonup-qt
+      steam
+      prismlauncher
+      jdk21
+      maven
+      bun
+      typescript-language-server
+      eslint
+      nodejs
+      kdePackages.ffmpegthumbs
+      kdePackages.filelight
+      kdePackages.kdf
+      kdePackages.kdialog
+      kdePackages.kio-admin
+      kdePackages.kompare
+      kdePackages.kwallet
+      kdePackages.kwayland-integration
+      kdePackages.ark
+      kdePackages.kservice
+      mpv
+      yt-dlp
+      qview
+      uv
+      pyright
+      python3
+      nmap
+      strace
+      jadx
+      xxd
+      ghidra
+      rustup
+      clang
+      lldb
+      mold
+      ccache
+      gdb
+      cargo-tauri
+      cargo-xwin
+      cargo-zigbuild
+      gparted
+      ntfs3g
+      wireguard-tools
+      spicetify-cli
+      modprobed-db
+      cpupower-gui
+      yazi
+      (pkgs.writeShellScriptBin "x-terminal-emulator" ''
+        exec ${pkgs.ghostty}/bin/ghostty "$@"
+      '')
+      (pkgs.writeShellScriptBin "www-browser" ''
+        exec ${zen}/bin/zen "$@"
+      '')
+    ]
+    ++ [ fx ];
+}

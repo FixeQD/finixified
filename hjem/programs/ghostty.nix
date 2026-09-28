@@ -1,8 +1,6 @@
 {
-  programs.ghostty = {
+  rum.programs.ghostty = {
     enable = true;
-    systemd.enable = false;
-
     themes.tokyo-night = {
       palette = [
         "0=#15161e"
@@ -22,43 +20,34 @@
         "14=#7dcfff"
         "15=#c0caf5"
       ];
-      background           = "#1a1b26";
-      foreground           = "#c0caf5";
-      cursor-color         = "#c0caf5";
-      cursor-text          = "#1a1b26";
+      background = "#1a1b26";
+      foreground = "#c0caf5";
+      cursor-color = "#c0caf5";
+      cursor-text = "#1a1b26";
       selection-background = "#33467c";
       selection-foreground = "#c0caf5";
     };
-
     settings = {
       theme = "tokyo-night";
-
       background-opacity = 0.82;
-      background-blur    = 20;
-
-      font-family            = "JetBrainsMono Nerd Font";
-      font-size              = 13;
-      font-style             = "Regular";
-      font-style-bold        = "Bold";
-      font-style-italic      = "Italic";
+      background-blur = 20;
+      font-family = "JetBrainsMono Nerd Font";
+      font-size = 13;
+      font-style = "Regular";
+      font-style-bold = "Bold";
+      font-style-italic = "Italic";
       font-style-bold-italic = "Bold Italic";
-
-      font-thicken       = false;
+      font-thicken = false;
       adjust-cell-height = "10%";
-      adjust-cell-width  = 0;
-
-      window-padding-x       = 14;
-      window-padding-y       = 10;
+      adjust-cell-width = 0;
+      window-padding-x = 14;
+      window-padding-y = 10;
       window-padding-balance = true;
-      window-decoration      = false;
-
+      window-decoration = false;
       title = "ghostty";
-
-      cursor-style       = "block";
+      cursor-style = "block";
       cursor-style-blink = true;
-
       scrollback-limit = 10000;
-
       keybind = [
         "ctrl+shift+d=new_split:right"
         "ctrl+shift+e=new_split:down"
@@ -85,11 +74,9 @@
         "ctrl+shift+v=paste_from_clipboard"
         "ctrl+shift+comma=reload_config"
       ];
-
-      confirm-close-surface         = false;
+      confirm-close-surface = false;
       quit-after-last-window-closed = true;
-      mouse-hide-while-typing       = true;
-
+      mouse-hide-while-typing = true;
       term = "xterm-256color";
     };
   };

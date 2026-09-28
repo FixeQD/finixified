@@ -38,29 +38,27 @@
       url = "github:noctalia-dev/noctalia";
     };
 
-    nushell-nightly = {
-      url = "sourcehut:~mangoiv/nu-shell.nix";
+    hjem = {
+      url = "github:feel-co/hjem";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    niri-nix = {
-      url = "git+https://codeberg.org/BANanaD3V/niri-nix";
+    hjem-rum = {
+      url = "github:snugnug/hjem-rum";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.hjem.follows = "hjem";
     };
   };
 
   outputs =
-    {
+    inputs@{
       nixpkgs,
       finix,
       community-modules,
+      nixcord,
       disko,
       sops-nix,
-      zen-browser,
-      spicetify-nix,
-      noctalia,
-      nixcord,
       efistubmgr,
-      niri-nix,
       ...
     }:
     let
@@ -83,7 +81,7 @@
             ];
           };
           hostConfig = (import host) {
-            inherit pkgs nixpkgs finix community-modules disko zen-browser spicetify-nix noctalia nixcord niri-nix;
+            inherit pkgs nixpkgs inputs disko community-modules finix nixcord;
           };
         in
         finix.lib.finixSystem {

@@ -1,7 +1,42 @@
-{ ... }:
 {
-  programs.nixcord = {
+  nixcord,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  cfg = config.programs.nixcord;
+
+  common = import (nixcord + "/modules/lib/mkCommonConfig.nix") { inherit config lib pkgs; };
+
+  homeDir = lib.attrsets.attrByPath [ cfg.user "home" ] "/home/${cfg.user}" config.users.users;
+
+  install = lib.getExe' pkgs.coreutils "install";
+
+  id = lib.getExe' pkgs.coreutils "id";
+  setpriv = lib.getExe' pkgs.util-linux "setpriv";
+  activationScripts = common.mkActivationScripts (
+    script:
+      ''
+        uid="$(${id} -u ${lib.escapeShellArg cfg.user})"
+        gid="$(${id} -g ${lib.escapeShellArg cfg.user})"
+        ${setpriv} --reuid="$uid" --regid="$gid" --init-groups ${pkgs.runtimeShell} -c ${lib.escapeShellArg script}
+      ''
+  );
+in
+{
+  imports = [ (nixcord + "/modules/common.nix") ];
+
+  programs.nixcord = lib.recursiveUpdate (common.mkConfigDirs cfg cfg.xdgConfigHome) {
     enable = true;
+    user = config.modules.user.name;
+
+    homeDirectory = lib.mkDefault homeDir;
+    xdgConfigHome = lib.mkDefault "${homeDir}/.config";
+    finalPackage = common.packages.final;
+
+
 
     discord.equicord.enable = true;
 
@@ -86,8 +121,8 @@
       messageLogger.enable = true;
       messageLoggerEnhanced = {
         enable = true;
-        imageCacheDir = "/home/fixeq/.config/Equicord/MessageLoggerData/savedImages";
-        logsDir = "/home/fixeq/.config/Equicord/MessageLoggerData";
+        imageCacheDir = "${homeDir}/.config/Equicord/MessageLoggerData/savedImages";
+        logsDir = "${homeDir}/.config/Equicord/MessageLoggerData";
       };
       messageTranslate = {
         targetLanguage = "pl";
@@ -335,6 +370,40 @@
         showInMessages = true;
         showInProfile = true;
       };
+    };
+  };
+
+  environment.systemPackages = common.packages.installed;
+
+  system.activation.scripts = {
+    nixcord-disableDiscordUpdates = {
+      deps = [ "users" ];
+      text = activationScripts.disableDiscordUpdates;
+    };
+
+    nixcord-fixDiscordModules = {
+      deps = [ "users" ];
+      text = activationScripts.fixDiscordModules;
+    };
+
+    nixcord-writeFiles = {
+      deps = [ "users" ];
+      text = ''
+        (
+          set -eu
+          target_user=${lib.escapeShellArg cfg.user}
+          target_group="$(${pkgs.coreutils}/bin/id -gn "$target_user")"
+
+          copy_file() {
+            local src="$1"
+            local dest="$2"
+            local mode="$3"
+            ${install} -D -m "$mode" -o "$target_user" -g "$target_group" "$src" "$dest"
+          }
+
+          ${common.fileCopyCommands}
+        )
+      '';
     };
   };
 }

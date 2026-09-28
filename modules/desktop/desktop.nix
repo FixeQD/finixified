@@ -51,10 +51,12 @@ let cfg = config.modules.desktop; in
       };
 
       systemPackages = with pkgs; [
+        bibata-cursors
         ddcutil
         gobject-introspection
         gtk3
         gtk4
+        kdePackages.breeze-icons
         wrapGAppsHook4
         (python3.withPackages (ps: with ps; [
           pygobject3
@@ -62,6 +64,7 @@ let cfg = config.modules.desktop; in
       ];
 
       pathsToLink = [
+        "/share/icons"
         "/share/wayland-sessions"
         "/share/xdg-desktop-portal"
       ];
@@ -70,7 +73,7 @@ let cfg = config.modules.desktop; in
     xdg.portal = {
       enable  = true;
       portals = [
-        pkgs.xdg-desktop-portal-gnome
+        pkgs.kdePackages.xdg-desktop-portal-kde
         pkgs.xdg-desktop-portal-gtk
       ];
     };

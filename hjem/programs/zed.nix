@@ -1,26 +1,20 @@
-{ ... }:
 {
-  programs.zed-editor = {
+  lib,
+  ...
+}:
+{
+  environment.sessionVariables = {
+    EDITOR = "zed --wait";
+    VISUAL = "zed --wait";
+  };
+  rum.programs.zed = {
     enable = true;
-
-    extensions = [
-      "catppuccin"
-      "material-icon-theme"
-      "discord-presence"
-      "toml"
-      "nix"
-      "nu"
-      "git-firefly"
-    ];
-
-    userSettings = {
+    settings = {
       cli_default_open_behavior = "existing_window";
-
-      project_panel.dock      = "left";
-      outline_panel.dock      = "left";
+      project_panel.dock = "left";
+      outline_panel.dock = "left";
       collaboration_panel.dock = "left";
-      git_panel.dock          = "left";
-
+      git_panel.dock = "left";
       agent = {
         dock = "right";
         tool_permissions.tools = {
@@ -61,7 +55,7 @@
             { pattern = "^echo(\\s|$)"; }
             { pattern = "^date(\\s|$)"; }
             { pattern = "^uname\\b"; }
-            { pattern = "^whoami(\\s|$)"; }
+            { pattern = "^whoami\\b"; }
             { pattern = "^which\\b"; }
             { pattern = "^type\\b"; }
             { pattern = "^env(\\s|$)"; }
@@ -72,14 +66,13 @@
           ];
         };
         default_model = {
-          provider       = "copilot_chat";
-          model          = "claude-haiku-4.5";
+          provider = "copilot_chat";
+          model = "claude-haiku-4.5";
           enable_thinking = true;
         };
-        favorite_models  = [];
-        model_parameters = [];
+        favorite_models = [ ];
+        model_parameters = [ ];
       };
-
       language_models.openai_compatible = {
         "llama.cpp" = {
           api_url = "http://127.0.0.1:8080/v1";
@@ -90,55 +83,61 @@
               max_output_tokens = 32000;
               max_completion_tokens = 200000;
               capabilities = {
-                tools = true; images = true;
-                parallel_tool_calls = false; prompt_cache_key = false;
-                chat_completions = true; interleaved_reasoning = false;
+                tools = true;
+                images = true;
+                parallel_tool_calls = false;
+                prompt_cache_key = false;
+                chat_completions = true;
+                interleaved_reasoning = false;
               };
             }
           ];
         };
-
       };
-
       telemetry = {
         diagnostics = true;
-        metrics     = false;
+        metrics = false;
       };
-
       agent_servers = {
-        opencode.type        = "registry";
+        opencode.type = "registry";
         github-copilot-cli.type = "registry";
       };
-
-      icon_theme      = "Material Icon Theme";
-      ui_font_size    = 16;
+      icon_theme = "Material Icon Theme";
+      ui_font_size = 16;
       buffer_font_size = 15;
-
       theme = {
-        mode  = "dark";
+        mode = "dark";
         light = "One Light";
-        dark  = "Catppuccin Espresso (Blur) [Light]";
+        dark = "Catppuccin Espresso (Blur) [Light]";
       };
-
       lsp.discord_presence.initialization_options = {
-        state   = "Working on {filename}";
+        state = "Working on {filename}";
         details = "In {workspace}";
         large_image = "{base_icons_url}/{language:lo}.png";
-        large_text  = "{language:u}";
+        large_text = "{language:u}";
         small_image = "{base_icons_url}/zed.png";
-        small_text  = "Zed";
+        small_text = "Zed";
         idle = {
           timeout = 1200;
-          action  = "change_activity";
-          state   = "Idling";
+          action = "change_activity";
+          state = "Idling";
           details = "In Zed";
           large_image = "{base_icons_url}/zed.png";
-          large_text  = "Zed";
+          large_text = "Zed";
           small_image = "{base_icons_url}/idle.png";
-          small_text  = "Idle";
+          small_text = "Idle";
         };
         git_integration = true;
       };
+      auto_install_extensions = lib.genAttrs [
+        "catppuccin"
+        "material-icon-theme"
+        "discord-presence"
+        "toml"
+        "nix"
+        "nu"
+        "git-firefly"
+      ] (_: true);
     };
   };
 }

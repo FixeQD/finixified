@@ -3,16 +3,13 @@
   disko,
   community-modules,
   finix,
-  zen-browser,
-  spicetify-nix,
-  noctalia,
   nixcord,
-  niri-nix,
+  inputs,
   ...
 }:
 {
   specialArgs = {
-    inherit disko community-modules finix zen-browser spicetify-nix noctalia nixcord niri-nix;
+    inherit disko community-modules finix nixcord;
   };
 
   modules = [
@@ -35,6 +32,7 @@
         ../../modules/desktop/desktop.nix
         ../../modules/desktop/fonts.nix
         ../../modules/desktop/nix-ld.nix
+        ../../modules/desktop/nixcord.nix
         ../../modules/desktop/virt.nix
 
         ../../modules/firewall/default.nix
@@ -45,7 +43,7 @@
         ../../modules/services/ollama.nix
         ../../modules/services/secrets.nix
 
-        community-modules.nixosModules.home-manager
+        inputs.hjem.finixModules.default
       ];
 
       networking.hostName = "gownobook";
@@ -100,18 +98,20 @@
         };
       };
 
-      home-manager.users.fixeq = {
-        _module.args = {
-          inherit zen-browser spicetify-nix noctalia niri-nix;
-          username = "fixeq";
-        };
+      hjem = {
+        clobberByDefault = true;
 
-        imports = [
-          ../../home/default.nix
-          spicetify-nix.homeManagerModules.default
-          noctalia.homeModules.default
-          nixcord.homeModules.nixcord
+        extraModules = [
+          inputs.hjem-rum.hjemModules.default
+          inputs.spicetify-nix.hjemModules.default
+          inputs.noctalia.hjemModules.default
+          ../../hjem
         ];
+        specialArgs = { inherit inputs; };
+
+        users.fixeq = {
+          enable = true;
+        };
       };
 
       finit.runlevel = 3;

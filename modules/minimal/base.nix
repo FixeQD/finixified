@@ -15,39 +15,44 @@ let cfg = config.modules.base; in
   config = mkIf cfg.enable {
     hardware.firmware = [ pkgs.linux-firmware ];
 
-    environment.systemPackages = with pkgs; [
-      btrfs-progs
-      util-linux
-      coreutils
-      wget
-      curl
-      git
-      neovim
-      man-pages
-      less
-      btop
-      usbutils
-      pciutils
-      lshw
-      ripgrep
-      fd
-      bat
-      eza
-      tree
-      tokei
-      fwupd
-      nushell
-      starship
-      ghostty
-      nixd
-      nixos-rebuild-ng
-      nil
-      nh
-      glib
-      pkg-config
-      libxkbcommon.dev
-      bash
-    ];
+    environment = {
+      systemPackages = with pkgs; [
+        btrfs-progs
+        util-linux
+        coreutils
+        wget
+        curl
+        git
+        neovim
+        man-pages
+        less
+        btop
+        usbutils
+        pciutils
+        lshw
+        ripgrep
+        fd
+        bat
+        eza
+        tree
+        tokei
+        fwupd
+        nushell
+        starship
+        ghostty
+        nixd
+        nixos-rebuild-ng
+        nil
+        nh
+        glib
+        pkg-config
+        libxkbcommon.dev
+        bash
+      ];
+      variables = {
+        EDITOR = "nvim";
+      };
+    };
 
     users.defaultUserShell = pkgs.nushell;
 

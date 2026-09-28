@@ -153,11 +153,11 @@ if [ "$REQUIRE_SOPS" = "true" ]; then
     nix --extra-experimental-features 'nix-command flakes' run nixpkgs#sops -- "$@"
   }
 
-  echo "    verifying key by decrypting home/secrets.yaml..."
-  if SOPS_AGE_KEY_FILE="$AGE_KEY_DIR/keys.txt" run_sops -d "$FLAKE_DIR/home/secrets.yaml" >/dev/null; then
+  echo "    verifying key by decrypting secrets/secrets.yaml..."
+  if SOPS_AGE_KEY_FILE="$AGE_KEY_DIR/keys.txt" run_sops -d "$FLAKE_DIR/secrets/secrets.yaml" >/dev/null; then
     echo "    OK - key decrypts secrets.yaml successfully."
   else
-    echo "    FAILED - this key cannot decrypt $FLAKE_DIR/home/secrets.yaml" >&2
+    echo "    FAILED - this key cannot decrypt $FLAKE_DIR/secrets/secrets.yaml" >&2
     if [ "$installed_age_key" = "true" ]; then
       rm -f "$AGE_KEY_DIR/keys.txt"
     fi
