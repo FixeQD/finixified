@@ -6,9 +6,9 @@
     discord.equicord.enable = true;
 
     config.plugins = {
-      alwaysAnimate.enable = true;
       accountPanelServerProfile.enable = true;
       advancedPermissions.enable = true;
+      alwaysAnimate.enable = true;
       alwaysExpandRoles.enable = true;
       anonymiseFileNames.enable = true;
       betterFolders.enable = true;
@@ -30,13 +30,20 @@
       clipUpload.enable = true;
       commandPalette = {
         enable = true;
-        hotkey = [ "Control" "Shift" "P" ];
+        hotkey = [
+          "Control"
+          "Shift"
+          "P"
+        ];
       };
       consoleJanitor.enable = true;
       consoleShortcuts.enable = true;
       copyEmojiMarkdown.enable = true;
       crashHandler.enable = true;
-      customTimestamps.enable = true;
+      customTimestamps = {
+        enable = true;
+        formats.enable = false;
+      };
       dearrow.enable = true;
       decor.enable = true;
       disableCameras.enable = true;
@@ -83,10 +90,21 @@
         logsDir = "/home/fixeq/.config/Equicord/MessageLoggerData";
       };
       messageTranslate = {
-        confidenceRequirement = 0.8;
         targetLanguage = "pl";
       };
       moreCommands.enable = true;
+      moreUserTags = {
+        tagSettings = {
+          administrator.enable = false;
+          chatModerator.enable = false;
+          moderator.enable = false;
+          moderatorStaff.enable = false;
+          owner.enable = false;
+          voiceModerator.enable = false;
+          webhook.enable = false;
+          enable = false;
+        };
+      };
       musicControls = {
         showSpotifyControls = true;
       };
@@ -115,25 +133,26 @@
         enable = true;
         acknowledgedNotices = {
           quest-ban-warning-2026-08-07 = true;
+          quest-ban-warning-2026-08-26 = true;
         };
         allowChangingDangerousSettings = true;
         autoCompleteQuestTypes = {
-          PLAY_ON_DESKTOP = true;
-          PLAY_ON_XBOX = true;
-          PLAY_ON_PLAYSTATION = true;
+          ACHIEVEMENT_IN_ACTIVITY = true;
           PLAY_ACTIVITY = true;
+          PLAY_ON_DESKTOP = true;
+          PLAY_ON_PLAYSTATION = true;
+          PLAY_ON_XBOX = true;
           WATCH_VIDEO = true;
           WATCH_VIDEO_ON_MOBILE = true;
-          ACHIEVEMENT_IN_ACTIVITY = true;
         };
         completeVideoQuestsQuicker = true;
         ignoredQuestIds = {
-          questIDs = [ ];
           "853621876551188490" = [ ];
+          questIDs = [ ];
         };
         makeMobileVideoQuestsDesktopCompatible = true;
         preventVideoQuestsPausing = true;
-        questButtonBadgeCount = 13;
+        questButtonBadgeCount = 3;
         resumeInterruptedQuests = true;
       };
       quickReply.enable = true;
@@ -164,7 +183,6 @@
       showMeYourName = {
         enable = true;
         includedNames = "{friend, nick} [{display}] (@{user})";
-        triggerNameRerender = true;
       };
       silentTyping.enable = true;
       sortFriends.enable = true;
@@ -172,15 +190,15 @@
       spotifyShareCommands.enable = true;
       startupTimings.enable = true;
       streamerModeOnStream.enable = true;
-      summaries = {
-        summaryExpiryThresholdDays = 7.050176056338028;
-      };
       superReactionTweaks.enable = true;
       supportHelper.enable = true;
       translate = {
         enable = true;
         receivedOutput = "pl";
         sentInput = "pl";
+      };
+      translatePlus = {
+        target = "pl";
       };
       typingIndicator.enable = true;
       typingTweaks.enable = true;
@@ -198,13 +216,33 @@
       };
       viewRaw.enable = true;
       voiceDownload.enable = true;
+      voiceMessageTranscriber = {
+        selectedModel = "Xenova/whisper-base";
+      };
       webKeybinds.enable = true;
-      webRichPresence.enable = true;
       whoReacted.enable = true;
       youtubeAdblock.enable = true;
     };
 
     extraConfig.plugins = {
+      AppleMusicRichPresence = {
+        activityType = 0;
+        detailsLink = "Album";
+        detailsString = "{name}";
+        enableButtons = true;
+        enableTimestamps = true;
+        largeImageLink = "Album";
+        largeImageType = "Album";
+        largeTextString = "{album}";
+        nameString = "Apple Music";
+        refreshInterval = 5;
+        smallImageLink = "Artist";
+        smallImageType = "Artist";
+        smallTextString = "{artist}";
+        stateLink = "Artist";
+        stateString = "{artist} · {album}";
+        statusDisplayType = "off";
+      };
       BANger = {
         source = "https://i.imgur.com/wp5q52C.mp4";
       };
@@ -215,25 +253,19 @@
         disableNoisyLoggers = false;
       };
       equicordHelper = {
-        noDefaultHangStatus = false;
         disableCreateDMButton = false;
         disableDMContextMenu = false;
+        noDefaultHangStatus = false;
       };
       experiments = {
         enableIsStaff = true;
-      };
-      fontLoader = {
-        applyOnClodeBlocks = false;
       };
       fullVcpfp = {
         useServerProfileAvatars = false;
       };
       gitHubRepos = {
-        showRepositoryTab = true;
         showInMiniProfile = true;
-      };
-      globalBadges = {
-        showRa1ncord = true;
+        showRepositoryTab = true;
       };
       imageZoom = {
         showMetadata = true;
@@ -254,58 +286,57 @@
         dmSectioncollapsed = false;
       };
       questify = {
-        disableQuestsDiscoveryTab = false;
-        disableQuestsFetchingQuests = false;
-        disableQuestsDirectMessagesTab = false;
-        disableQuestsPageSponsoredBanner = false;
-        disableQuestsPopupAboveAccountPanel = true;
-        disableQuestsBadgeOnUserProfiles = false;
-        disableQuestsGiftInventoryRelocationNotice = true;
+        completeAchievementQuestsInBackground = false;
+        completeGameQuestsInBackground = false;
+        completeVideoQuestsInBackground = false;
         disableFriendsListActiveNowPromotion = true;
         disableMembersListActivelyPlayingIcon = true;
-        makeMobileQuestsDesktopCompatible = true;
-        completeVideoQuestsInBackground = false;
-        completeGameQuestsInBackground = false;
-        completeAchievementQuestsInBackground = false;
-        questButtonUnclaimed = "both";
-        questRewardIncludeRewardCode = true;
-        questRewardIncludeNitroCode = true;
-        questRewardIncludeCollectibles = true;
-        questRewardIncludeInGame = true;
-        questRewardIncludeOrbs = true;
-        fetchingQuestsInterval = 2700;
+        disableQuestsBadgeOnUserProfiles = false;
+        disableQuestsDirectMessagesTab = false;
+        disableQuestsDiscoveryTab = false;
+        disableQuestsFetchingQuests = false;
+        disableQuestsGiftInventoryRelocationNotice = true;
+        disableQuestsPageSponsoredBanner = false;
+        disableQuestsPopupAboveAccountPanel = true;
         fetchingQuestsAlert = "discodo";
         fetchingQuestsAlertVolume = 100;
-        restyleQuestsUnclaimed = 2842239;
+        fetchingQuestsInterval = 2700;
+        ignoredQuestProfile = "private";
+        makeMobileQuestsDesktopCompatible = true;
+        questButtonUnclaimed = "both";
+        questRewardIncludeCollectibles = true;
+        questRewardIncludeInGame = true;
+        questRewardIncludeNitroCode = true;
+        questRewardIncludeOrbs = true;
+        questRewardIncludeRewardCode = true;
+        reorderQuests = "UNCLAIMED, CLAIMED, IGNORED, EXPIRED";
         restyleQuestsClaimed = 6105983;
-        restyleQuestsIgnored = 8334124;
         restyleQuestsExpired = 2368553;
         restyleQuestsGradient = "intense";
+        restyleQuestsIgnored = 8334124;
         restyleQuestsPreload = true;
-        reorderQuests = "UNCLAIMED, CLAIMED, IGNORED, EXPIRED";
-        ignoredQuestProfile = "private";
+        restyleQuestsUnclaimed = 2842239;
       };
       RPCStats = {
-        statDisplay = 0;
-        lastFMApiKey = "";
         RPCTitle = "RPCStats";
         assetURL = "";
+        lastFMApiKey = "";
+        statDisplay = 0;
       };
       showHiddenThings = {
-        disableDiscoveryFilters = true;
         disableDisallowedDiscoveryFilters = true;
+        disableDiscoveryFilters = true;
+      };
+      Summaries = {
+        summaryExpiryThresholdDays = 7.050176056338028;
       };
       translate = {
-        shavian = true;
-        sitelen = true;
-        target = "pl";
-        toki = true;
         showChatBarButton = true;
       };
       userMessagesPronouns = {
         pronounSource = 0;
-        showInProfile = true;
         showInMessages = true;
+        showInProfile = true;
       };
     };
   };

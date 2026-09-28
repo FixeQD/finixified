@@ -8,10 +8,12 @@
 with lib;
 let
   cfg = config.modules.user;
-  runtimeDirCmd = "/run/user/$(${pkgs.coreutils}/bin/id -u ${cfg.name})";
+  #runtimeDirCmd = "/run/user/$(${pkgs.coreutils}/bin/id -u ${cfg.name})";
 in
 {
-  imports = [ finix.nixosModules.sudo ];
+  imports = [
+    finix.nixosModules.sudo
+  ];
 
   options.modules.user = {
     enable = mkEnableOption "primary user and sudo";
@@ -25,7 +27,7 @@ in
     users.users.${cfg.name} = {
       isNormalUser = true;
       description = cfg.name;
-      shell = pkgs.fish;
+      shell = pkgs.nushell;
       passwordFile = "/etc/nixos-passwords/${cfg.name}";
       extraGroups = [
         "wheel"
@@ -48,16 +50,16 @@ in
 
     programs.sudo.enable = true;
 
-    finit.tasks.user-runtime-dir = {
-      description = "Create ${cfg.name}'s XDG_RUNTIME_DIR";
-      runlevels = "2345";
-      conditions = [ "service/seatd/ready" ];
-      command = pkgs.writeShellScript "user-runtime-dir" ''
-        dir="${runtimeDirCmd}"
-        mkdir -p "$dir"
-        chown ${cfg.name}:${config.users.users.${cfg.name}.group} "$dir"
-        chmod 0700 "$dir"
-      '';
-    };
+    #finit.tasks.user-runtime-dir = {
+    #  description = "Create ${cfg.name}'s XDG_RUNTIME_DIR";
+    #  runlevels = "2345";
+    #  conditions = [ "service/seatd/ready" ];
+    #  command = pkgs.writeShellScript "user-runtime-dir" ''
+    #    dir="${runtimeDirCmd}"
+    #    mkdir -p "$dir"
+    #    chown ${cfg.name}:${config.users.users.${cfg.name}.group} "$dir"
+    #    chmod 0700 "$dir"
+    #  '';
+    #};
   };
 }

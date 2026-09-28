@@ -7,5 +7,6 @@
     spicetify-cli
     modprobed-db
     cpupower-gui
+    yazi
   ];
 }

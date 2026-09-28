@@ -15,5 +15,10 @@ in
       owner = user;
       mode = "0400";
     };
+
+    gownobook_cloudflared_token = {
+      owner = user;
+      mode = "0400";
+    };
   };
 }

@@ -220,5 +220,6 @@ in
     "rootfstype=${rootFsType}"
     "zswap.enabled=0"
     "snd_intel_dspcfg.dsp_driver=1"
+    "intel_pstate.no_turbo=0"
   ];
 }

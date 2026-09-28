@@ -4,12 +4,13 @@ let cfg = config.modules.desktop; in
 {
   imports = [
     community-modules.nixosModules.fastfetch
-    finix.nixosModules.niri
-    finix.nixosModules.xwayland-satellite
-    finix.nixosModules.sddm
-    finix.nixosModules.zzz
+
     finix.nixosModules.brightnessctl
+    finix.nixosModules.niri
+    finix.nixosModules.sddm
     finix.nixosModules.upower
+    finix.nixosModules.xwayland-satellite
+    finix.nixosModules.zzz
   ];
 
   options.modules.desktop.enable = mkEnableOption "niri desktop and seatd";
@@ -23,6 +24,8 @@ let cfg = config.modules.desktop; in
     };
 
     services.upower.enable = true;
+
+    services.sessiond.enable = true;
 
     programs.brightnessctl.enable = true;
 
@@ -60,6 +63,7 @@ let cfg = config.modules.desktop; in
 
       pathsToLink = [
         "/share/wayland-sessions"
+        "/share/xdg-desktop-portal"
       ];
     };
 
@@ -71,7 +75,32 @@ let cfg = config.modules.desktop; in
       ];
     };
 
-    services.sddm.enable = true;
+    services.sddm = {
+      enable = true;
+      extraPackages = [
+        pkgs.kdePackages.qtdeclarative
+        pkgs.kdePackages.qtsvg
+        pkgs.kdePackages.qt5compat
+        (pkgs.stdenv.mkDerivation {
+          name = "glyph-sddm";
+          src = pkgs.fetchFromGitHub {
+            owner = "xCaptaiN09";
+            repo = "glyph-sddm";
+            rev = "main";
+            hash = "sha256-A2uncMbcu1+jqCaaEYMV8CICW485XkpbSj2UUs0QeMU=";
+          };
+          installPhase = "
+            mkdir -p $out/share/sddm/themes/glyph
+            cp -r * $out/share/sddm/themes/glyph/
+          ";
+        })
+      ];
+      settings = {
+        Theme = {
+          Current = "glyph";
+        };
+      };
+    };
 
     services.dbus.packages = [ pkgs.dconf ];
   };

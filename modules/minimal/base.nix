@@ -36,7 +36,7 @@ let cfg = config.modules.base; in
       tree
       tokei
       fwupd
-      fish
+      nushell
       starship
       ghostty
       nixd
@@ -46,9 +46,10 @@ let cfg = config.modules.base; in
       glib
       pkg-config
       libxkbcommon.dev
+      bash
     ];
 
-    users.defaultUserShell = pkgs.fish;
+    users.defaultUserShell = pkgs.nushell;
 
     services.bootchart.enable = true;
     services.bootchart.stop.conditions = [ "service/sddm/ready" ];

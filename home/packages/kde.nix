@@ -1,8 +1,6 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
-    kdePackages.dolphin
-    kdePackages.dolphin-plugins
     kdePackages.ffmpegthumbs
     kdePackages.filelight
     kdePackages.kdf

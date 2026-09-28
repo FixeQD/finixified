@@ -7,40 +7,43 @@
   spicetify-nix,
   noctalia,
   nixcord,
+  niri-nix,
   ...
 }:
 {
   specialArgs = {
-    inherit disko community-modules finix zen-browser spicetify-nix noctalia nixcord;
+    inherit disko community-modules finix zen-browser spicetify-nix noctalia nixcord niri-nix;
   };
 
   modules = [
     {
       imports = [
-        ./hardware.nix
         ./boot.nix
+        ./hardware.nix
 
         ../../modules/minimal/base.nix
-        ../../modules/minimal/locale.nix
-        ../../modules/minimal/network.nix
         ../../modules/minimal/cron.nix
-        ../../modules/minimal/performance.nix
-        ../../modules/minimal/zram.nix
-        ../../modules/minimal/user.nix
+        ../../modules/minimal/locale.nix
         ../../modules/minimal/mdevd.nix
+        ../../modules/minimal/network.nix
+        ../../modules/minimal/performance.nix
+        ../../modules/minimal/user.nix
+        ../../modules/minimal/zram.nix
 
-        ../../modules/desktop/fonts.nix
         ../../modules/desktop/audio.nix
-        ../../modules/desktop/desktop.nix
         ../../modules/desktop/bluetooth.nix
+        ../../modules/desktop/desktop.nix
+        ../../modules/desktop/fonts.nix
         ../../modules/desktop/nix-ld.nix
         ../../modules/desktop/virt.nix
 
+        ../../modules/firewall/default.nix
         ../../modules/installer.nix
+
+        ../../modules/services/cloudflared.nix
         ../../modules/services/fwupd.nix
         ../../modules/services/ollama.nix
         ../../modules/services/secrets.nix
-        ../../modules/firewall/default.nix
 
         community-modules.nixosModules.home-manager
       ];
@@ -84,17 +87,22 @@
 
         performance.enable = true;
         firewall.enable = true;
+        firewall.trustedInterfaces = [ "tailscale0" "br-metamcp" ];
         fwupd.enable = true;
         user.enable = true;
         user.name = "fixeq";
         virt.enable = true;
         zram.enable = true;
         ollama.enable = true;
+        cloudflared = {
+          enable = true;
+          tokenFile = "/run/secrets/gownobook_cloudflared_token";
+        };
       };
 
       home-manager.users.fixeq = {
         _module.args = {
-          inherit zen-browser spicetify-nix noctalia;
+          inherit zen-browser spicetify-nix noctalia niri-nix;
           username = "fixeq";
         };
 

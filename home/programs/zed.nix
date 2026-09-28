@@ -9,7 +9,7 @@
       "discord-presence"
       "toml"
       "nix"
-      "fish"
+      "nu"
       "git-firefly"
     ];
 

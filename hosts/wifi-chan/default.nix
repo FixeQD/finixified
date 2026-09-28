@@ -12,21 +12,23 @@
   modules = [
     {
       imports = [
-        ./hardware.nix
         ./boot.nix
+        ./hardware.nix
 
         ../../modules/minimal/base.nix
-        ../../modules/minimal/locale.nix
-        ../../modules/minimal/network.nix
         ../../modules/minimal/cron.nix
-        ../../modules/minimal/performance.nix
-        ../../modules/minimal/zram.nix
-        ../../modules/minimal/user.nix
+        ../../modules/minimal/locale.nix
         ../../modules/minimal/mdevd.nix
+        ../../modules/minimal/network.nix
+        ../../modules/minimal/performance.nix
+        ../../modules/minimal/user.nix
+        ../../modules/minimal/zram.nix
+
+        ../../modules/firewall/default.nix
         ../../modules/installer.nix
+
         ../../modules/services/fwupd.nix
         ../../modules/services/pihole.nix
-        ../../modules/firewall/default.nix
       ];
 
       networking.hostName = "wifi-chan";

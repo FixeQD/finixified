@@ -1,18 +1,10 @@
 { username, ... }:
 {
   imports = [
+    ./niri
     ./packages.nix
-    ./programs.nix
-    ./theme.nix
-    ./dconf-extra.nix
-    ./secrets-keys.nix
-    ./xdg-mime.nix
-    ./zed.nix
-    ./dotfiles.nix
-    ./spicetify.nix
-    ./noctalia.nix
-    ./nixcord.nix
-    ./gh.nix
+    ./programs
+    ./system
   ];
 
   home = {
@@ -20,6 +12,10 @@
     homeDirectory = "/home/${username}";
     stateVersion  = "26.05";
     enableNixpkgsReleaseCheck = false;
+
+    file.".wallpaper.jpg" = {
+      source = ./wallpaper.jpg;
+    };
   };
 
   xdg.enable          = true;

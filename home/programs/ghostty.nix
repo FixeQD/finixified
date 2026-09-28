@@ -1,0 +1,96 @@
+{
+  programs.ghostty = {
+    enable = true;
+    systemd.enable = false;
+
+    themes.tokyo-night = {
+      palette = [
+        "0=#15161e"
+        "1=#f7768e"
+        "2=#9ece6a"
+        "3=#e0af68"
+        "4=#7aa2f7"
+        "5=#bb9af7"
+        "6=#7dcfff"
+        "7=#a9b1d6"
+        "8=#414868"
+        "9=#f7768e"
+        "10=#9ece6a"
+        "11=#e0af68"
+        "12=#7aa2f7"
+        "13=#bb9af7"
+        "14=#7dcfff"
+        "15=#c0caf5"
+      ];
+      background           = "#1a1b26";
+      foreground           = "#c0caf5";
+      cursor-color         = "#c0caf5";
+      cursor-text          = "#1a1b26";
+      selection-background = "#33467c";
+      selection-foreground = "#c0caf5";
+    };
+
+    settings = {
+      theme = "tokyo-night";
+
+      background-opacity = 0.82;
+      background-blur    = 20;
+
+      font-family            = "JetBrainsMono Nerd Font";
+      font-size              = 13;
+      font-style             = "Regular";
+      font-style-bold        = "Bold";
+      font-style-italic      = "Italic";
+      font-style-bold-italic = "Bold Italic";
+
+      font-thicken       = false;
+      adjust-cell-height = "10%";
+      adjust-cell-width  = 0;
+
+      window-padding-x       = 14;
+      window-padding-y       = 10;
+      window-padding-balance = true;
+      window-decoration      = false;
+
+      title = "ghostty";
+
+      cursor-style       = "block";
+      cursor-style-blink = true;
+
+      scrollback-limit = 10000;
+
+      keybind = [
+        "ctrl+shift+d=new_split:right"
+        "ctrl+shift+e=new_split:down"
+        "ctrl+shift+w=close_surface"
+        "ctrl+shift+h=goto_split:left"
+        "ctrl+shift+l=goto_split:right"
+        "ctrl+shift+k=goto_split:up"
+        "ctrl+shift+j=goto_split:down"
+        "ctrl+shift+t=new_tab"
+        "ctrl+shift+q=close_tab"
+        "ctrl+shift+right=next_tab"
+        "ctrl+shift+left=previous_tab"
+        "ctrl+shift+1=goto_tab:1"
+        "ctrl+shift+2=goto_tab:2"
+        "ctrl+shift+3=goto_tab:3"
+        "ctrl+shift+4=goto_tab:4"
+        "ctrl+shift+5=goto_tab:5"
+        "ctrl+shift+n=new_window"
+        "ctrl+shift+z=toggle_split_zoom"
+        "ctrl+equal=increase_font_size:1"
+        "ctrl+minus=decrease_font_size:1"
+        "ctrl+zero=reset_font_size"
+        "ctrl+shift+c=copy_to_clipboard"
+        "ctrl+shift+v=paste_from_clipboard"
+        "ctrl+shift+comma=reload_config"
+      ];
+
+      confirm-close-surface         = false;
+      quit-after-last-window-closed = true;
+      mouse-hide-while-typing       = true;
+
+      term = "xterm-256color";
+    };
+  };
+}
