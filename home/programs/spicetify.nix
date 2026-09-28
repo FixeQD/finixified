@@ -26,7 +26,7 @@ in
           owner = "L3-N0X";
           repo = "spicetify-dj-info";
           rev = "main";
-          hash = "sha256-WXYhFBKGuwiqAxWLEgP6rzj+82f4Ulm9P7txVssSV/k=";
+          hash = "sha256-rg/SfzIIkrSle2c6xhHfSUyBfrKecq6CY+9HXRI78xA=";
         };
       })
     ];

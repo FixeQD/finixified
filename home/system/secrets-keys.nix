@@ -4,10 +4,10 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    matchBlocks."*" = {
-      addKeysToAgent = "yes";
-      serverAliveInterval = 60;
-      serverAliveCountMax = 3;
+    settings = {
+      AddKeysToAgent.data = "yes";
+      ServerAliveInterval.data = 60;
+      ServerAliveCountMax.data = 3;
     };
   };
 

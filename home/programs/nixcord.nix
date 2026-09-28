@@ -216,9 +216,6 @@
       };
       viewRaw.enable = true;
       voiceDownload.enable = true;
-      voiceMessageTranscriber = {
-        selectedModel = "Xenova/whisper-base";
-      };
       webKeybinds.enable = true;
       whoReacted.enable = true;
       youtubeAdblock.enable = true;
