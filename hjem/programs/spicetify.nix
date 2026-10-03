@@ -6,6 +6,22 @@
 let
   spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};
 
+  lucidTheme = pkgs.runCommand "spicetify-theme-lucid" { } ''
+    mkdir -p $out
+    cp ${pkgs.fetchurl {
+      url = "https://spicetify-lucid.sanooj.uk/spice/user.css";
+      hash = "sha256-70N9VgIrroy+wDzmY2i5hgddOOVBtP4zyVT3mAB1qbo=";
+    }} $out/user.css
+    cp ${pkgs.fetchurl {
+      url = "https://spicetify-lucid.sanooj.uk/spice/color.ini";
+      hash = "sha256-iVxVBO1HvI0trHsw7GC3sEGvyOzHHTdkRvpqyfqlcVk=";
+    }} $out/color.ini
+    cp ${pkgs.fetchurl {
+      url = "https://spicetify-lucid.sanooj.uk/spice/theme.js";
+      hash = "sha256-+GZJ+dqCG6wbKo0WMrZrDSplBNpH7r3LhMMa4JSYxRE=";
+    }} $out/theme.js
+  '';
+
   spotify = pkgs.spotify.overrideAttrs (old: {
     buildInputs = (old.buildInputs or []) ++ [
       pkgs.libayatana-appindicator
@@ -59,17 +75,63 @@ in
         };
       }
       {
-        name = "dist/djinfo.mjs";
-        src = pkgs.fetchFromGitHub {
+        name = "djinfo.mjs";
+        src = "${pkgs.fetchFromGitHub {
           owner = "L3-N0X";
           repo = "spicetify-dj-info";
           rev = "main";
           hash = "sha256-rg/SfzIIkrSle2c6xhHfSUyBfrKecq6CY+9HXRI78xA=";
+        }}/dist";
+      }
+      {
+        name = "beautiful-lyrics.mjs";
+        src = "${pkgs.fetchFromGitHub {
+          owner = "surfbryce";
+          repo = "beautiful-lyrics";
+          rev = "main";
+          hash = "sha256-pzpIT8MowIsH7MSylxShW2VboV+KL9WZSN8/8XIrMLs=";
+        }}/Extension/Builds/Release";
+      }
+      {
+        name = "speedify.js";
+        src = "${pkgs.fetchFromGitHub {
+          owner = "ssatwik975";
+          repo = "Speedify";
+          rev = "main";
+          hash = "sha256-Kf+mR41NfX+yOEQCnDFUjHRPcJZHvPFXBUFg6BBuYXA=";
+        }}/dist";
+      }
+      {
+        name = "cacheCleaner.js";
+        src = pkgs.fetchFromGitHub {
+          owner = "kyrie25";
+          repo = "Spicetify-Cache-Cleaner";
+          rev = "main";
+          hash = "sha256-VuBbW4xYpB2QbSsNjR1an05WMXhLU9rv9moHw/DgCgk=";
+        };
+      }
+      {
+        name = "clean-links.js";
+        src = pkgs.fetchFromGitHub {
+          owner = "Borfak";
+          repo = "spicetify-clean-links";
+          rev = "main";
+          hash = "sha256-TUe+MKXfrIEaQKhIFbwIVdHOKw7wG5vKQMeUeVUEHKY=";
         };
       }
     ];
 
-    theme = spicePkgs.themes.catppuccin;
-    colorScheme = "mocha"; # TODO: Change that mf
+    theme = {
+      name = "Lucid";
+      src = lucidTheme;
+      injectCss = true;
+      injectThemeJs = true;
+      replaceColors = true;
+      homeConfig = true;
+      overwriteAssets = false;
+      additionalCss = "";
+    };
+
+    colorScheme = "use-lucid";
   };
 }
