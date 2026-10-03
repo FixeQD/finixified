@@ -13,10 +13,11 @@ let
     ];
 
     postFixup = (old.postFixup or "") + ''
-      # Keep the library wrapper inside a dedicated D-Bus session.
+      # Reuse the desktop session bus so MPRIS is visible to playerctl and panels.
       mv "$out/share/spotify/spotify" "$out/share/spotify/.spotify-without-dbus"
-      makeShellWrapper ${pkgs.dbus}/bin/dbus-run-session "$out/share/spotify/spotify" \
+      makeShellWrapper ${pkgs.dbus}/bin/dbus-launch "$out/share/spotify/spotify" \
         --run '
+          spotify_dbus_machine_id="$(cat /etc/machine-id)"
           case "''${XDG_SESSION_TYPE:-}" in
             wayland) spotify_ozone_platform=wayland ;;
             x11) spotify_ozone_platform=x11 ;;
@@ -33,7 +34,7 @@ let
             unset NIXOS_OZONE_WL
           fi
         ' \
-        --add-flags "$out/share/spotify/.spotify-without-dbus --ozone-platform=\$spotify_ozone_platform"
+        --add-flags "--autolaunch=\$spotify_dbus_machine_id --exit-with-session $out/share/spotify/.spotify-without-dbus --ozone-platform=\$spotify_ozone_platform"
     '';
   });
 in
