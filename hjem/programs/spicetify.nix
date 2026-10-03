@@ -84,13 +84,13 @@ in
         }}/dist";
       }
       {
-        name = "beautiful-lyrics.mjs";
+        name = "spicy-lyrics.mjs";
         src = "${pkgs.fetchFromGitHub {
-          owner = "surfbryce";
-          repo = "beautiful-lyrics";
+          owner = "Spikerko";
+          repo = "spicy-lyrics";
           rev = "main";
-          hash = "sha256-pzpIT8MowIsH7MSylxShW2VboV+KL9WZSN8/8XIrMLs=";
-        }}/Extension/Builds/Release";
+          hash = "sha256-OlzNKuTB2jeWXEgMbpBvhv/GKTGG1FmjhtusUOkFBOg=";
+        }}/builds";
       }
       {
         name = "speedify.js";
