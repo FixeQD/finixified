@@ -11,6 +11,7 @@ let cfg = config.modules.desktop; in
     finix.nixosModules.upower
     finix.nixosModules.xwayland-satellite
     finix.nixosModules.zzz
+    finix.nixosModules.sessiond-uaccess
   ];
 
   options.modules.desktop.enable = mkEnableOption "niri desktop and seatd";
@@ -26,6 +27,7 @@ let cfg = config.modules.desktop; in
     services.upower.enable = true;
 
     services.sessiond.enable = true;
+    services.sessiond-uaccess.enable = true;
 
     programs.brightnessctl.enable = true;
 
@@ -51,6 +53,7 @@ let cfg = config.modules.desktop; in
       };
 
       systemPackages = with pkgs; [
+        appimage-run
         bibata-cursors
         ddcutil
         gobject-introspection

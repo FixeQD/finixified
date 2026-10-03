@@ -12,6 +12,7 @@ let
 
   terminalAppId = "com.mitchellh.ghostty";
   browserAppId = "zen";
+  discordAppId = "discord";
 
   spawn = args: "spawn " + lib.concatMapStringsSep " " (a: ''"${a}"'') args;
 
@@ -180,6 +181,15 @@ let
         match app-id="^${browserAppId}$"
         opacity 1.0
     }
+
+    window-rule {
+        match app-id="^${discordAppId}$"
+        geometry-corner-radius 0
+        border {
+            off
+        }
+    }
+
 
     layer-rule {
       match namespace=r#"^noctalia-wallpaper.*"#

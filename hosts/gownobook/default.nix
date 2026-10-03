@@ -40,7 +40,6 @@
 
         ../../modules/services/cloudflared.nix
         ../../modules/services/fwupd.nix
-        ../../modules/services/ollama.nix
         ../../modules/services/secrets.nix
 
         inputs.hjem.finixModules.default
@@ -81,6 +80,7 @@
           curl
           libepoxy
           fontconfig
+          openvino
         ];
 
         performance.enable = true;
@@ -91,7 +91,6 @@
         user.name = "fixeq";
         virt.enable = true;
         zram.enable = true;
-        ollama.enable = true;
         cloudflared = {
           enable = true;
           tokenFile = "/run/secrets/gownobook_cloudflared_token";

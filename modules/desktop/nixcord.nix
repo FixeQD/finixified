@@ -40,220 +40,224 @@ in
 
     discord.equicord.enable = true;
 
-    config.plugins = {
-      accountPanelServerProfile.enable = true;
-      advancedPermissions.enable = true;
-      alwaysAnimate.enable = true;
-      alwaysExpandRoles.enable = true;
-      anonymiseFileNames.enable = true;
-      betterFolders.enable = true;
-      betterRoleContext.enable = true;
-      betterRoleDot.enable = true;
-      betterSettings = {
-        enable = true;
-        disableFade = false;
-      };
-      betterUploadButton.enable = true;
-      biggerStreamPreview.enable = true;
-      blurNsfw.enable = true;
-      callTimer = {
-        enable = true;
-        format = "human";
-        showSeconds = true;
-      };
-      clearUrls.enable = true;
-      clipUpload.enable = true;
-      commandPalette = {
-        enable = true;
-        hotkey = [
-          "Control"
-          "Shift"
-          "P"
-        ];
-      };
-      consoleJanitor.enable = true;
-      consoleShortcuts.enable = true;
-      copyEmojiMarkdown.enable = true;
-      crashHandler.enable = true;
-      customTimestamps = {
-        enable = true;
-        formats.enable = false;
-      };
-      dearrow.enable = true;
-      decor.enable = true;
-      disableCameras.enable = true;
-      disableDeepLinks.enable = true;
-      dontRoundMyTimestamps.enable = true;
-      dragify = {
-        enable = true;
-        reuseExistingInvites = true;
-      };
-      equicordHelper.enable = true;
-      equicordToolbox.enable = true;
-      experiments.enable = true;
-      expressionCloner.enable = true;
-      f8Break.enable = true;
-      fakeNitro.enable = true;
-      fakeProfileThemes.enable = true;
-      fixCodeblockGap.enable = true;
-      fixSpotifyEmbeds.enable = true;
-      fixYoutubeEmbeds.enable = true;
-      followVoiceUser.enable = true;
-      forceOwnerCrown.enable = true;
-      friendCodes.enable = true;
-      friendInvites.enable = true;
-      gameActivityToggle.enable = true;
-      gitHubRepos.enable = true;
-      hideMedia.enable = true;
-      iLoveSpam.enable = true;
-      imageLink.enable = true;
-      imageZoom = {
-        enable = true;
-        nearestNeighbour = true;
-        size = 263.14102564102564;
-        square = true;
-        zoom = 2.0153885129182645;
-        zoomSpeed = 1.6711094875273982;
-      };
-      memberCount.enable = true;
-      messageLatency.enable = true;
-      messageLinkEmbeds.enable = true;
-      messageLogger.enable = true;
-      messageLoggerEnhanced = {
-        enable = true;
-        imageCacheDir = "${homeDir}/.config/Equicord/MessageLoggerData/savedImages";
-        logsDir = "${homeDir}/.config/Equicord/MessageLoggerData";
-      };
-      messageTranslate = {
-        targetLanguage = "pl";
-      };
-      moreCommands.enable = true;
-      moreUserTags = {
-        tagSettings = {
-          administrator.enable = false;
-          chatModerator.enable = false;
-          moderator.enable = false;
-          moderatorStaff.enable = false;
-          owner.enable = false;
-          voiceModerator.enable = false;
-          webhook.enable = false;
-          enable = false;
+    config = {
+      transparent = true;
+      frameless = true;
+      plugins = {
+        accountPanelServerProfile.enable = true;
+        advancedPermissions.enable = true;
+        alwaysAnimate.enable = true;
+        alwaysExpandRoles.enable = true;
+        anonymiseFileNames.enable = true;
+        betterFolders.enable = true;
+        betterRoleContext.enable = true;
+        betterRoleDot.enable = true;
+        betterSettings = {
+          enable = true;
+          disableFade = false;
         };
-      };
-      musicControls = {
-        showSpotifyControls = true;
-      };
-      mutualGroupDms.enable = true;
-      newPluginsManager.enable = true;
-      noBlockedMessages.enable = true;
-      noDevtoolsWarning.enable = true;
-      noF1.enable = true;
-      noOnboardingDelay.enable = true;
-      noPendingCount.enable = true;
-      noReplyMention.enable = true;
-      noTrack.enable = true;
-      noTypingAnimation.enable = true;
-      onePingPerDm.enable = true;
-      openInApp.enable = true;
-      permissionsViewer.enable = true;
-      pinDms = {
-        enable = true;
-        userBasedCategoryList = {
-          "853621876551188490" = [ ];
+        betterUploadButton.enable = true;
+        biggerStreamPreview.enable = true;
+        blurNsfw.enable = true;
+        callTimer = {
+          enable = true;
+          format = "human";
+          showSeconds = true;
         };
-      };
-      platformIndicators.enable = true;
-      previewMessage.enable = true;
-      questify = {
-        enable = true;
-        acknowledgedNotices = {
-          quest-ban-warning-2026-08-07 = true;
-          quest-ban-warning-2026-08-26 = true;
+        clearUrls.enable = true;
+        clipUpload.enable = true;
+        commandPalette = {
+          enable = true;
+          hotkey = [
+            "Control"
+            "Shift"
+            "P"
+          ];
         };
-        allowChangingDangerousSettings = true;
-        autoCompleteQuestTypes = {
-          ACHIEVEMENT_IN_ACTIVITY = true;
-          PLAY_ACTIVITY = true;
-          PLAY_ON_DESKTOP = true;
-          PLAY_ON_PLAYSTATION = true;
-          PLAY_ON_XBOX = true;
-          WATCH_VIDEO = true;
-          WATCH_VIDEO_ON_MOBILE = true;
+        consoleJanitor.enable = true;
+        consoleShortcuts.enable = true;
+        copyEmojiMarkdown.enable = true;
+        crashHandler.enable = true;
+        customTimestamps = {
+          enable = true;
+          formats.enable = false;
         };
-        completeVideoQuestsQuicker = true;
-        ignoredQuestIds = {
-          "853621876551188490" = [ ];
-          questIDs = [ ];
+        dearrow.enable = true;
+        decor.enable = true;
+        disableCameras.enable = true;
+        disableDeepLinks.enable = true;
+        dontRoundMyTimestamps.enable = true;
+        dragify = {
+          enable = true;
+          reuseExistingInvites = true;
         };
-        makeMobileVideoQuestsDesktopCompatible = true;
-        preventVideoQuestsPausing = true;
-        questButtonBadgeCount = 3;
-        resumeInterruptedQuests = true;
+        equicordHelper.enable = true;
+        equicordToolbox.enable = true;
+        experiments.enable = true;
+        expressionCloner.enable = true;
+        f8Break.enable = true;
+        fakeNitro.enable = true;
+        fakeProfileThemes.enable = true;
+        fixCodeblockGap.enable = true;
+        fixSpotifyEmbeds.enable = true;
+        fixYoutubeEmbeds.enable = true;
+        followVoiceUser.enable = true;
+        forceOwnerCrown.enable = true;
+        friendCodes.enable = true;
+        friendInvites.enable = true;
+        gameActivityToggle.enable = true;
+        gitHubRepos.enable = true;
+        hideMedia.enable = true;
+        iLoveSpam.enable = true;
+        imageLink.enable = true;
+        imageZoom = {
+          enable = true;
+          nearestNeighbour = true;
+          size = 263.14102564102564;
+          square = true;
+          zoom = 2.0153885129182645;
+          zoomSpeed = 1.6711094875273982;
+        };
+        memberCount.enable = true;
+        messageLatency.enable = true;
+        messageLinkEmbeds.enable = true;
+        messageLogger.enable = true;
+        messageLoggerEnhanced = {
+          enable = true;
+          imageCacheDir = "${homeDir}/.config/Equicord/MessageLoggerData/savedImages";
+          logsDir = "${homeDir}/.config/Equicord/MessageLoggerData";
+        };
+        messageTranslate = {
+          targetLanguage = "pl";
+        };
+        moreCommands.enable = true;
+        moreUserTags = {
+          tagSettings = {
+            administrator.enable = false;
+            chatModerator.enable = false;
+            moderator.enable = false;
+            moderatorStaff.enable = false;
+            owner.enable = false;
+            voiceModerator.enable = false;
+            webhook.enable = false;
+            enable = false;
+          };
+        };
+        musicControls = {
+          showSpotifyControls = true;
+        };
+        mutualGroupDms.enable = true;
+        newPluginsManager.enable = true;
+        noBlockedMessages.enable = true;
+        noDevtoolsWarning.enable = true;
+        noF1.enable = true;
+        noOnboardingDelay.enable = true;
+        noPendingCount.enable = true;
+        noReplyMention.enable = true;
+        noTrack.enable = true;
+        noTypingAnimation.enable = true;
+        onePingPerDm.enable = true;
+        openInApp.enable = true;
+        permissionsViewer.enable = true;
+        pinDms = {
+          enable = true;
+          userBasedCategoryList = {
+            "853621876551188490" = [ ];
+          };
+        };
+        platformIndicators.enable = true;
+        previewMessage.enable = true;
+        questify = {
+          enable = true;
+          acknowledgedNotices = {
+            quest-ban-warning-2026-08-07 = true;
+            quest-ban-warning-2026-08-26 = true;
+          };
+          allowChangingDangerousSettings = true;
+          autoCompleteQuestTypes = {
+            ACHIEVEMENT_IN_ACTIVITY = true;
+            PLAY_ACTIVITY = true;
+            PLAY_ON_DESKTOP = true;
+            PLAY_ON_PLAYSTATION = true;
+            PLAY_ON_XBOX = true;
+            WATCH_VIDEO = true;
+            WATCH_VIDEO_ON_MOBILE = true;
+          };
+          completeVideoQuestsQuicker = true;
+          ignoredQuestIds = {
+            "853621876551188490" = [ ];
+            questIDs = [ ];
+          };
+          makeMobileVideoQuestsDesktopCompatible = true;
+          preventVideoQuestsPausing = true;
+          questButtonBadgeCount = 3;
+          resumeInterruptedQuests = true;
+        };
+        quickReply.enable = true;
+        randomVoice = {
+          keybind = [ ];
+        };
+        reactErrorDecoder.enable = true;
+        readAllNotificationsButton.enable = true;
+        revealAllSpoilers.enable = true;
+        reviewDb = {
+          enable = true;
+          reviewsDropdownState = true;
+        };
+        roleColorEverywhere.enable = true;
+        searchFix.enable = true;
+        sendTimestamps.enable = true;
+        serverInfo.enable = true;
+        settings = {
+          enable = true;
+          settingsLocation = "aboveActivity";
+        };
+        showConnections = {
+          enable = true;
+          iconSpacing = 0;
+        };
+        showHiddenChannels.enable = true;
+        showHiddenThings.enable = true;
+        showMeYourName = {
+          enable = true;
+          includedNames = "{friend, nick} [{display}] (@{user})";
+        };
+        silentTyping.enable = true;
+        sortFriends.enable = true;
+        spotifyCrack.enable = true;
+        spotifyShareCommands.enable = true;
+        startupTimings.enable = true;
+        streamerModeOnStream.enable = true;
+        superReactionTweaks.enable = true;
+        supportHelper.enable = true;
+        translate = {
+          enable = true;
+          receivedOutput = "pl";
+          sentInput = "pl";
+        };
+        translatePlus = {
+          target = "pl";
+        };
+        typingIndicator.enable = true;
+        typingTweaks.enable = true;
+        userMessagesPronouns.enable = true;
+        userPfp.enable = true;
+        usrbg.enable = true;
+        validReply.enable = true;
+        validUser.enable = true;
+        vcNarrator = {
+          voice = null;
+        };
+        viewIcons = {
+          enable = true;
+          format = "png";
+        };
+        viewRaw.enable = true;
+        voiceDownload.enable = true;
+        webKeybinds.enable = true;
+        whoReacted.enable = true;
+        youtubeAdblock.enable = true;
       };
-      quickReply.enable = true;
-      randomVoice = {
-        keybind = [ ];
-      };
-      reactErrorDecoder.enable = true;
-      readAllNotificationsButton.enable = true;
-      revealAllSpoilers.enable = true;
-      reviewDb = {
-        enable = true;
-        reviewsDropdownState = true;
-      };
-      roleColorEverywhere.enable = true;
-      searchFix.enable = true;
-      sendTimestamps.enable = true;
-      serverInfo.enable = true;
-      settings = {
-        enable = true;
-        settingsLocation = "aboveActivity";
-      };
-      showConnections = {
-        enable = true;
-        iconSpacing = 0;
-      };
-      showHiddenChannels.enable = true;
-      showHiddenThings.enable = true;
-      showMeYourName = {
-        enable = true;
-        includedNames = "{friend, nick} [{display}] (@{user})";
-      };
-      silentTyping.enable = true;
-      sortFriends.enable = true;
-      spotifyCrack.enable = true;
-      spotifyShareCommands.enable = true;
-      startupTimings.enable = true;
-      streamerModeOnStream.enable = true;
-      superReactionTweaks.enable = true;
-      supportHelper.enable = true;
-      translate = {
-        enable = true;
-        receivedOutput = "pl";
-        sentInput = "pl";
-      };
-      translatePlus = {
-        target = "pl";
-      };
-      typingIndicator.enable = true;
-      typingTweaks.enable = true;
-      userMessagesPronouns.enable = true;
-      userPfp.enable = true;
-      usrbg.enable = true;
-      validReply.enable = true;
-      validUser.enable = true;
-      vcNarrator = {
-        voice = null;
-      };
-      viewIcons = {
-        enable = true;
-        format = "png";
-      };
-      viewRaw.enable = true;
-      voiceDownload.enable = true;
-      webKeybinds.enable = true;
-      whoReacted.enable = true;
-      youtubeAdblock.enable = true;
     };
 
     extraConfig.plugins = {
