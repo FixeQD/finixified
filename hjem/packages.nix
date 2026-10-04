@@ -91,6 +91,5 @@ in
       (pkgs.writeShellScriptBin "www-browser" ''
         exec ${zen}/bin/zen "$@"
       '')
-    ]
-    ++ [ fx ];
+    ];
 }

@@ -74,10 +74,6 @@
             config.allowUnfree = true;
             overlays = [
               sops-nix.overlays.default
-              (import ./pkgs)
-              (final: prev: {
-                efistubmgr = efistubmgr.packages.${system}.default;
-              })
             ];
           };
           hostConfig = (import host) {
