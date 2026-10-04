@@ -46,7 +46,7 @@ in
       plugins = {
         accountPanelServerProfile.enable = true;
         advancedPermissions.enable = true;
-        alwaysAnimate.enable = true;
+        alwaysAnimate.enable = false;
         alwaysExpandRoles.enable = true;
         anonymiseFileNames.enable = true;
         betterFolders.enable = true;
