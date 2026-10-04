@@ -2,16 +2,17 @@
   "nodes": {
     "community-modules": {
       "locked": {
-        "lastModified": 1789915875,
-        "narHash": "sha256-HLR4jtriTaLp3Re/CW1zVk9rMe3m4+r/69WNYp1e6Ek=",
-        "owner": "finix-community",
-        "repo": "community-modules",
-        "rev": "fde0284678c6ddda9641d963ddbb367c825f5696",
+        "lastModified": 1791077639,
+        "narHash": "sha256-5cwpBTWagVd9olx6HmnYoaZFqh0JFTWh5lCzKJFFlU4=",
+        "owner": "FixeQD",
+        "repo": "finix-community-modules",
+        "rev": "190eba7fc03af5cc5002205d145d9b813180798e",
         "type": "github"
       },
       "original": {
-        "owner": "finix-community",
-        "repo": "community-modules",
+        "owner": "FixeQD",
+        "ref": "fix/efistubmgr",
+        "repo": "finix-community-modules",
         "type": "github"
       }
     },
