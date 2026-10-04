@@ -9,7 +9,6 @@
       liberation_ttf
       dejavu_fonts
       material-symbols
-      google-fonts
     ];
 
     fontconfig = {

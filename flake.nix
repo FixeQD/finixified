@@ -5,7 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     finix.url = "github:finix-community/finix";
-    community-modules.url = "github:FixeQD/finix-community-modules/fix/efistubmgr";
+    community-modules.url = "github:finix-community/community-modules";
 
     efistubmgr = {
       url = "github:finix-community/efistubmgr";
