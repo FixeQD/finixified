@@ -8,12 +8,12 @@ let
 in
 {
   xdg.mime-apps.default-applications = {
-    "text/html" = "zen.desktop";
-    "application/xhtml+xml" = "zen.desktop";
-    "x-scheme-handler/http" = "zen.desktop";
-    "x-scheme-handler/https" = "zen.desktop";
-    "x-scheme-handler/about" = "zen.desktop";
-    "x-scheme-handler/unknown" = "zen.desktop";
+    "text/html" = "helium.desktop";
+    "application/xhtml+xml" = "helium.desktop";
+    "x-scheme-handler/http" = "helium.desktop";
+    "x-scheme-handler/https" = "helium.desktop";
+    "x-scheme-handler/about" = "helium.desktop";
+    "x-scheme-handler/unknown" = "helium.desktop";
     "inode/directory" = "org.kde.dolphin.desktop";
     "video/mp4" = "mpv.desktop";
     "video/x-matroska" = "mpv.desktop";

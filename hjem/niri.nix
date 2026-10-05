@@ -7,11 +7,11 @@ let
   terminal = [
     "ghostty"
   ];
-  browser = [ "zen" ];
+  browser = [ "helium" ];
   editor = [ "zeditor" ];
 
   terminalAppId = "com.mitchellh.ghostty";
-  browserAppId = "zen";
+  browserAppId = "Helium";
   discordAppId = "discord";
 
   spawn = args: "spawn " + lib.concatMapStringsSep " " (a: ''"${a}"'') args;

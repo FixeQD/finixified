@@ -5,7 +5,7 @@
 }:
 let
   inherit (pkgs) stdenv;
-  zen = inputs.zen-browser.packages.${stdenv.hostPlatform.system}.default;
+  helium-browser = inputs.helium.packages.${stdenv.hostPlatform.system}.default;
 in
 {
   packages =
@@ -19,7 +19,7 @@ in
       helvum
       calf
       lsp-plugins
-      zen
+      helium-browser
       xdg-utils
       cliphist
       wl-clipboard
@@ -89,7 +89,7 @@ in
         exec ${pkgs.ghostty}/bin/ghostty "$@"
       '')
       (pkgs.writeShellScriptBin "www-browser" ''
-        exec ${zen}/bin/zen "$@"
+        exec ${helium-browser}/bin/helium "$@"
       '')
     ];
 }
