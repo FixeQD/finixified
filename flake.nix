@@ -7,11 +7,6 @@
     finix.url = "github:finix-community/finix";
     community-modules.url = "github:finix-community/community-modules";
 
-    efistubmgr = {
-      url = "github:finix-community/efistubmgr";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nixcord.url = "github:4evy/nixcord";
 
     disko = {
@@ -58,7 +53,6 @@
       nixcord,
       disko,
       sops-nix,
-      efistubmgr,
       helium,
       ...
     }:
