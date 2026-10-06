@@ -43,6 +43,7 @@ in
         "libvirtd"
         "kvm"
         "adbusers"
+        "fido"
       ];
     };
 
