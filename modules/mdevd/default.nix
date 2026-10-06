@@ -60,11 +60,18 @@ def main() -> None:
         script.write("#!/bin/sh\n")
         script.write(${builtins.toJSON setup})
         script.write(f"case {case_expression} in\n")
-        for device in sorted(devices):
-            script.write(f"  {device})\n")
-            script.write('    ${pkgs.coreutils}/bin/chgrp ${group} /dev/"$MDEV"\n')
-            script.write('    ${pkgs.coreutils}/bin/chmod 0660 /dev/"$MDEV"\n')
-            script.write("    ;;\n")
+        patterns = sorted(devices)
+        if patterns:
+            for start in range(0, len(patterns), 4):
+                chunk = patterns[start : start + 4]
+                last = start + 4 >= len(patterns)
+                suffix = ")\n" if last else "|\\\n"
+                script.write("  " + "|".join(chunk) + suffix)
+        else:
+            script.write("  *)\n")
+        script.write('    ${pkgs.coreutils}/bin/chgrp ${group} /dev/"$MDEV"\n')
+        script.write('    ${pkgs.coreutils}/bin/chmod 0660 /dev/"$MDEV"\n')
+        script.write("    ;;\n")
         script.write("esac\n")
 
 
