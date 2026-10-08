@@ -25,6 +25,7 @@ let cfg = config.modules.virt; in
       virt-viewer
       spice-gtk
       virtiofsd
+      ventoy-full
     ];
   };
 }

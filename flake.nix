@@ -66,7 +66,12 @@
         let
           pkgs = import nixpkgs {
             inherit system;
-            config.allowUnfree = true;
+            config = {
+              allowUnfree = true;
+              permittedInsecurePackages = [
+                "ventoy-1.1.17"
+              ];
+            };
             overlays = [
               sops-nix.overlays.default
             ];
