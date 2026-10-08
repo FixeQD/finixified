@@ -8,6 +8,11 @@
     settings = {
       init.defaultBranch = "main";
       pull.rebase = false;
+
+      "depot-tools" = {
+        useNewAuthStack = true;
+      };
+
       user = {
         name = "Paweł";
         email = "github@fixeq.qzz.io";
