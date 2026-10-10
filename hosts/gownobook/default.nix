@@ -81,6 +81,9 @@
           libepoxy
           fontconfig
           openvino
+          ocl-icd
+          level-zero
+          intel-compute-runtime
         ];
 
         performance.enable = true;
