@@ -27,7 +27,7 @@ in
     users.users.${cfg.name} = {
       isNormalUser = true;
       description = cfg.name;
-      shell = pkgs.nushell;
+      shell = pkgs.fish;
       passwordFile = "/etc/nixos-passwords/${cfg.name}";
       extraGroups = [
         "wheel"

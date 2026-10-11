@@ -6,6 +6,7 @@ let cfg = config.modules.base; in
     disko.nixosModules.disko
     community-modules.nixosModules.bootchart
     finix.nixosModules.getty
+    finix.nixosModules.fish
     finix.nixosModules.nix-daemon
     finix.nixosModules.sysklogd
   ];
@@ -37,7 +38,7 @@ let cfg = config.modules.base; in
         tree
         tokei
         fwupd
-        nushell
+        fish
         starship
         ghostty
         nixd
@@ -54,7 +55,9 @@ let cfg = config.modules.base; in
       };
     };
 
-    users.defaultUserShell = pkgs.nushell;
+    programs.fish.enable = true;
+
+    users.defaultUserShell = pkgs.fish;
 
     services.bootchart.enable = true;
     services.bootchart.stop.conditions = [ "service/sddm/ready" ];

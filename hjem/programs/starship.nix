@@ -5,6 +5,7 @@
 {
   rum.programs.starship = {
     enable = true;
+    integrations.fish.enable = true;
     settings = {
       palette = "tokyo_night";
       format = lib.removeSuffix "\n" ''
