@@ -32,12 +32,8 @@ in
       mitmproxy
       android-tools
       opencode
-      opencode-desktop
-      lmstudio
       gnumake
       perl
-      antigravity-ide
-      nvidia-container-toolkit
       proton-vpn
       protonup-qt
       steam
@@ -45,7 +41,7 @@ in
       jdk21
       maven
       bun
-      typescript-language-server
+      # typescript-language-server
       eslint
       nodejs
       kdePackages.ffmpegthumbs

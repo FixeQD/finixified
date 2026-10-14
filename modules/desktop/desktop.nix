@@ -28,6 +28,7 @@ let cfg = config.modules.desktop; in
 
     services.sessiond.enable = true;
     services.sessiond-uaccess.enable = true;
+    services.sessiond-power.enable = true;
 
     programs.brightnessctl.enable = true;
 

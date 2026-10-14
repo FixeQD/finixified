@@ -1,7 +1,4 @@
-{
-  pkgs,
-  ...
-}:
+{ ... }:
 {
   rum.programs.fish = {
     enable = true;
@@ -10,7 +7,6 @@
       l = "eza -l --git";
       t = "eza --tree";
       c = "bat --paging=never";
-      rm = "eza -d";
       gst = "git status";
       gd = "git diff";
       gl = "git log --oneline --graph --decorate -20";
