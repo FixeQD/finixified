@@ -17,6 +17,7 @@
       imports = [
         ./boot.nix
         ./hardware.nix
+        ./mdevd
 
         ../../modules/minimal/base.nix
         ../../modules/minimal/cron.nix
