@@ -55,15 +55,16 @@
     },
     "finix": {
       "locked": {
-        "lastModified": 1792111865,
-        "narHash": "sha256-D2yOraYYFR7WSX/NndMtnA0vNU3Ukw+dEKigQAIhQtE=",
-        "owner": "finix-community",
+        "lastModified": 1792362740,
+        "narHash": "sha256-LBNnFBkya5DRubqkE0uKKhzHEFcx7nEp7dEQfY6DPOk=",
+        "owner": "FixeQD",
         "repo": "finix",
-        "rev": "3348ed178c7b457c9ad64dec3fefed66c17b1462",
+        "rev": "07d420b9ca2a21785fdd11c1458001227d7246fb",
         "type": "github"
       },
       "original": {
-        "owner": "finix-community",
+        "owner": "FixeQD",
+        "ref": "feat/dconf-module",
         "repo": "finix",
         "type": "github"
       }

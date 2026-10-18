@@ -1,7 +1,6 @@
 {
   imports = [
     ./exo.nix
-    ./dconf.nix
     ./packages.nix
     ./programs
     ./gpg-ssh.nix

@@ -30,6 +30,7 @@
 
         ../../modules/desktop/audio.nix
         ../../modules/desktop/bluetooth.nix
+        ../../modules/desktop/dconf.nix
         ../../modules/desktop/desktop.nix
         ../../modules/desktop/fonts.nix
         ../../modules/desktop/nix-ld.nix
@@ -52,6 +53,7 @@
         audio.enable = true;
         base.enable = true;
         bluetooth.enable = true;
+        dconf.enable = true;
         cron.enable = true;
         desktop.enable = true;
         desktop.nvidia.enable = false;
