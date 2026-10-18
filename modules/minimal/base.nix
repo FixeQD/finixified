@@ -36,7 +36,7 @@ let cfg = config.modules.base; in
         bat
         eza
         tree
-        tokei
+        scc
         fwupd
         fish
         starship

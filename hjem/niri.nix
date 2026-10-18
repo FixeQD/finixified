@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   pkgs,
   ...
@@ -13,6 +14,7 @@ let
   terminalAppId = "com.mitchellh.ghostty";
   browserAppId = "Helium";
   discordAppId = "discord";
+  obsidianAppId = "md.obsidian.Obsidian";
 
   spawn = args: "spawn " + lib.concatMapStringsSep " " (a: ''"${a}"'') args;
 
@@ -23,7 +25,6 @@ let
     "Mod+j { focus-window-down; }"
     "Mod+k { focus-window-up; }"
     "Mod+h { focus-column-left-or-last; }"
-    "Mod+l { focus-column-right-or-first; }"
     "Mod+Shift+j { move-window-down; }"
     "Mod+Shift+k { move-window-up; }"
     "Mod+Shift+h { move-column-left-or-to-monitor-left; }"
@@ -183,23 +184,38 @@ let
     }
 
     window-rule {
+        match app-id="^${obsidianAppId}$"
+        opacity 1.0
+        default-column-width {
+            proportion 0.65
+        }
+        default-window-height {
+            proportion 1.0
+        }
+    }
+
+    window-rule {
+        match app-id="^${obsidianAppId}$" is-focused=false
+        border {
+            off
+        }
+    }
+
+    window-rule {
         match app-id="^${discordAppId}$"
         geometry-corner-radius 0
         border {
             off
         }
     }
-
-
-    layer-rule {
-      match namespace=r#"^noctalia-wallpaper.*"#
-      place-within-backdrop true
-    }
   '';
 in
 {
   rum.desktops.niri = {
     enable = true;
+
+    package = null;
+    includes = [ "${config.directory}/.config/niri/exo.kdl" ];
 
     extraVariables = {
       _JAVA_AWT_WM_NONREPARENTING = "1";
@@ -217,7 +233,6 @@ in
     };
 
     spawn-at-startup = map (cmd: [ "sh" "-c" cmd ]) [
-      "noctalia"
       "polkit-kde-authentication-agent-1"
       "pgrep -x kdeconnectd || kdeconnectd"
       "pgrep -x kwalletd6 || kwalletd6"

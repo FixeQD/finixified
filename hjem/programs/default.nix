@@ -5,7 +5,6 @@
     ./ghostty.nix
     ./git.nix
     ./fish.nix
-    ./noctalia.nix
     ./spicetify.nix
     ./starship.nix
     ./zed.nix

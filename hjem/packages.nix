@@ -81,6 +81,7 @@ in
       modprobed-db
       cpupower-gui
       yazi
+      obsidian
       (pkgs.writeShellScriptBin "x-terminal-emulator" ''
         exec ${pkgs.ghostty}/bin/ghostty "$@"
       '')

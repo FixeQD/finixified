@@ -107,7 +107,7 @@
         extraModules = [
           inputs.hjem-rum.hjemModules.default
           inputs.spicetify-nix.hjemModules.default
-          inputs.noctalia.hjemModules.default
+          inputs.exo.hjemModules.default
           ../../hjem
         ];
         specialArgs = { inherit inputs; };

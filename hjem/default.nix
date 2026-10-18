@@ -1,6 +1,6 @@
 {
   imports = [
-    ./noctalia-systemd-stub.nix
+    ./exo.nix
     ./dconf.nix
     ./packages.nix
     ./programs
