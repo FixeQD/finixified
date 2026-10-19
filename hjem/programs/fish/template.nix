@@ -3,15 +3,14 @@
 
 let
   system = pkgs.stdenv.hostPlatform.system;
-  flakePath = "/home/fixeq/finixified";
 
   hosts = lib.filterAttrs (_: type: type == "directory") (builtins.readDir ../../../hosts);
   hostNames = lib.attrNames hosts;
 
   evalSnippet =
     code:
-    (import (builtins.toFile "fish-snippet.nix" "scope:\nlet\n  inherit (scope) inputs lib pkgs system flakePath hostNames util;\n  hostList = lib.concatStringsSep \" \" hostNames;\nin\n${code}\n") {
-      inherit inputs lib pkgs system flakePath hostNames util;
+    (import (builtins.toFile "fish-snippet.nix" "scope:\nlet\n  inherit (scope) inputs lib pkgs system hostNames util;\n  hostList = lib.concatStringsSep \" \" hostNames;\nin\n${code}\n") {
+      inherit inputs lib pkgs system hostNames util;
     });
 
   fillFile =
@@ -73,7 +72,7 @@ let
   topLevel = lib.filterAttrs (name: _: !(isFunction name)) templates;
 in
 {
-  inherit templates functions flakePath;
+  inherit templates functions;
 
   configFile = topLevel."config";
   confFiles = lib.removeAttrs topLevel [ "config" ];

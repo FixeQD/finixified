@@ -66,6 +66,8 @@
           extraModules ? [ ],
         }:
         let
+          flakeDir = "/etc/finix";
+
           pkgs = import nixpkgs {
             inherit system;
             config = {
@@ -79,7 +81,7 @@
             ];
           };
           hostConfig = (import host) {
-            inherit pkgs nixpkgs inputs disko community-modules finix nixcord;
+            inherit pkgs nixpkgs inputs disko community-modules finix nixcord flakeDir;
           };
         in
         finix.lib.finixSystem {
@@ -87,6 +89,20 @@
           inherit (hostConfig) specialArgs;
           modules = [
             { nixpkgs.pkgs = nixpkgs.lib.mkDefault pkgs; }
+            (
+              { config, ... }:
+              let
+                user = config.modules.user.name;
+              in
+              {
+                system.activation.scripts.ensure-flake-dir = {
+                  deps = [ "users" ];
+                  text = ''
+                    install -d -o ${user} -g ${config.users.users.${user}.group} -m 0775 ${flakeDir}
+                  '';
+                };
+              }
+            )
           ]
           ++ hostConfig.modules
           ++ extraModules;

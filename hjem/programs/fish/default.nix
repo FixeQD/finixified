@@ -2,6 +2,7 @@
   inputs,
   lib,
   pkgs,
+  flakeDir,
   ...
 }:
 let
@@ -16,8 +17,8 @@ in
   environment.sessionVariables = {
     EDITOR = "nvim";
     VISUAL = "zed --wait";
-    NH_FLAKE = templates.flakePath;
-    NIX_FLAKE = templates.flakePath;
+    NH_FLAKE = flakeDir;
+    NIX_FLAKE = flakeDir;
   };
 
   rum.programs.direnv = {

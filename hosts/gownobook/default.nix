@@ -5,6 +5,7 @@
   finix,
   nixcord,
   inputs,
+  flakeDir,
   ...
 }:
 {
@@ -112,7 +113,7 @@
           inputs.exo.hjemModules.default
           ../../hjem
         ];
-        specialArgs = { inherit inputs; };
+        specialArgs = { inherit inputs flakeDir; };
 
         users.fixeq = {
           enable = true;
