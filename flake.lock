@@ -43,14 +43,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1792227602,
-        "narHash": "sha256-rQhnux2x8e5nGaJSESIBTzRdhvIHjBUx5Y2nQvYW4NQ=",
-        "path": "/home/fixeq/Exo",
-        "type": "path"
+        "lastModified": 1792437521,
+        "narHash": "sha256-+ivSQxZYFTgCM3Wmm28a6Aldkm3Ga6I9GV7L+GmXdbs=",
+        "owner": "FixeQD",
+        "repo": "Exo",
+        "rev": "f6b061a36bfcd6bc1b964165432d0d656bd50044",
+        "type": "github"
       },
       "original": {
-        "path": "/home/fixeq/Exo",
-        "type": "path"
+        "owner": "FixeQD",
+        "repo": "Exo",
+        "type": "github"
       }
     },
     "finix": {

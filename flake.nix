@@ -42,7 +42,7 @@
     };
 
     exo = {
-      url = "path:/home/fixeq/Exo";
+      url = "github:FixeQD/Exo";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
