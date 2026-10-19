@@ -4,7 +4,7 @@
     ./gh.nix
     ./ghostty.nix
     ./git.nix
-    ./fish.nix
+    ./fish
     ./spicetify.nix
     ./starship.nix
     ./zed.nix

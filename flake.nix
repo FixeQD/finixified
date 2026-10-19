@@ -8,6 +8,7 @@
     community-modules.url = "github:finix-community/community-modules";
 
     nixcord.url = "github:4evy/nixcord";
+    nix-index-database.url = "github:nix-community/nix-index-database";
 
     disko = {
       url = "github:nix-community/disko";

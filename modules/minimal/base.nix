@@ -50,9 +50,6 @@ let cfg = config.modules.base; in
         libxkbcommon.dev
         bash
       ];
-      variables = {
-        EDITOR = "nvim";
-      };
     };
 
     programs.fish.enable = true;

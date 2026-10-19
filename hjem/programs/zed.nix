@@ -3,10 +3,6 @@
   ...
 }:
 {
-  environment.sessionVariables = {
-    EDITOR = "zed --wait";
-    VISUAL = "zed --wait";
-  };
   rum.programs.zed = {
     enable = true;
     settings = {
