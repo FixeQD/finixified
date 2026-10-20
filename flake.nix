@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    finix.url = "github:FixeQD/finix/feat/dconf-module";
+    finix.url = "github:finix-community/finix";
     community-modules.url = "github:finix-community/community-modules";
 
     nixcord.url = "github:4evy/nixcord";
