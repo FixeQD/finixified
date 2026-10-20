@@ -11,8 +11,5 @@ let cfg = config.modules.mdevd; in
       enable = true;
       nlgroups = 4;
     };
-
-    services.gardendevd.enable = false;
-    services.gardendevd.debug = false;
   };
 }
