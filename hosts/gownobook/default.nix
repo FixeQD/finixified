@@ -8,6 +8,9 @@
   flakeDir,
   ...
 }:
+let
+  userName = "fixeq";
+in
 {
   specialArgs = {
     inherit disko community-modules finix nixcord;
@@ -95,7 +98,7 @@
         firewall.trustedInterfaces = [ "tailscale0" "br-metamcp" ];
         fwupd.enable = true;
         user.enable = true;
-        user.name = "fixeq";
+        user.name = userName;
         virt.enable = true;
         zram.enable = true;
         cloudflared = {
@@ -115,7 +118,7 @@
         ];
         specialArgs = { inherit inputs flakeDir; };
 
-        users.fixeq = {
+        users.${userName} = {
           enable = true;
         };
       };
