@@ -122,6 +122,7 @@
         in
         {
           type = "app";
+          meta.description = "${if resume then "Resume installation" else "Install"} for ${hostname}";
           program = toString (
             pkgs.writeShellScript "${if resume then "resume-" else ""}install-${hostname}" ''
               export DISKO_BIN="${disko.packages.${system}.disko}/bin/disko"
