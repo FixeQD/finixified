@@ -1,0 +1,18 @@
+{
+  "name": "finixified (Nix)",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "remoteUser": "root",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "jnoordheen.nix-ide"
+      ],
+      "settings": {
+        "nix.enableLanguageServer": true
+      }
+    }
+  }
+}
