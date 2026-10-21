@@ -3,11 +3,22 @@
 
 set -euo pipefail
 
+RUNNER_PATH="$(readlink -f "$0" 2>/dev/null || printf '%s' "$0")"
+case "$RUNNER_PATH" in
+  /nix/store/*|*/nix/store/*)
+    ;;
+  *)
+    echo "ERROR: this script must be started via 'nix run', not directly." >&2
+    echo "  Detected launcher: $RUNNER_PATH" >&2
+    exit 1
+    ;;
+esac
+
 : "${DISKO_BIN:?DISKO_BIN must be set}"
 : "${SBCTL_BIN:?SBCTL_BIN must be set}"
 : "${MKPASSWD_BIN:?MKPASSWD_BIN must be set}"
 : "${PRIMARY_USER:?PRIMARY_USER must be set}"
-: "${FLAKE_HOST:=gownobook}"
+: "${FLAKE_HOST:?FLAKE_HOST must be set}"
 : "${DISKO_MODE:=destroy,format,mount}"
 : "${REQUIRE_SOPS:=true}"
 : "${RESUME_INSTALL:=false}"
