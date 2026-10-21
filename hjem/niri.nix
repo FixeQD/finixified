@@ -230,6 +230,7 @@ in
       ELECTRON_OZONE_PLATFORM_HINT = "auto";
       NVD_BACKEND = "direct";
       DISPLAY = ":0";
+      GTK_A11Y = "none";
     };
 
     spawn-at-startup = map (cmd: [ "sh" "-c" cmd ]) [

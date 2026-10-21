@@ -11,10 +11,6 @@
       pkgs.noto-fonts
     ];
 
-    # Generator hjem-rum doklada prefiks `gtk-`, a GTK zna tylko
-    # `gtk-cursor-theme-name` / `gtk-icon-theme-name`. `gtk-cursor-size` nie
-    # istnieje w GTK -- rozmiar kursora idzie przez `XCURSOR_SIZE` i
-    # `GTK_CURSOR_SIZE`.
     settings = {
       theme-name = "Breeze-Dark";
       icon-theme-name = "breeze";
@@ -23,7 +19,6 @@
       application-prefer-dark-theme = true;
       decoration-layout = "icon:minimize,maximize,close";
       enable-animations = true;
-      enable-mnemonics = true;
     };
   };
 
