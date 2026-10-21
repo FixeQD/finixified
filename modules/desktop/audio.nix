@@ -1,9 +1,13 @@
 { pkgs, lib, config, finix, ... }:
 with lib;
-let cfg = config.modules.audio; in
-{
+let
+  cfg = config.modules.audio;
+  pipewire = config.programs.pipewire.package;
+  wireplumber = config.programs.wireplumber.package;
+in {
   imports = [
     finix.nixosModules.pipewire
+    finix.nixosModules.sessiond-hooks
     finix.nixosModules.wireplumber
   ];
 
@@ -18,16 +22,33 @@ let cfg = config.modules.audio; in
       pkgs.pavucontrol
     ];
 
-    environment.etc."profile.d/pipewire-session.sh" = {
-      text = ''
-        if [ -n "$XDG_RUNTIME_DIR" ] && [ ! -e "$XDG_RUNTIME_DIR/pipewire-session.lock" ]; then
-          if ( set -o noclobber; : > "$XDG_RUNTIME_DIR/pipewire-session.lock" ) 2>/dev/null; then
-            ${config.programs.pipewire.package}/bin/pipewire >/dev/null 2>&1 &
-            ${config.programs.pipewire.package}/bin/pipewire-pulse >/dev/null 2>&1 &
-            ${lib.optionalString config.programs.wireplumber.enable "${config.programs.wireplumber.package}/bin/wireplumber >/dev/null 2>&1 &"}
-          fi
-        fi
-      '';
+    services.sessiond-hooks = {
+      enable = true;
+      hooks = {
+        pipewire.settings = {
+          on_start = "${pipewire}/bin/pipewire";
+          restart = {
+            on = "Always";
+            delay = 2;
+          };
+        };
+
+        pipewire-pulse.settings = {
+          on_start = "${pipewire}/bin/pipewire-pulse";
+          restart = {
+            on = "Always";
+            delay = 2;
+          };
+        };
+
+        wireplumber.settings = {
+          on_start = "${wireplumber}/bin/wireplumber";
+          restart = {
+            on = "Always";
+            delay = 2;
+          };
+        };
+      };
     };
   };
 }
