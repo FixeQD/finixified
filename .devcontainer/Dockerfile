@@ -6,6 +6,6 @@ ENV PATH="/root/.nix-profile/bin:/nix/var/nix/profiles/default/bin:${PATH}"
 RUN nix profile install \
     nixpkgs#gh \
     nixpkgs#jq \
-    nixpkgs#ripgrep
-
-WORKDIR /workspaces/finixified
+    nixpkgs#ripgrep \
+    nixpkgs#nil \
+    nixpkgs#nixd

@@ -5,6 +5,11 @@
     "context": ".."
   },
   "remoteUser": "root",
+  "postCreateCommand": [
+    "bash",
+    "-lc",
+    "set -eu; cd -- \"${containerWorkspaceFolder}\"; git config --system --add safe.directory \"${containerWorkspaceFolder}\"; nix flake archive --json > /nix/.flake-archive-setup.json"
+  ],
   "customizations": {
     "vscode": {
       "extensions": [
