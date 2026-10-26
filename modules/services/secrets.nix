@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  sops-nix,
   ...
 }:
 let
@@ -11,9 +12,11 @@ let
   hjemEnabled = lib.any (u: u.enable && u.user == user) (lib.attrValues config.hjem.users);
 in
 {
-  imports = [ ../sops ];
+  imports = [ sops-nix.nixosModules.sops ];
 
   sops.age.keyFile = "/etc/sops/age/keys.txt";
+  sops.age.sshKeyPaths = [ ];
+  sops.gnupg.sshKeyPaths = [ ];
   sops.defaultSopsFile = ../../secrets/secrets.yaml;
 
   environment.systemPackages = [ pkgs.sops ];

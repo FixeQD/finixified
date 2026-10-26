@@ -393,15 +393,16 @@
         ]
       },
       "locked": {
-        "lastModified": 1792056300,
-        "narHash": "sha256-YU1LjDe1o2Ymg5zEiCHbmMXLkDCtxHQRiVqZ3nC5GGk=",
-        "owner": "Mic92",
+        "lastModified": 1792981754,
+        "narHash": "sha256-L7jHjDBTPyr0+A75u9VxrViDrtog3vABO5Sopp5Zv9Q=",
+        "owner": "FixeQD",
         "repo": "sops-nix",
-        "rev": "44931708c62937c2b1bf7953902989fa5bb9ee1b",
+        "rev": "b06c6b46a1304ba11b85ff5831af2b85714c111b",
         "type": "github"
       },
       "original": {
-        "owner": "Mic92",
+        "owner": "FixeQD",
+        "ref": "feat/non-systemd-activation",
         "repo": "sops-nix",
         "type": "github"
       }

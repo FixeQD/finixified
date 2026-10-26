@@ -16,7 +16,7 @@
     };
 
     sops-nix = {
-      url = "github:Mic92/sops-nix";
+      url = "github:FixeQD/sops-nix/feat/non-systemd-activation";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -86,7 +86,7 @@
         in
         finix.lib.finixSystem {
           inherit (pkgs) lib;
-          inherit (hostConfig) specialArgs;
+          specialArgs = (hostConfig.specialArgs or { }) // { inherit sops-nix; };
           modules = [
             { nixpkgs.pkgs = nixpkgs.lib.mkDefault pkgs; }
             (
