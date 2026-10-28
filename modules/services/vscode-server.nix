@@ -2,7 +2,6 @@
 with lib;
 let
   cfg = config.modules.vscode-server;
-  user = config.users.users.${cfg.user};
   autoFixVscodeServer = pkgs.callPackage "${inputs.vscode-server}/pkgs/auto-fix-vscode-server.nix" {
     enableFHS = cfg.enableFHS;
     nodejsPackage = cfg.nodejsPackage;
@@ -10,16 +9,6 @@ let
     installPath = cfg.installPath;
     postPatch = cfg.postPatch;
   };
-
-  vscodeServerStart = pkgs.writeShellScript "vscode-server-start" ''
-    set -euo pipefail
-    export HOME=${escapeShellArg user.home}
-    export USER=${escapeShellArg cfg.user}
-    export LOGNAME=${escapeShellArg cfg.user}
-    cd "$HOME"
-    exec ${pkgs.util-linux}/bin/runuser -u ${escapeShellArg cfg.user} -- \
-      ${autoFixVscodeServer}/bin/auto-fix-vscode-server
-  '';
 in
 {
   options.modules.vscode-server = {
@@ -61,9 +50,11 @@ in
   config = mkIf cfg.enable {
     finit.services.vscode-server = {
       description = "VS Code Server auto-fix monitor";
-      runlevels = "2345";
+      runlevel = "2345";
       conditions = [ "service/syslogd/ready" ];
-      command = "${vscodeServerStart}";
+      user = cfg.user;
+      group = config.users.users.${cfg.user}.group;
+      command = getExe autoFixVscodeServer;
       respawn = true;
       log = true;
     };
