@@ -31,6 +31,10 @@ in
       owner = user;
       mode = "0400";
     };
+    code_server_hashed_password = {
+      owner = user;
+      mode = "0400";
+    };
   };
 
   finit.tasks = lib.optionalAttrs hjemEnabled {

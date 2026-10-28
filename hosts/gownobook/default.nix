@@ -106,8 +106,11 @@ in
           enable = true;
           tokenFile = "/run/secrets/gownobook_cloudflared_token";
         };
-        vscode-server.enable = true;
-        vscode-server.user = userName;
+        vscode-server = {
+          enable = true;
+          bindAddr = "0.0.0.0";
+          hashedPasswordFile = "/run/secrets/code_server_hashed_password";
+        };
       };
 
       hjem = {
