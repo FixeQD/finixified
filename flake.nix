@@ -10,6 +10,8 @@
     nixcord.url = "github:4evy/nixcord";
     nix-index-database.url = "github:nix-community/nix-index-database";
 
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";

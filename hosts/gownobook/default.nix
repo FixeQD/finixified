@@ -13,7 +13,7 @@ let
 in
 {
   specialArgs = {
-    inherit disko community-modules finix nixcord;
+    inherit disko community-modules finix nixcord inputs;
   };
 
   modules = [
@@ -47,6 +47,7 @@ in
         ../../modules/services/cloudflared.nix
         ../../modules/services/fwupd.nix
         ../../modules/services/secrets.nix
+        ../../modules/services/vscode-server.nix
 
         inputs.hjem.finixModules.default
       ];
@@ -105,6 +106,8 @@ in
           enable = true;
           tokenFile = "/run/secrets/gownobook_cloudflared_token";
         };
+        vscode-server.enable = true;
+        vscode-server.user = userName;
       };
 
       hjem = {
