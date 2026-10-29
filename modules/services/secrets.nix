@@ -14,7 +14,7 @@ in
 {
   imports = [ sops-nix.nixosModules.sops ];
 
-  sops.age.keyFile = "/etc/sops/age/keys.txt";
+  sops.age.keyFile = "/persist/sops/age/keys.txt";
   sops.age.sshKeyPaths = [ ];
   sops.gnupg.sshKeyPaths = [ ];
   sops.defaultSopsFile = ../../secrets/secrets.yaml;

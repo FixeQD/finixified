@@ -3,11 +3,14 @@
 let
   rootFsType = config.fileSystems."/".fsType;
 
-  rootSubvolOption = lib.findFirst (lib.hasPrefix "subvol=") null config.fileSystems."/".options;
+  rootSubvolOption = lib.findFirst (lib.hasPrefix "subvol=") null (config.fileSystems."/".options or [ ]);
   rootSubvol =
-    if rootSubvolOption != null
-    then lib.removePrefix "subvol=" rootSubvolOption
-    else throw "boot.nix: subvol= not found in fileSystems.\"/\".options";
+    if rootFsType == "btrfs" then
+      if rootSubvolOption != null
+      then lib.removePrefix "subvol=" rootSubvolOption
+      else throw "boot.nix: subvol= not found in fileSystems.\"/\".options"
+    else
+      null;
 in
 {
   imports = [ community-modules.nixosModules.efistubmgr ];
@@ -41,8 +44,9 @@ in
 
   boot.kernelModules = [ "kvm-intel" ];
 
-  boot.kernelParams = [
+  boot.kernelParams = (lib.optionals (rootFsType == "btrfs") [
     "rootflags=subvol=${rootSubvol}"
+  ]) ++ [
     "rootfstype=${rootFsType}"
     "zswap.enabled=0"
     "snd_intel_dspcfg.dsp_driver=1"

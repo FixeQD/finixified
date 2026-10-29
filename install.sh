@@ -22,6 +22,7 @@ esac
 : "${DISKO_MODE:=destroy,format,mount}"
 : "${REQUIRE_SOPS:=true}"
 : "${RESUME_INSTALL:=false}"
+: "${PERSIST_DIR:=/mnt}"
 
 FLAKE_DIR="$(pwd)"
 
@@ -30,7 +31,7 @@ echo "==> [1/5] disko (mode: $DISKO_MODE) for host '$FLAKE_HOST'"
   --mode "$DISKO_MODE" \
   --flake "$FLAKE_DIR#$FLAKE_HOST"
 
-PASSWD_DIR="/mnt/etc/nixos-passwords"
+PASSWD_DIR="$PERSIST_DIR/user-passwords"
 
 read_password_masked() {
   local prompt="$1" password="" char=""
@@ -120,7 +121,7 @@ else
 fi
 
 if [ "$REQUIRE_SOPS" = "true" ]; then
-  AGE_KEY_DIR="/mnt/etc/sops/age"
+  AGE_KEY_DIR="$PERSIST_DIR/sops/age"
   installed_age_key=false
 
   if [ "$RESUME_INSTALL" = "true" ] && [ -s "$AGE_KEY_DIR/keys.txt" ]; then
