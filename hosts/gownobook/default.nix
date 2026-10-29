@@ -115,6 +115,7 @@ in
             cockpit-files
             cockpit-dockermanager
           ];
+          allowedOrigins = [ "https://gownobook.rohu-tint.ts.net" ];
         };
         vscode-server = {
           enable = true;
