@@ -1,4 +1,4 @@
-{ pkgs, community-modules, ... }:
+{ community-modules, ... }:
 
 let
   btrfsOpts = [

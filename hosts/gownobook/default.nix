@@ -49,7 +49,6 @@ in
         ../../modules/services/fwupd.nix
         ../../modules/services/secrets.nix
         ../../modules/services/tailscale.nix
-        ../../modules/services/vscode-server.nix
 
         inputs.hjem.finixModules.default
       ];
@@ -116,11 +115,6 @@ in
             cockpit-dockermanager
           ];
           allowedOrigins = [ "https://gownobook.rohu-tint.ts.net" ];
-        };
-        vscode-server = {
-          enable = true;
-          bindAddr = "0.0.0.0";
-          hashedPasswordFile = "/run/secrets/code_server_hashed_password";
         };
       };
 
