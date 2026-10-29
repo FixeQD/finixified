@@ -45,6 +45,7 @@ in
         ../../modules/installer.nix
 
         ../../modules/services/cloudflared.nix
+        ../../modules/services/cockpit.nix
         ../../modules/services/fwupd.nix
         ../../modules/services/secrets.nix
         ../../modules/services/vscode-server.nix
@@ -105,6 +106,14 @@ in
         cloudflared = {
           enable = true;
           tokenFile = "/run/secrets/gownobook_cloudflared_token";
+        };
+        cockpit = {
+          enable = true;
+          plugins = with pkgs; [
+            cockpit-machines
+            cockpit-files
+            cockpit-dockermanager
+          ];
         };
         vscode-server = {
           enable = true;
