@@ -10,7 +10,7 @@ let
     mkdir -p $out
     cp ${pkgs.fetchurl {
       url = "https://spicetify-lucid.sanooj.uk/spice/user.css";
-      hash = "sha256-70N9VgIrroy+wDzmY2i5hgddOOVBtP4zyVT3mAB1qbo=";
+      hash = "sha256-na3bw52xqRYyLh+UHn67UupHhCiGhoqMtuWyY3Webto=";
     }} $out/user.css
     cp ${pkgs.fetchurl {
       url = "https://spicetify-lucid.sanooj.uk/spice/color.ini";
@@ -80,7 +80,7 @@ in
           owner = "L3-N0X";
           repo = "spicetify-dj-info";
           rev = "main";
-          hash = "sha256-rg/SfzIIkrSle2c6xhHfSUyBfrKecq6CY+9HXRI78xA=";
+          hash = "sha256-1ZpTpOhrIQHr1/cBzWJdW5nf08LPxaioLHkAeq6vsvs=";
         }}/dist";
       }
       {
@@ -89,7 +89,7 @@ in
           owner = "Spikerko";
           repo = "spicy-lyrics";
           rev = "main";
-          hash = "sha256-OlzNKuTB2jeWXEgMbpBvhv/GKTGG1FmjhtusUOkFBOg=";
+          hash = "sha256-yUuDlxF7KrMTRuCt/4DCYe7X8L/pipzRduVb1F4wZlA=";
         }}/builds";
       }
       {
