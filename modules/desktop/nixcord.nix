@@ -381,18 +381,26 @@ in
   environment.systemPackages = common.packages.installed;
 
   system.activation.scripts = {
-    nixcord-disableDiscordUpdates = {
+    nixcord-prepareHome = {
       deps = [ "users" ];
+      text = ''
+        install -d -o ${cfg.user} -g ${config.users.users.${cfg.user}.group} -m 0700 ${homeDir}/.config
+        chown -R ${cfg.user}:${config.users.users.${cfg.user}.group} ${homeDir}/.config
+      '';
+    };
+
+    nixcord-disableDiscordUpdates = {
+      deps = [ "users" "nixcord-prepareHome" ];
       text = activationScripts.disableDiscordUpdates;
     };
 
     nixcord-fixDiscordModules = {
-      deps = [ "users" ];
+      deps = [ "users" "nixcord-prepareHome" ];
       text = activationScripts.fixDiscordModules;
     };
 
     nixcord-writeFiles = {
-      deps = [ "users" ];
+      deps = [ "users" "nixcord-prepareHome" ];
       text = ''
         (
           set -eu
