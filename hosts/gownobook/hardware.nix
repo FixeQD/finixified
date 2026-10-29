@@ -68,31 +68,10 @@ in
 
   fileSystems."/persist".neededForBoot = true;
 
-  fileSystems."/var/lib" = {
-    device = "/persist/var/lib";
-    fsType = "none";
-    options = [ "bind" "X-mount.mkdir" ];
-    neededForBoot = true;
-    depends = [ "/persist" ];
-  };
-
-  fileSystems."/etc/sops" = {
-    device = "/persist/sops";
-    fsType = "none";
-    options = [ "bind" "X-mount.mkdir" ];
-    neededForBoot = true;
-    depends = [ "/persist" ];
-  };
-
-  fileSystems."/etc/user-passwords" = {
-    device = "/persist/user-passwords";
-    fsType = "none";
-    options = [ "bind" "X-mount.mkdir" ];
-    neededForBoot = true;
-    depends = [ "/persist" ];
-  };
-
   finit.tmpfiles.rules = [
+    "L+ /var/lib - - - - /persist/var/lib"
+    "L+ /etc/sops - - - - /persist/sops"
+    "L+ /etc/user-passwords - - - - /persist/user-passwords"
     "L+ /etc/machine-id - - - - /persist/machine-id"
     "L+ /var/lib/dbus/machine-id - - - - /persist/machine-id"
   ];
