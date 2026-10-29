@@ -120,6 +120,12 @@ else
   )
 fi
 
+echo "    mounting password files into the installation root"
+mkdir -p /mnt/etc/user-passwords
+if ! mountpoint -q /mnt/etc/user-passwords; then
+  mount --bind "$PASSWD_DIR" /mnt/etc/user-passwords
+fi
+
 if [ "$REQUIRE_SOPS" = "true" ]; then
   AGE_KEY_DIR="$PERSIST_DIR/sops/age"
   installed_age_key=false
