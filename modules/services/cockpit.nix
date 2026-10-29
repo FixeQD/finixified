@@ -6,6 +6,14 @@ let
   settingsFormat = pkgs.formats.ini { };
   configFile = settingsFormat.generate "cockpit.conf" cfg.settings;
 
+  # Sessions inherit ws's cwd, and the user's shell (fish) complains when it can't open it.
+  # /run/cockpit/xdg is read after /etc, so other modules can drop a cockpit.conf there to override settings at runtime.
+  wsStart = pkgs.writeShellScript "cockpit-ws-start" ''
+    cd /
+    export XDG_CONFIG_DIRS=/run/cockpit/xdg
+    exec ${cfg.package}/libexec/cockpit-ws --no-tls --address ${cfg.bindAddr} --port ${toString cfg.port}
+  '';
+
   pathPkgs = [ cfg.package ] ++ cfg.plugins;
 
   resourcesEnv = pkgs.buildEnv {
@@ -39,7 +47,8 @@ in
       default = [ ];
       example = literalExpression "[ pkgs.cockpit-machines pkgs.cockpit-files ]";
       description = ''
-        Addons for Cockpit. Each addon contributes its `share/cockpit` and `passthru.cockpitPath`
+        Cockpit plugins. Each one contributes its `share/cockpit` and its
+        `passthru.cockpitPath` (runtime dependencies).
       '';
     };
 
@@ -47,19 +56,19 @@ in
       type = types.str;
       default = "127.0.0.1";
       example = "0.0.0.0";
-      description = "Address which cockpit-ws listens on.";
+      description = "Address cockpit-ws listens on.";
     };
 
     port = mkOption {
       type = types.port;
       default = 9090;
-      description = "Port, on which cockpit-ws listens.";
+      description = "Port cockpit-ws listens on.";
     };
 
     openFirewall = mkOption {
       type = types.bool;
       default = false;
-      description = "Opens the Cockpit port in modules.firewall.";
+      description = "Open the Cockpit port in `modules.firewall`.";
     };
 
     allowedOrigins = mkOption {
@@ -67,17 +76,15 @@ in
       default = [ ];
       example = [ "https://cockpit.example.com" ];
       description = ''
-        Additional origins allowed in `WebService.Origins`. Localhost is added automatically. 
-        If you are accessing through a reverse proxy or tunnel with HTTPS, enter 
-        its address here and set `settings.WebService.ProtocolHeader = "X-Forwarded-Proto"`.
+        Extra origins allowed in `WebService.Origins`. Localhost is always included. 
+        When serving through an HTTPS reverse proxy, add its origin here and set `settings.WebService.ProtocolHeader`.
       '';
     };
 
     disallowedUsers = mkOption {
       type = types.listOf types.str;
       default = [ "root" ];
-      example = [ "john" "jane" ];
-      description = "Users who are not allowed to log in to Cockpit.";
+      description = "Users that are not allowed to log in to Cockpit.";
     };
 
     settings = mkOption {
@@ -88,9 +95,7 @@ in
           WebService.AllowUnencrypted = true;
         }
       '';
-      description = ''
-        Content of /etc/cockpit/cockpit.conf, see `man cockpit.conf.5`.
-      '';
+      description = "Contents of /etc/cockpit/cockpit.conf, see `man cockpit.conf.5`.";
     };
   };
 
@@ -105,7 +110,11 @@ in
         Origins = concatStringsSep " " cfg.allowedOrigins;
         LoginTo = mkDefault false;
       };
+
+      # No systemd socket activation for /run/cockpit/session, so ws spawns cockpit-session directly.
       basic.Command = mkDefault "${cfg.package}/libexec/cockpit-session";
+
+      # Browsers try Kerberos first, which fails noisily without the socket.
       negotiate.action = mkDefault "none";
     };
 
@@ -125,10 +134,11 @@ in
       description = "Cockpit web console";
       runlevel = "2345";
       conditions = [ "service/syslogd/ready" ];
-      command = "${cfg.package}/libexec/cockpit-ws --no-tls --address ${cfg.bindAddr} --port ${toString cfg.port}";
+      command = "${wsStart}";
       respawn = true;
       log = true;
 
+      # ws only reads cockpit.conf on start
       reload-signal = "none";
       reload-triggers = [ "${configFile}" ];
     };

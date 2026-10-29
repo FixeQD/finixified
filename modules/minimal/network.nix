@@ -1,9 +1,8 @@
-{ pkgs, lib, config, community-modules, finix, ... }:
+{ pkgs, lib, config, finix, ... }:
 with lib;
 let cfg = config.modules.network; in
 {
   imports = [
-    community-modules.nixosModules.tailscale
     finix.nixosModules.iwd
     finix.nixosModules.dhcpcd
     finix.nixosModules.openssh
@@ -11,23 +10,6 @@ let cfg = config.modules.network; in
 
   options.modules.network = {
     enable = mkEnableOption "iwd and dhcpcd networking";
-
-    tailscale = {
-      enable = mkEnableOption "Tailscale VPN";
-
-      authKeyFile = mkOption {
-        type = with types; nullOr path;
-        default = null;
-        description = "Path to a file containing the Tailscale auth key (e.g. an sops secret path). If unset, `tailscale up` must be run manually.";
-      };
-
-      extraUpFlags = mkOption {
-        type = with types; listOf str;
-        default = [ ];
-        example = [ "--ssh" "--advertise-exit-node" ];
-        description = "Extra flags passed to `tailscale up`.";
-      };
-    };
 
     openssh = {
       enable = mkEnableOption "OpenSSH server";
@@ -63,12 +45,6 @@ let cfg = config.modules.network; in
       iwd
       dhcpcd
     ];
-
-    services.tailscale = mkIf cfg.tailscale.enable {
-      enable = true;
-      authKeyFile = cfg.tailscale.authKeyFile;
-      extraUpFlags = cfg.tailscale.extraUpFlags;
-    };
 
     services.openssh = mkIf cfg.openssh.enable {
       enable = true;

@@ -48,6 +48,7 @@ in
         ../../modules/services/cockpit.nix
         ../../modules/services/fwupd.nix
         ../../modules/services/secrets.nix
+        ../../modules/services/tailscale.nix
         ../../modules/services/vscode-server.nix
 
         inputs.hjem.finixModules.default
@@ -66,7 +67,6 @@ in
         locale.enable = true;
         mdevd.enable = true;
         network.enable = true;
-        network.tailscale.enable = true;
 
         network.openssh.enable = true;
         network.openssh.permitRootLogin = "no";
@@ -99,6 +99,7 @@ in
         firewall.enable = true;
         firewall.trustedInterfaces = [ "tailscale0" "br-metamcp" ];
         fwupd.enable = true;
+        tailscale.enable = true;
         user.enable = true;
         user.name = userName;
         virt.enable = true;

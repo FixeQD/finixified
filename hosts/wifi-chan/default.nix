@@ -29,6 +29,7 @@
 
         ../../modules/services/fwupd.nix
         ../../modules/services/pihole.nix
+        ../../modules/services/tailscale.nix
       ];
 
       networking.hostName = "wifi-chan";
@@ -41,7 +42,6 @@
         network.enable = true;
         network.openssh.enable = true;
         network.openssh.permitRootLogin = "no";
-        network.tailscale.enable = true;
 
         cron.enable = true;
         performance.enable = true;
@@ -49,6 +49,7 @@
         firewall.trustedInterfaces = [ "tailscale0" ];
         fwupd.enable = true;
         installer.requireSops = false;
+        tailscale.enable = true;
         zram.enable = true;
 
         user.enable = true;
