@@ -402,11 +402,11 @@ in
           copy_file() {
             local src="$1"
             local dest="$2"
-            local mode="$3"
+            local mode="''${3:-0644}"
             ${install} -D -m "$mode" -o "$target_user" -g "$target_group" "$src" "$dest"
           }
 
-          ${common.fileCopyCommands}
+          ${common.fileCopyCommands "copy_file"}
         )
       '';
     };
