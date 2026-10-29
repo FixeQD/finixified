@@ -1,4 +1,4 @@
-{ community-modules, ... }:
+{ community-modules, pkgs, ... }:
 
 let
   btrfsOpts = [
@@ -76,14 +76,6 @@ in
     depends = [ "/persist" ];
   };
 
-  fileSystems."/etc/machine-id" = {
-    device = "/persist/machine-id";
-    fsType = "none";
-    options = [ "bind" ];
-    neededForBoot = true;
-    depends = [ "/persist" ];
-  };
-
   fileSystems."/etc/sops" = {
     device = "/persist/sops";
     fsType = "none";
@@ -99,6 +91,11 @@ in
     neededForBoot = true;
     depends = [ "/persist" ];
   };
+
+  finit.tmpfiles.rules = [
+    "L+ /etc/machine-id - - - - /persist/machine-id"
+    "L+ /var/lib/dbus/machine-id - - - - /persist/machine-id"
+  ];
 
   fileSystems."/" = {
     device = "tmpfs";

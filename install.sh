@@ -33,7 +33,7 @@ echo "==> [1/5] disko (mode: $DISKO_MODE) for host '$FLAKE_HOST'"
   --flake "$FLAKE_DIR#$FLAKE_HOST"
 
 echo "    initializing persistent directories and machine-id"
-mkdir -p "$PERSIST_DIR/var/lib" "$PERSIST_DIR/etc/ssh"
+mkdir -p "$PERSIST_DIR/var/lib/dbus"
 mkdir -p "$PERSIST_DIR/sops/age" "$PERSIST_DIR/user-passwords"
 chmod 700 "$PERSIST_DIR/sops/age" "$PERSIST_DIR/user-passwords"
 "$DBUS_UUIDGEN_BIN" --ensure="$PERSIST_DIR/machine-id"
