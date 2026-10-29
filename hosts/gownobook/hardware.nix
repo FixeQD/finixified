@@ -46,7 +46,7 @@ in
             type = "btrfs";
             extraArgs = [ "-L" "GownoFS" "-f" ];
             postCreateHook = ''
-              mkdir -p /mnt/persist/var/lib /mnt/persist/etc/ssh
+              mkdir -p /mnt/persist/var/lib
               mkdir -p /mnt/persist/sops/age /mnt/persist/user-passwords
               chmod 700 /mnt/persist/sops/age /mnt/persist/user-passwords
               ${pkgs.dbus}/bin/dbus-uuidgen --ensure=/mnt/persist/machine-id
@@ -76,14 +76,6 @@ in
 
   fileSystems."/var/lib" = {
     device = "/persist/var/lib";
-    fsType = "none";
-    options = [ "bind" "X-mount.mkdir" ];
-    neededForBoot = true;
-    depends = [ "/persist" ];
-  };
-
-  fileSystems."/etc/ssh" = {
-    device = "/persist/etc/ssh";
     fsType = "none";
     options = [ "bind" "X-mount.mkdir" ];
     neededForBoot = true;
