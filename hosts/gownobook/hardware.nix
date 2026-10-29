@@ -7,6 +7,7 @@ let
     "ssd"
     "discard=async"
     "space_cache=v2"
+    "X-mount.mkdir"
   ];
 in
 {
@@ -26,7 +27,7 @@ in
             type = "filesystem";
             format = "vfat";
             mountpoint = "/boot";
-            mountOptions = [ "fmask=0022" "dmask=0022" ];
+            mountOptions = [ "fmask=0022" "dmask=0022" "X-mount.mkdir" ];
           };
         };
 
