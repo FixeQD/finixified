@@ -106,18 +106,18 @@ in
         LoginTo = mkDefault false;
       };
       basic.Command = mkDefault "${cfg.package}/libexec/cockpit-session";
+      negotiate.action = mkDefault "none";
     };
 
     environment.etc = {
       "cockpit/cockpit.conf".source = configFile;
-      "cockpit/disallowed-users".text = concatMapStrings (u: "${u}\n") cfg.disallowedUsers;
       "cockpit/share".source = "${share}/share";
       "cockpit/bin".source = "${depsEnv}/bin";
       "cockpit/lib".source = "${depsEnv}/lib";
     };
 
     security.pam.services.cockpit.text = mkDefault ''
-      account required pam_listfile.so item=user sense=deny file=/etc/cockpit/disallowed-users onerr=succeed
+      ${optionalString (cfg.disallowedUsers != [ ]) "account required pam_succeed_if.so user notin ${concatStringsSep ":" cfg.disallowedUsers}"}
       ${config.security.pam.services.login.text}
     '';
 
