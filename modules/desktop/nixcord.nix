@@ -2,13 +2,14 @@
   nixcord,
   config,
   lib,
+  options,
   pkgs,
   ...
 }:
 let
   cfg = config.programs.nixcord;
 
-  common = import (nixcord + "/modules/lib/mkCommonConfig.nix") { inherit config lib pkgs; };
+  common = import (nixcord + "/modules/lib/mkCommonConfig.nix") { inherit config lib options pkgs; };
 
   homeDir = lib.attrsets.attrByPath [ cfg.user "home" ] "/home/${cfg.user}" config.users.users;
 
