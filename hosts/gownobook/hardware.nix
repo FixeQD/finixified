@@ -45,12 +45,6 @@ in
           content = {
             type = "btrfs";
             extraArgs = [ "-L" "GownoFS" "-f" ];
-            postCreateHook = ''
-              mkdir -p /mnt/persist/var/lib
-              mkdir -p /mnt/persist/sops/age /mnt/persist/user-passwords
-              chmod 700 /mnt/persist/sops/age /mnt/persist/user-passwords
-              ${pkgs.dbus}/bin/dbus-uuidgen --ensure=/mnt/persist/machine-id
-            '';
             subvolumes = {
               # "@" (root) removed: "/" is a tmpfs (impermanent)
               "@home"      = { mountpoint = "/home";      mountOptions = btrfsOpts; };

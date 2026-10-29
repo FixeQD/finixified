@@ -15,6 +15,7 @@ case "$RUNNER_PATH" in
 esac
 
 : "${DISKO_BIN:?DISKO_BIN must be set}"
+: "${DBUS_UUIDGEN_BIN:?DBUS_UUIDGEN_BIN must be set}"
 : "${SBCTL_BIN:?SBCTL_BIN must be set}"
 : "${MKPASSWD_BIN:?MKPASSWD_BIN must be set}"
 : "${PRIMARY_USER:?PRIMARY_USER must be set}"
@@ -30,6 +31,12 @@ echo "==> [1/5] disko (mode: $DISKO_MODE) for host '$FLAKE_HOST'"
 "$DISKO_BIN" \
   --mode "$DISKO_MODE" \
   --flake "$FLAKE_DIR#$FLAKE_HOST"
+
+echo "    initializing persistent directories and machine-id"
+mkdir -p "$PERSIST_DIR/var/lib" "$PERSIST_DIR/etc/ssh"
+mkdir -p "$PERSIST_DIR/sops/age" "$PERSIST_DIR/user-passwords"
+chmod 700 "$PERSIST_DIR/sops/age" "$PERSIST_DIR/user-passwords"
+"$DBUS_UUIDGEN_BIN" --ensure="$PERSIST_DIR/machine-id"
 
 PASSWD_DIR="$PERSIST_DIR/user-passwords"
 

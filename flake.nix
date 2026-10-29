@@ -125,6 +125,7 @@
           program = toString (
             pkgs.writeShellScript "${if resume then "resume-" else ""}install-${hostname}" ''
               export DISKO_BIN="${disko.packages.${system}.disko}/bin/disko"
+              export DBUS_UUIDGEN_BIN="${pkgs.dbus}/bin/dbus-uuidgen"
               export SBCTL_BIN="${pkgs.sbctl}/bin/sbctl"
               export MKPASSWD_BIN="${pkgs.mkpasswd}/bin/mkpasswd"
               export FLAKE_HOST="${hostname}"
