@@ -21,7 +21,7 @@ end
 
 if contains -- $action $nh_actions
   @util.flake_cmd@ $action $args
-  exit $status
+  return $status
 end
 
 switch $action
