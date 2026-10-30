@@ -49,6 +49,11 @@ let cfg = config.modules.base; in
         pkg-config
         libxkbcommon.dev
         bash
+
+        libfido2
+        yubikey-personalization
+        yubikey-manager
+        yubioath-flutter
       ];
     };
 
