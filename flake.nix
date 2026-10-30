@@ -146,6 +146,17 @@
     {
       nixosConfigurations = hostConfigurations;
 
+      formatter.x86_64-linux =
+        let
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        in
+        pkgs.writeShellApplication {
+          name = "nixfmt";
+          text = ''
+            exec ${pkgs.nixfmt}/bin/nixfmt - "$@"
+          '';
+        };
+
       apps.x86_64-linux.install-wifi-chan = mkInstallApp { config = hostConfigurations.wifi-chan.config; };
       apps.x86_64-linux.resume-install-wifi-chan = mkInstallApp { config = hostConfigurations.wifi-chan.config; resume = true; };
 
