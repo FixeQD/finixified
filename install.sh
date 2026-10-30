@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# DISKO_BIN / SBCTL_BIN / MKPASSWD_BIN / FLAKE_HOST / PRIMARY_USER / REQUIRE_SOPS.
+# DISKO_BIN / SBCTL_BIN / MKPASSWD_BIN / FLAKE_HOST / PRIMARY_USER / REQUIRE_SOPS
+# (with REQUIRE_SOPS=true also AGE_BIN / AGE_PLUGIN_FIDO2_HMAC_BIN).
 
 set -euo pipefail
 
@@ -134,44 +135,45 @@ if ! mountpoint -q /mnt/etc/user-passwords; then
 fi
 
 if [ "$REQUIRE_SOPS" = "true" ]; then
+  : "${AGE_BIN:?AGE_BIN must be set}"
+  : "${AGE_PLUGIN_FIDO2_HMAC_BIN:?AGE_PLUGIN_FIDO2_HMAC_BIN must be set}"
+
   AGE_KEY_DIR="$PERSIST_DIR/sops/age"
+  HOST_KEY_BLOB="$FLAKE_DIR/secrets/host-age-key.age"
+  FIDO2_IDENTITY="$FLAKE_DIR/secrets/fido2-identity.txt"
   installed_age_key=false
 
   if [ "$RESUME_INSTALL" = "true" ] && [ -s "$AGE_KEY_DIR/keys.txt" ]; then
     echo "==> [3/5] sops: age key already present, skipping installation"
   else
-    echo "==> [3/5] sops: installing age key"
+    echo "==> [3/5] sops: decrypting host age key with the FIDO2 token"
     installed_age_key=true
+
+    for required_file in "$HOST_KEY_BLOB" "$FIDO2_IDENTITY"; do
+      if [ ! -f "$required_file" ]; then
+        echo "ERROR: $required_file not found" >&2
+        exit 1
+      fi
+    done
+
     mkdir -p "$AGE_KEY_DIR"
     chmod 700 "$AGE_KEY_DIR"
 
-    DEFAULT_KEY_PATH="$HOME/.config/sops/age/keys.txt"
-    printf '    path to age key file [%s]: ' "$DEFAULT_KEY_PATH" >&2
-    read -r KEY_PATH
-    KEY_PATH="${KEY_PATH:-$DEFAULT_KEY_PATH}"
-
-    (
+    echo "    plug in the token and touch it when it blinks"
+    # age finds age-plugin-fido2-hmac through PATH
+    if ! (
       umask 077
-      if [ -f "$KEY_PATH" ]; then
-        cp "$KEY_PATH" "$AGE_KEY_DIR/keys.txt"
-        echo "    copied from $KEY_PATH"
-      else
-        echo "    '$KEY_PATH' not found - falling back to manual paste"
-        printf  "    Paste age private key, then Ctrl+D: "
-        stty -echo
-        trap 'stty echo' EXIT
-        : > "$AGE_KEY_DIR/keys.txt"
-        while IFS= read -r line; do
-          printf '*'
-          printf '%s\n' "$line" >> "$AGE_KEY_DIR/keys.txt"
-        done
-        stty echo
-        trap - EXIT
-        echo
-        echo "    ($(wc -l < "$AGE_KEY_DIR/keys.txt") lines written)"
-      fi
-      chmod 600 "$AGE_KEY_DIR/keys.txt"
-    )
+      PATH="$(dirname "$AGE_PLUGIN_FIDO2_HMAC_BIN"):$PATH" \
+        "$AGE_BIN" --decrypt \
+          --identity "$FIDO2_IDENTITY" \
+          --output "$AGE_KEY_DIR/keys.txt" \
+          "$HOST_KEY_BLOB"
+    ); then
+      rm -f "$AGE_KEY_DIR/keys.txt"
+      echo "ERROR: could not decrypt $HOST_KEY_BLOB with the FIDO2 token" >&2
+      exit 1
+    fi
+    chmod 600 "$AGE_KEY_DIR/keys.txt"
   fi
 
   run_sops() {
@@ -183,6 +185,8 @@ if [ "$REQUIRE_SOPS" = "true" ]; then
     echo "    OK - key decrypts secrets.yaml successfully."
   else
     echo "    FAILED - this key cannot decrypt $FLAKE_DIR/secrets/secrets.yaml" >&2
+    grep -h '^# public key:' "$AGE_KEY_DIR/keys.txt" >&2 || true
+    grep -h 'recipient:' "$FLAKE_DIR/secrets/secrets.yaml" >&2 || true
     if [ "$installed_age_key" = "true" ]; then
       rm -f "$AGE_KEY_DIR/keys.txt"
     fi

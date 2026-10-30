@@ -131,6 +131,10 @@
               export FLAKE_HOST="${hostname}"
               export PRIMARY_USER="${config.modules.user.name}"
               export REQUIRE_SOPS="${if config.modules.installer.requireSops then "true" else "false"}"
+              ${if config.modules.installer.requireSops then ''
+                export AGE_BIN="${pkgs.age}/bin/age"
+                export AGE_PLUGIN_FIDO2_HMAC_BIN="${pkgs.age-plugin-fido2-hmac}/bin/age-plugin-fido2-hmac"
+              '' else ""}
               export PERSIST_DIR="${if builtins.hasAttr "/persist" config.fileSystems then "/mnt/persist" else "/mnt"}"
               export RESUME_INSTALL="${if resume then "true" else "false"}"
               ${if resume then ''export DISKO_MODE="mount"'' else ""}

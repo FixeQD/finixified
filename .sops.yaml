@@ -1,5 +1,5 @@
 keys:
-  - &fixeq age1xmssaykpccrc5d9n4ajcxk55hh4kmeaxrcq295nnh0rzj83w29zq8g5ecl
+  - &fixeq age17vvmn7gda4j2l38q40px454jsh73fpruqcjmqvanrd0t3ytpmvyqnucrd8
 
 creation_rules:
   - path_regex: secrets/secrets\.yaml$
