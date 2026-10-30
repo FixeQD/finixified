@@ -7,7 +7,7 @@ let
 in
 {
   xdg.config.files."gh/config.yml".source = yaml.generate "gh-config.yml" {
-    git_protocol = "https";
+    git_protocol = "ssh";
     prompt = "enabled";
   };
   packages = [ pkgs.gh ];
