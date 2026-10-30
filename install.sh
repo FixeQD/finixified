@@ -27,6 +27,7 @@ esac
 : "${PERSIST_DIR:=/mnt}"
 
 FLAKE_DIR="$(pwd)"
+CHROOT_PERSIST_DIR="${PERSIST_DIR#/mnt}"
 
 echo "==> [1/5] disko (mode: $DISKO_MODE) for host '$FLAKE_HOST'"
 "$DISKO_BIN" \
@@ -128,11 +129,9 @@ else
   )
 fi
 
-echo "    mounting password files into the installation root"
-mkdir -p /mnt/etc/user-passwords
-if ! mountpoint -q /mnt/etc/user-passwords; then
-  mount --bind "$PASSWD_DIR" /mnt/etc/user-passwords
-fi
+echo "    linking password files into the installation root"
+mkdir -p /mnt/etc
+ln -sfT "$CHROOT_PERSIST_DIR/user-passwords" /mnt/etc/user-passwords
 
 if [ "$REQUIRE_SOPS" = "true" ]; then
   : "${AGE_BIN:?AGE_BIN must be set}"
@@ -203,6 +202,10 @@ nixos-install \
   --no-channel-copy
 
 echo "==> [5/5] sbctl: creating Secure Boot keys"
+if [ -n "$CHROOT_PERSIST_DIR" ]; then
+  mkdir -p "$PERSIST_DIR/var/lib/sbctl" /mnt/var/lib
+  ln -sfT "$CHROOT_PERSIST_DIR/var/lib/sbctl" /mnt/var/lib/sbctl
+fi
 nixos-enter --root /mnt -c "'$SBCTL_BIN' create-keys"
 
 echo "==> Ready!"
