@@ -28,7 +28,7 @@ in
       isNormalUser = true;
       description = cfg.name;
       shell = pkgs.fish;
-      passwordFile = "/etc/user-passwords/${cfg.name}";
+      passwordFile = "/persist/user-passwords/${cfg.name}";
       extraGroups = [
         "wheel"
         "seat"
@@ -47,7 +47,7 @@ in
       ];
     };
 
-    users.users.root.passwordFile = "/etc/user-passwords/root";
+    users.users.root.passwordFile = "/persist/user-passwords/root";
 
     programs.sudo.enable = true;
 
