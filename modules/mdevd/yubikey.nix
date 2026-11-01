@@ -1,4 +1,10 @@
-{ config, lib, mkMdevHelper, pkgs, ... }:
+{
+  config,
+  lib,
+  mkMdevHelper,
+  pkgs,
+  ...
+}:
 let
   libfido2 = pkgs.fetchFromGitHub {
     owner = "Yubico";

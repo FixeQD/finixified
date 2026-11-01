@@ -1,6 +1,13 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 with lib;
-let cfg = config.modules.cron; in
+let
+  cfg = config.modules.cron;
+in
 {
   options.modules.cron.enable = mkEnableOption "Cron daemon with periodic tasks";
 

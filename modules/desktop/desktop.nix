@@ -1,6 +1,15 @@
-{ pkgs, lib, config, community-modules, finix, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  community-modules,
+  finix,
+  ...
+}:
 with lib;
-let cfg = config.modules.desktop; in
+let
+  cfg = config.modules.desktop;
+in
 {
   imports = [
     community-modules.nixosModules.fastfetch
@@ -40,17 +49,18 @@ let cfg = config.modules.desktop; in
 
     environment = {
       variables = {
-        WLR_NO_HARDWARE_CURSORS             = "1";
-        NIXOS_OZONE_WL                      = "1";
-        MOZ_ENABLE_WAYLAND                  = "1";
-        QT_QPA_PLATFORM                     = "wayland";
+        WLR_NO_HARDWARE_CURSORS = "1";
+        NIXOS_OZONE_WL = "1";
+        MOZ_ENABLE_WAYLAND = "1";
+        QT_QPA_PLATFORM = "wayland";
         QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-        ELECTRON_OZONE_PLATFORM_HINT        = "auto";
-      } // mkIf cfg.nvidia.enable {
-        LIBVA_DRIVER_NAME         = "nvidia";
-        GBM_BACKEND               = "nvidia-drm";
+        ELECTRON_OZONE_PLATFORM_HINT = "auto";
+      }
+      // mkIf cfg.nvidia.enable {
+        LIBVA_DRIVER_NAME = "nvidia";
+        GBM_BACKEND = "nvidia-drm";
         __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-        NVD_BACKEND               = "direct";
+        NVD_BACKEND = "direct";
       };
 
       systemPackages = with pkgs; [
@@ -62,9 +72,11 @@ let cfg = config.modules.desktop; in
         gtk4
         kdePackages.breeze-icons
         wrapGAppsHook4
-        (python3.withPackages (ps: with ps; [
-          pygobject3
-        ]))
+        (python3.withPackages (
+          ps: with ps; [
+            pygobject3
+          ]
+        ))
       ];
 
       pathsToLink = [
@@ -75,7 +87,7 @@ let cfg = config.modules.desktop; in
     };
 
     xdg.portal = {
-      enable  = true;
+      enable = true;
       portals = [
         pkgs.kdePackages.xdg-desktop-portal-kde
         pkgs.xdg-desktop-portal-gtk

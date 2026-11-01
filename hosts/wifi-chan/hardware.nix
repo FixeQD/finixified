@@ -23,7 +23,10 @@ in
             type = "filesystem";
             format = "vfat";
             mountpoint = "/boot";
-            mountOptions = [ "fmask=0022" "dmask=0022" ];
+            mountOptions = [
+              "fmask=0022"
+              "dmask=0022"
+            ];
           };
         };
 
@@ -39,14 +42,36 @@ in
           size = "100%";
           content = {
             type = "btrfs";
-            extraArgs = [ "-L" "T630FS" "-f" ];
+            extraArgs = [
+              "-L"
+              "T630FS"
+              "-f"
+            ];
             subvolumes = {
-              "@"           = { mountpoint = "/";           mountOptions = btrfsOpts; };
-              "@home"       = { mountpoint = "/home";       mountOptions = btrfsOpts; };
-              "@opt"        = { mountpoint = "/opt";        mountOptions = btrfsOpts; };
-              "@var_log"    = { mountpoint = "/var/log";    mountOptions = btrfsOpts; };
-              "@nix"        = { mountpoint = "/nix";        mountOptions = btrfsOpts; };
-              "@var_lib"    = { mountpoint = "/var/lib";    mountOptions = btrfsOpts; };
+              "@" = {
+                mountpoint = "/";
+                mountOptions = btrfsOpts;
+              };
+              "@home" = {
+                mountpoint = "/home";
+                mountOptions = btrfsOpts;
+              };
+              "@opt" = {
+                mountpoint = "/opt";
+                mountOptions = btrfsOpts;
+              };
+              "@var_log" = {
+                mountpoint = "/var/log";
+                mountOptions = btrfsOpts;
+              };
+              "@nix" = {
+                mountpoint = "/nix";
+                mountOptions = btrfsOpts;
+              };
+              "@var_lib" = {
+                mountpoint = "/var/lib";
+                mountOptions = btrfsOpts;
+              };
             };
           };
         };
@@ -60,9 +85,16 @@ in
   fileSystems."/tmp" = {
     device = "tmpfs";
     fsType = "tmpfs";
-    options = [ "rw" "nosuid" "nodev" "relatime" "size=1G" "mode=1777" ];
+    options = [
+      "rw"
+      "nosuid"
+      "nodev"
+      "relatime"
+      "size=1G"
+      "mode=1777"
+    ];
   };
 
   hardware.cpu.amd.updateMicrocode = true;
-  
+
 }

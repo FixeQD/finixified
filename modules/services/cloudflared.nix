@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 with lib;
 let
   cfg = config.modules.cloudflared;
@@ -24,7 +29,10 @@ in
     extraFlags = mkOption {
       type = types.listOf types.str;
       default = [ ];
-      example = [ "--loglevel" "debug" ];
+      example = [
+        "--loglevel"
+        "debug"
+      ];
       description = "Extra flags passed to `cloudflared tunnel run`.";
     };
   };
@@ -35,7 +43,10 @@ in
     finit.services.cloudflared = {
       description = "Cloudflare Tunnel";
       runlevels = "2345";
-      conditions = [ "service/syslogd/ready" "service/dhcpcd/ready" ];
+      conditions = [
+        "service/syslogd/ready"
+        "service/dhcpcd/ready"
+      ];
       command = "${cloudflaredStart}";
       respawn = true;
       log = true;

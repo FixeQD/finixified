@@ -9,7 +9,14 @@
 let
   cfg = config.programs.nixcord;
 
-  common = import (nixcord + "/modules/lib/mkCommonConfig.nix") { inherit config lib options pkgs; };
+  common = import (nixcord + "/modules/lib/mkCommonConfig.nix") {
+    inherit
+      config
+      lib
+      options
+      pkgs
+      ;
+  };
 
   homeDir = lib.attrsets.attrByPath [ cfg.user "home" ] "/home/${cfg.user}" config.users.users;
 
@@ -17,14 +24,11 @@ let
 
   id = lib.getExe' pkgs.coreutils "id";
   setpriv = lib.getExe' pkgs.util-linux "setpriv";
-  activationScripts = common.mkActivationScripts (
-    script:
-      ''
-        uid="$(${id} -u ${lib.escapeShellArg cfg.user})"
-        gid="$(${id} -g ${lib.escapeShellArg cfg.user})"
-        ${setpriv} --reuid="$uid" --regid="$gid" --init-groups ${pkgs.runtimeShell} -c ${lib.escapeShellArg script}
-      ''
-  );
+  activationScripts = common.mkActivationScripts (script: ''
+    uid="$(${id} -u ${lib.escapeShellArg cfg.user})"
+    gid="$(${id} -g ${lib.escapeShellArg cfg.user})"
+    ${setpriv} --reuid="$uid" --regid="$gid" --init-groups ${pkgs.runtimeShell} -c ${lib.escapeShellArg script}
+  '');
 in
 {
   imports = [ (nixcord + "/modules/common.nix") ];
@@ -36,8 +40,6 @@ in
     homeDirectory = lib.mkDefault homeDir;
     xdgConfigHome = lib.mkDefault "${homeDir}/.config";
     finalPackage = common.packages.final;
-
-
 
     discord.equicord.enable = true;
 
@@ -95,7 +97,7 @@ in
         equicordHelper.enable = true;
         equicordToolbox.enable = true;
         experiments.enable = true;
-        expressionCloner.enable = true;
+        expressionManager.enable = true;
         f8Break.enable = true;
         fakeNitro.enable = true;
         fakeProfileThemes.enable = true;
@@ -390,17 +392,26 @@ in
     };
 
     nixcord-disableDiscordUpdates = {
-      deps = [ "users" "nixcord-prepareHome" ];
+      deps = [
+        "users"
+        "nixcord-prepareHome"
+      ];
       text = activationScripts.disableDiscordUpdates;
     };
 
     nixcord-fixDiscordModules = {
-      deps = [ "users" "nixcord-prepareHome" ];
+      deps = [
+        "users"
+        "nixcord-prepareHome"
+      ];
       text = activationScripts.fixDiscordModules;
     };
 
     nixcord-writeFiles = {
-      deps = [ "users" "nixcord-prepareHome" ];
+      deps = [
+        "users"
+        "nixcord-prepareHome"
+      ];
       text = ''
         (
           set -eu

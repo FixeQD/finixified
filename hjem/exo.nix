@@ -6,11 +6,13 @@
   ...
 }:
 let
-  renderNiriCommand = command:
+  renderNiriCommand =
+    command:
     lib.concatMapStringsSep " " builtins.toJSON (
       lib.filter (arg: arg != "") (lib.splitString " " command)
     );
-in {
+in
+{
   exo = {
     enable = true;
     network.backend = "iwd";

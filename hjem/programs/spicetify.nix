@@ -8,22 +8,28 @@ let
 
   lucidTheme = pkgs.runCommand "spicetify-theme-lucid" { } ''
     mkdir -p $out
-    cp ${pkgs.fetchurl {
-      url = "https://spicetify-lucid.sanooj.uk/spice/user.css";
-      hash = "sha256-na3bw52xqRYyLh+UHn67UupHhCiGhoqMtuWyY3Webto=";
-    }} $out/user.css
-    cp ${pkgs.fetchurl {
-      url = "https://spicetify-lucid.sanooj.uk/spice/color.ini";
-      hash = "sha256-iVxVBO1HvI0trHsw7GC3sEGvyOzHHTdkRvpqyfqlcVk=";
-    }} $out/color.ini
-    cp ${pkgs.fetchurl {
-      url = "https://spicetify-lucid.sanooj.uk/spice/theme.js";
-      hash = "sha256-+GZJ+dqCG6wbKo0WMrZrDSplBNpH7r3LhMMa4JSYxRE=";
-    }} $out/theme.js
+    cp ${
+      pkgs.fetchurl {
+        url = "https://spicetify-lucid.sanooj.uk/spice/user.css";
+        hash = "sha256-na3bw52xqRYyLh+UHn67UupHhCiGhoqMtuWyY3Webto=";
+      }
+    } $out/user.css
+    cp ${
+      pkgs.fetchurl {
+        url = "https://spicetify-lucid.sanooj.uk/spice/color.ini";
+        hash = "sha256-iVxVBO1HvI0trHsw7GC3sEGvyOzHHTdkRvpqyfqlcVk=";
+      }
+    } $out/color.ini
+    cp ${
+      pkgs.fetchurl {
+        url = "https://spicetify-lucid.sanooj.uk/spice/theme.js";
+        hash = "sha256-+GZJ+dqCG6wbKo0WMrZrDSplBNpH7r3LhMMa4JSYxRE=";
+      }
+    } $out/theme.js
   '';
 
   spotify = pkgs.spotify.overrideAttrs (old: {
-    buildInputs = (old.buildInputs or []) ++ [
+    buildInputs = (old.buildInputs or [ ]) ++ [
       pkgs.libayatana-appindicator
       pkgs.libayatana-indicator
     ];
@@ -60,66 +66,75 @@ in
 
     spotifyPackage = pkgs.lib.hiPrio spotify;
 
-    enabledExtensions = with spicePkgs.extensions; [
-      adblock
-      hidePodcasts
-      shuffle
-    ] ++ [
-      {
-        name = "cat-jam.js";
-        src = pkgs.fetchFromGitHub {
-          owner = "FixeQD";
-          repo = "spicetify-cat-jam-synced-reborn";
-          rev = "build";
-          hash = "sha256-BgIobG9XbBn6TTb3jtkWjkF0Sba0oYgn61cpkHcxAOo=";
-        };
-      }
-      {
-        name = "djinfo.mjs";
-        src = "${pkgs.fetchFromGitHub {
-          owner = "L3-N0X";
-          repo = "spicetify-dj-info";
-          rev = "main";
-          hash = "sha256-1ZpTpOhrIQHr1/cBzWJdW5nf08LPxaioLHkAeq6vsvs=";
-        }}/dist";
-      }
-      {
-        name = "spicy-lyrics.mjs";
-        src = "${pkgs.fetchFromGitHub {
-          owner = "Spikerko";
-          repo = "spicy-lyrics";
-          rev = "main";
-          hash = "sha256-yUuDlxF7KrMTRuCt/4DCYe7X8L/pipzRduVb1F4wZlA=";
-        }}/builds";
-      }
-      {
-        name = "speedify.js";
-        src = "${pkgs.fetchFromGitHub {
-          owner = "ssatwik975";
-          repo = "Speedify";
-          rev = "main";
-          hash = "sha256-Kf+mR41NfX+yOEQCnDFUjHRPcJZHvPFXBUFg6BBuYXA=";
-        }}/dist";
-      }
-      {
-        name = "cacheCleaner.js";
-        src = pkgs.fetchFromGitHub {
-          owner = "kyrie25";
-          repo = "Spicetify-Cache-Cleaner";
-          rev = "main";
-          hash = "sha256-VuBbW4xYpB2QbSsNjR1an05WMXhLU9rv9moHw/DgCgk=";
-        };
-      }
-      {
-        name = "clean-links.js";
-        src = pkgs.fetchFromGitHub {
-          owner = "Borfak";
-          repo = "spicetify-clean-links";
-          rev = "main";
-          hash = "sha256-TUe+MKXfrIEaQKhIFbwIVdHOKw7wG5vKQMeUeVUEHKY=";
-        };
-      }
-    ];
+    enabledExtensions =
+      with spicePkgs.extensions;
+      [
+        adblock
+        hidePodcasts
+        shuffle
+      ]
+      ++ [
+        {
+          name = "cat-jam.js";
+          src = pkgs.fetchFromGitHub {
+            owner = "FixeQD";
+            repo = "spicetify-cat-jam-synced-reborn";
+            rev = "build";
+            hash = "sha256-BgIobG9XbBn6TTb3jtkWjkF0Sba0oYgn61cpkHcxAOo=";
+          };
+        }
+        {
+          name = "djinfo.mjs";
+          src = "${
+            pkgs.fetchFromGitHub {
+              owner = "L3-N0X";
+              repo = "spicetify-dj-info";
+              rev = "main";
+              hash = "sha256-1ZpTpOhrIQHr1/cBzWJdW5nf08LPxaioLHkAeq6vsvs=";
+            }
+          }/dist";
+        }
+        {
+          name = "spicy-lyrics.mjs";
+          src = "${
+            pkgs.fetchFromGitHub {
+              owner = "Spikerko";
+              repo = "spicy-lyrics";
+              rev = "main";
+              hash = "sha256-yUuDlxF7KrMTRuCt/4DCYe7X8L/pipzRduVb1F4wZlA=";
+            }
+          }/builds";
+        }
+        {
+          name = "speedify.js";
+          src = "${
+            pkgs.fetchFromGitHub {
+              owner = "ssatwik975";
+              repo = "Speedify";
+              rev = "main";
+              hash = "sha256-Kf+mR41NfX+yOEQCnDFUjHRPcJZHvPFXBUFg6BBuYXA=";
+            }
+          }/dist";
+        }
+        {
+          name = "cacheCleaner.js";
+          src = pkgs.fetchFromGitHub {
+            owner = "kyrie25";
+            repo = "Spicetify-Cache-Cleaner";
+            rev = "main";
+            hash = "sha256-VuBbW4xYpB2QbSsNjR1an05WMXhLU9rv9moHw/DgCgk=";
+          };
+        }
+        {
+          name = "clean-links.js";
+          src = pkgs.fetchFromGitHub {
+            owner = "Borfak";
+            repo = "spicetify-clean-links";
+            rev = "main";
+            hash = "sha256-TUe+MKXfrIEaQKhIFbwIVdHOKw7wG5vKQMeUeVUEHKY=";
+          };
+        }
+      ];
 
     theme = {
       name = "Lucid";

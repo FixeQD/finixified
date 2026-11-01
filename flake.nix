@@ -80,12 +80,23 @@
             ];
           };
           hostConfig = (import host) {
-            inherit pkgs nixpkgs inputs disko community-modules finix nixcord flakeDir;
+            inherit
+              pkgs
+              nixpkgs
+              inputs
+              disko
+              community-modules
+              finix
+              nixcord
+              flakeDir
+              ;
           };
         in
         finix.lib.finixSystem {
           inherit (pkgs) lib;
-          specialArgs = (hostConfig.specialArgs or { }) // { inherit sops-nix; };
+          specialArgs = (hostConfig.specialArgs or { }) // {
+            inherit sops-nix;
+          };
           modules = [
             { nixpkgs.pkgs = nixpkgs.lib.mkDefault pkgs; }
             (
@@ -113,7 +124,10 @@
       };
 
       mkInstallApp =
-        { config, resume ? false }:
+        {
+          config,
+          resume ? false,
+        }:
         let
           hostname = config.networking.hostName;
           system = config.nixpkgs.pkgs.stdenv.hostPlatform.system;
@@ -131,11 +145,18 @@
               export FLAKE_HOST="${hostname}"
               export PRIMARY_USER="${config.modules.user.name}"
               export REQUIRE_SOPS="${if config.modules.installer.requireSops then "true" else "false"}"
-              ${if config.modules.installer.requireSops then ''
-                export AGE_BIN="${pkgs.age}/bin/age"
-                export AGE_PLUGIN_FIDO2_HMAC_BIN="${pkgs.age-plugin-fido2-hmac}/bin/age-plugin-fido2-hmac"
-              '' else ""}
-              export PERSIST_DIR="${if builtins.hasAttr "/persist" config.fileSystems then "/mnt/persist" else "/mnt"}"
+              ${
+                if config.modules.installer.requireSops then
+                  ''
+                    export AGE_BIN="${pkgs.age}/bin/age"
+                    export AGE_PLUGIN_FIDO2_HMAC_BIN="${pkgs.age-plugin-fido2-hmac}/bin/age-plugin-fido2-hmac"
+                  ''
+                else
+                  ""
+              }
+              export PERSIST_DIR="${
+                if builtins.hasAttr "/persist" config.fileSystems then "/mnt/persist" else "/mnt"
+              }"
               export RESUME_INSTALL="${if resume then "true" else "false"}"
               ${if resume then ''export DISKO_MODE="mount"'' else ""}
               source ${./install.sh}
@@ -146,21 +167,22 @@
     {
       nixosConfigurations = hostConfigurations;
 
-      formatter.x86_64-linux =
-        let
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        in
-        pkgs.writeShellApplication {
-          name = "nixfmt";
-          text = ''
-            exec ${pkgs.nixfmt}/bin/nixfmt - "$@"
-          '';
-        };
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
 
-      apps.x86_64-linux.install-wifi-chan = mkInstallApp { config = hostConfigurations.wifi-chan.config; };
-      apps.x86_64-linux.resume-install-wifi-chan = mkInstallApp { config = hostConfigurations.wifi-chan.config; resume = true; };
+      apps.x86_64-linux.install-wifi-chan = mkInstallApp {
+        config = hostConfigurations.wifi-chan.config;
+      };
+      apps.x86_64-linux.resume-install-wifi-chan = mkInstallApp {
+        config = hostConfigurations.wifi-chan.config;
+        resume = true;
+      };
 
-      apps.x86_64-linux.install-gownobook = mkInstallApp { config = hostConfigurations.gownobook.config; };
-      apps.x86_64-linux.resume-install-gownobook = mkInstallApp { config = hostConfigurations.gownobook.config; resume = true; };
+      apps.x86_64-linux.install-gownobook = mkInstallApp {
+        config = hostConfigurations.gownobook.config;
+      };
+      apps.x86_64-linux.resume-install-gownobook = mkInstallApp {
+        config = hostConfigurations.gownobook.config;
+        resume = true;
+      };
     };
 }

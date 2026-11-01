@@ -1,4 +1,10 @@
-{ pkgs, lib, config, community-modules, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  community-modules,
+  ...
+}:
 with lib;
 let
   cfg = config.modules.tailscale;
@@ -19,7 +25,10 @@ in
     extraUpFlags = mkOption {
       type = with types; listOf str;
       default = [ ];
-      example = [ "--ssh" "--advertise-exit-node" ];
+      example = [
+        "--ssh"
+        "--advertise-exit-node"
+      ];
       description = "Extra flags passed to `tailscale up`.";
     };
   };

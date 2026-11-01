@@ -1,6 +1,13 @@
-{ finix, lib, config, ... }:
+{
+  finix,
+  lib,
+  config,
+  ...
+}:
 with lib;
-let cfg = config.modules.zram; in
+let
+  cfg = config.modules.zram;
+in
 {
   imports = [ finix.nixosModules.zram-swap ];
 

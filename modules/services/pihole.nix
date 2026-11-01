@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 with lib;
 let
   cfg = config.modules.pihole;
@@ -106,7 +111,10 @@ in
 
     finit.services.pihole-ftl = {
       description = "Pi-hole FTL";
-      conditions = [ "service/syslogd/ready" "service/dhcpcd/ready" ];
+      conditions = [
+        "service/syslogd/ready"
+        "service/dhcpcd/ready"
+      ];
       command = "${cfg.package}/bin/pihole-FTL no-daemon";
       path = [ pkgs.coreutils ];
       respawn = true;

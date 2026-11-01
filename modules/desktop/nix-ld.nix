@@ -1,6 +1,13 @@
-{ lib, config, community-modules, ... }:
+{
+  lib,
+  config,
+  community-modules,
+  ...
+}:
 with lib;
-let cfg = config.modules.nix-ld; in
+let
+  cfg = config.modules.nix-ld;
+in
 {
   imports = [ community-modules.nixosModules.nix-ld ];
 

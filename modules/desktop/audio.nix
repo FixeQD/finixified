@@ -1,10 +1,17 @@
-{ pkgs, lib, config, finix, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  finix,
+  ...
+}:
 with lib;
 let
   cfg = config.modules.audio;
   pipewire = config.programs.pipewire.package;
   wireplumber = config.programs.wireplumber.package;
-in {
+in
+{
   imports = [
     finix.nixosModules.pipewire
     finix.nixosModules.sessiond-hooks

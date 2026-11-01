@@ -8,7 +8,10 @@ with lib;
 let
   cfg = config.modules.dconf;
 
-  homeDir = attrsets.attrByPath [ config.modules.user.name "home" ] "/home/${config.modules.user.name}" config.users.users;
+  homeDir = attrsets.attrByPath [
+    config.modules.user.name
+    "home"
+  ] "/home/${config.modules.user.name}" config.users.users;
 
   mkInt32 = lib.gvariant.mkInt32;
 in

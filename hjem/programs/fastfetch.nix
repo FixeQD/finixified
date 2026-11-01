@@ -1,7 +1,11 @@
 let
   esc = builtins.fromJSON ''"\u001b"'';
-  fg = r: g: b: "${esc}[38;2;${toString r};${toString g};${toString b}m";
-  bold = r: g: b: "${esc}[1;38;2;${toString r};${toString g};${toString b}m";
+  fg =
+    r: g: b:
+    "${esc}[38;2;${toString r};${toString g};${toString b}m";
+  bold =
+    r: g: b:
+    "${esc}[1;38;2;${toString r};${toString g};${toString b}m";
   reset = "${esc}[0m";
   purple = "#bb9af7";
   blue = "#7aa2f7";

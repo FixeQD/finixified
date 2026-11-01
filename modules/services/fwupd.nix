@@ -1,6 +1,13 @@
-{ lib, config, finix, ... }:
+{
+  lib,
+  config,
+  finix,
+  ...
+}:
 with lib;
-let cfg = config.modules.fwupd; in
+let
+  cfg = config.modules.fwupd;
+in
 {
   imports = [ finix.nixosModules.fwupd ];
 

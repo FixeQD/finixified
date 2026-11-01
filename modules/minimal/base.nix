@@ -1,6 +1,16 @@
-{ pkgs, lib, config, disko, community-modules, finix, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  disko,
+  community-modules,
+  finix,
+  ...
+}:
 with lib;
-let cfg = config.modules.base; in
+let
+  cfg = config.modules.base;
+in
 {
   imports = [
     disko.nixosModules.disko
@@ -73,10 +83,13 @@ let cfg = config.modules.base; in
       settings = {
         substituters = [ "https://finix.cachix.org" ];
         trusted-public-keys = [ "finix.cachix.org-1:0ejikHDeCp0UErsduUUHcg9IJczY2/h2e5132Z/As/c=" ];
-        experimental-features = [ "nix-command" "flakes" ];
-        auto-optimise-store   = true;
-        warn-dirty            = false;
-        max-jobs              = "auto";
+        experimental-features = [
+          "nix-command"
+          "flakes"
+        ];
+        auto-optimise-store = true;
+        warn-dirty = false;
+        max-jobs = "auto";
       };
     };
   };

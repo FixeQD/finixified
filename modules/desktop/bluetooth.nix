@@ -1,6 +1,14 @@
-{ pkgs, lib, config, finix, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  finix,
+  ...
+}:
 with lib;
-let cfg = config.modules.bluetooth; in
+let
+  cfg = config.modules.bluetooth;
+in
 {
   imports = [ finix.nixosModules.bluetooth ];
 

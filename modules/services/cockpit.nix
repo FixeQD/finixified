@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 with lib;
 let
   cfg = config.modules.cockpit;
@@ -25,12 +30,19 @@ let
   depsEnv = pkgs.buildEnv {
     name = "cockpit-plugins-env";
     paths = concatMap (p: p.passthru.cockpitPath or [ ]) pathPkgs;
-    pathsToLink = [ "/bin" "/share" "/lib" ];
+    pathsToLink = [
+      "/bin"
+      "/share"
+      "/lib"
+    ];
   };
 
   share = pkgs.buildEnv {
     name = "cockpit-share";
-    paths = [ resourcesEnv depsEnv ];
+    paths = [
+      resourcesEnv
+      depsEnv
+    ];
     pathsToLink = [ "/share" ];
   };
 in
@@ -126,7 +138,9 @@ in
     };
 
     security.pam.services.cockpit.text = mkDefault ''
-      ${optionalString (cfg.disallowedUsers != [ ]) "account required pam_succeed_if.so user notin ${concatStringsSep ":" cfg.disallowedUsers}"}
+      ${optionalString (
+        cfg.disallowedUsers != [ ]
+      ) "account required pam_succeed_if.so user notin ${concatStringsSep ":" cfg.disallowedUsers}"}
       ${config.security.pam.services.login.text}
     '';
 

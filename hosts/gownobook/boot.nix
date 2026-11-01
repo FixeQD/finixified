@@ -1,14 +1,23 @@
-{ pkgs, config, lib, community-modules, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  community-modules,
+  ...
+}:
 
 let
   rootFsType = config.fileSystems."/".fsType;
 
-  rootSubvolOption = lib.findFirst (lib.hasPrefix "subvol=") null (config.fileSystems."/".options or [ ]);
+  rootSubvolOption = lib.findFirst (lib.hasPrefix "subvol=") null (
+    config.fileSystems."/".options or [ ]
+  );
   rootSubvol =
     if rootFsType == "btrfs" then
-      if rootSubvolOption != null
-      then lib.removePrefix "subvol=" rootSubvolOption
-      else throw "boot.nix: subvol= not found in fileSystems.\"/\".options"
+      if rootSubvolOption != null then
+        lib.removePrefix "subvol=" rootSubvolOption
+      else
+        throw "boot.nix: subvol= not found in fileSystems.\"/\".options"
     else
       null;
 in
@@ -44,11 +53,13 @@ in
 
   boot.kernelModules = [ "kvm-intel" ];
 
-  boot.kernelParams = (lib.optionals (rootFsType == "btrfs") [
-    "rootflags=subvol=${rootSubvol}"
-  ]) ++ [
-    "rootfstype=${rootFsType}"
-    "zswap.enabled=0"
-    "snd_intel_dspcfg.dsp_driver=1"
-  ];
+  boot.kernelParams =
+    (lib.optionals (rootFsType == "btrfs") [
+      "rootflags=subvol=${rootSubvol}"
+    ])
+    ++ [
+      "rootfstype=${rootFsType}"
+      "zswap.enabled=0"
+      "snd_intel_dspcfg.dsp_driver=1"
+    ];
 }

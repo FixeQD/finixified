@@ -27,7 +27,11 @@ in
             type = "filesystem";
             format = "vfat";
             mountpoint = "/boot";
-            mountOptions = [ "fmask=0022" "dmask=0022" "X-mount.mkdir" ];
+            mountOptions = [
+              "fmask=0022"
+              "dmask=0022"
+              "X-mount.mkdir"
+            ];
           };
         };
 
@@ -44,18 +48,34 @@ in
           size = "100%";
           content = {
             type = "btrfs";
-            extraArgs = [ "-L" "GownoFS" "-f" ];
+            extraArgs = [
+              "-L"
+              "GownoFS"
+              "-f"
+            ];
             subvolumes = {
               # "@" (root) removed: "/" is a tmpfs (impermanent)
-              "@home"      = { mountpoint = "/home";      mountOptions = btrfsOpts; };
-              "@opt"       = { mountpoint = "/opt";       mountOptions = btrfsOpts; };
-              "@var_log"   = { mountpoint = "/var/log";   mountOptions = btrfsOpts; };
-              "@nix"       = { mountpoint = "/nix";       mountOptions = btrfsOpts; };
+              "@home" = {
+                mountpoint = "/home";
+                mountOptions = btrfsOpts;
+              };
+              "@opt" = {
+                mountpoint = "/opt";
+                mountOptions = btrfsOpts;
+              };
+              "@var_log" = {
+                mountpoint = "/var/log";
+                mountOptions = btrfsOpts;
+              };
+              "@nix" = {
+                mountpoint = "/nix";
+                mountOptions = btrfsOpts;
+              };
               "@persist" = {
                 mountpoint = "/persist";
                 mountOptions = btrfsOpts;
               };
-#              "@snapshots" = { mountpoint = "/.snapshots"; mountOptions = btrfsOpts; };
+              #              "@snapshots" = { mountpoint = "/.snapshots"; mountOptions = btrfsOpts; };
             };
           };
         };
@@ -79,25 +99,42 @@ in
   fileSystems."/" = {
     device = "tmpfs";
     fsType = "tmpfs";
-    options = [ "rw" "nosuid" "nodev" "relatime" "size=50%" "mode=755" ];
+    options = [
+      "rw"
+      "nosuid"
+      "nodev"
+      "relatime"
+      "size=50%"
+      "mode=755"
+    ];
   };
 
   fileSystems."/tmp" = {
     device = "tmpfs";
     fsType = "tmpfs";
-    options = [ "rw" "nosuid" "nodev" "relatime" "size=4G" "mode=1777" ];
+    options = [
+      "rw"
+      "nosuid"
+      "nodev"
+      "relatime"
+      "size=4G"
+      "mode=1777"
+    ];
   };
 
   programs.modprobe.blacklist = [
-#    "fjes"
-#    "spi_nor"
+    #    "fjes"
+    #    "spi_nor"
   ];
 
   # ── GPU: Intel Arc Graphics (Meteor Lake, integrated only) ──────────────────
 
   hardware.cpu.intel.updateMicrocode = true;
 
-  hardware.firmware = [ pkgs.sof-firmware pkgs.alsa-firmware ];
+  hardware.firmware = [
+    pkgs.sof-firmware
+    pkgs.alsa-firmware
+  ];
 
   services.hardware.openrgb = {
     enable = true;
@@ -105,7 +142,7 @@ in
   };
 
   hardware.graphics = {
-    enable    = true;
+    enable = true;
     enable32Bit = true;
     extraPackages = with pkgs; [
       intel-media-driver

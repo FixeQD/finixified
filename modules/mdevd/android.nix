@@ -1,4 +1,10 @@
-{ config, lib, mkMdevHelper, pkgs, ... }:
+{
+  config,
+  lib,
+  mkMdevHelper,
+  pkgs,
+  ...
+}:
 let
   androidUdevRules = pkgs.fetchFromGitHub {
     owner = "M0Rf30";

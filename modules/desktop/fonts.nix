@@ -15,10 +15,10 @@
       enable = true;
 
       defaultFonts = {
-        serif      = [ "Noto Serif" ];
-        sansSerif  = [ "Noto Sans" ];
-        monospace  = [ "JetBrainsMono Nerd Font" ];
-        emoji      = [ "Noto Color Emoji" ];
+        serif = [ "Noto Serif" ];
+        sansSerif = [ "Noto Sans" ];
+        monospace = [ "JetBrainsMono Nerd Font" ];
+        emoji = [ "Noto Color Emoji" ];
       };
     };
   };

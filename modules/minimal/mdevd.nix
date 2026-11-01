@@ -1,6 +1,8 @@
 { lib, config, ... }:
 with lib;
-let cfg = config.modules.mdevd; in
+let
+  cfg = config.modules.mdevd;
+in
 {
   imports = [ ../mdevd ];
 

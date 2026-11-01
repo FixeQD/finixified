@@ -1,13 +1,20 @@
-{ pkgs, config, lib, community-modules, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  community-modules,
+  ...
+}:
 
 let
   rootFsType = config.fileSystems."/".fsType;
 
   rootSubvolOption = lib.findFirst (lib.hasPrefix "subvol=") null config.fileSystems."/".options;
   rootSubvol =
-    if rootSubvolOption != null
-    then lib.removePrefix "subvol=" rootSubvolOption
-    else throw "boot.nix: subvol= not found in fileSystems.\"/\".options";
+    if rootSubvolOption != null then
+      lib.removePrefix "subvol=" rootSubvolOption
+    else
+      throw "boot.nix: subvol= not found in fileSystems.\"/\".options";
 in
 {
   imports = [ community-modules.nixosModules.efistubmgr ];
@@ -29,7 +36,7 @@ in
 
   boot.initrd = {
     availableKernelModules = [
-      "ahci"       # M.2 SATA SSD
+      "ahci" # M.2 SATA SSD
       "xhci_pci"
       "usb_storage"
       "sd_mod"

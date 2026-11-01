@@ -38,50 +38,50 @@ let
         lib.splitString "\n" (lib.removeSuffix "\n" collect)
       );
       helperProgram = pkgs.writeText "${name}.py" ''
-from __future__ import annotations
+        from __future__ import annotations
 
-import sys
-from pathlib import Path
+        import sys
+        from pathlib import Path
 
-from udev_parser import Clause, parse_rules
-
-
-def collect_devices(rules: list[list[Clause]]) -> set[str]:
-    devices: set[str] = set()
-${indentedCollector}
-    return devices
+        from udev_parser import Clause, parse_rules
 
 
-def main() -> None:
-    source, output, grammar = sys.argv[1:]
-    devices = collect_devices(parse_rules(Path(source), Path(grammar)))
-    case_expression = ${builtins.toJSON caseExpression}
-    with open(output, "w", encoding="utf-8") as script:
-        script.write("#!/bin/sh\n")
-        script.write(${builtins.toJSON setup})
-        script.write(f"case {case_expression} in\n")
-        patterns = sorted(devices)
-        if patterns:
-            for start in range(0, len(patterns), 4):
-                chunk = patterns[start : start + 4]
-                last = start + 4 >= len(patterns)
-                suffix = ")\n" if last else "|\\\n"
-                script.write("  " + "|".join(chunk) + suffix)
-        else:
-            script.write("  *)\n")
-        script.write('    ${pkgs.coreutils}/bin/chgrp ${group} /dev/"$MDEV"\n')
-        script.write('    ${pkgs.coreutils}/bin/chmod 0660 /dev/"$MDEV"\n')
-        script.write("    ;;\n")
-        script.write("esac\n")
+        def collect_devices(rules: list[list[Clause]]) -> set[str]:
+            devices: set[str] = set()
+        ${indentedCollector}
+            return devices
 
 
-if __name__ == "__main__":
-    main()
-'';
+        def main() -> None:
+            source, output, grammar = sys.argv[1:]
+            devices = collect_devices(parse_rules(Path(source), Path(grammar)))
+            case_expression = ${builtins.toJSON caseExpression}
+            with open(output, "w", encoding="utf-8") as script:
+                script.write("#!/bin/sh\n")
+                script.write(${builtins.toJSON setup})
+                script.write(f"case {case_expression} in\n")
+                patterns = sorted(devices)
+                if patterns:
+                    for start in range(0, len(patterns), 4):
+                        chunk = patterns[start : start + 4]
+                        last = start + 4 >= len(patterns)
+                        suffix = ")\n" if last else "|\\\n"
+                        script.write("  " + "|".join(chunk) + suffix)
+                else:
+                    script.write("  *)\n")
+                script.write('    ${pkgs.coreutils}/bin/chgrp ${group} /dev/"$MDEV"\n')
+                script.write('    ${pkgs.coreutils}/bin/chmod 0660 /dev/"$MDEV"\n')
+                script.write("    ;;\n")
+                script.write("esac\n")
+
+
+        if __name__ == "__main__":
+            main()
+      '';
       helper = pkgs.runCommand name { } ''
-      export PYTHONPATH=${lib.escapeShellArg parserDirectory}
-      ${parserPython}/bin/python ${helperProgram} ${source} "$out" ${udevGrammar}/parser
-      ${pkgs.coreutils}/bin/chmod 0755 "$out"
+        export PYTHONPATH=${lib.escapeShellArg parserDirectory}
+        ${parserPython}/bin/python ${helperProgram} ${source} "$out" ${udevGrammar}/parser
+        ${pkgs.coreutils}/bin/chmod 0755 "$out"
       '';
     in
     "-${match} root:root 0600 @${helper}";

@@ -1,6 +1,14 @@
-{ pkgs, lib, config, finix, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  finix,
+  ...
+}:
 with lib;
-let cfg = config.modules.virt; in
+let
+  cfg = config.modules.virt;
+in
 {
   imports = [ finix.nixosModules.docker ];
 
@@ -14,9 +22,9 @@ let cfg = config.modules.virt; in
 
     finit.services.libvirtd = {
       description = "libvirt virtualisation daemon";
-      runlevels   = "2345";
-      conditions  = [ "service/syslogd/ready" ];
-      command     = "${pkgs.libvirt}/bin/libvirtd";
+      runlevels = "2345";
+      conditions = [ "service/syslogd/ready" ];
+      command = "${pkgs.libvirt}/bin/libvirtd";
     };
 
     environment.systemPackages = with pkgs; [

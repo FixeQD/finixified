@@ -9,7 +9,10 @@
     ServerAliveInterval 60
     ServerAliveCountMax 3
   '';
-  packages = [ pkgs.openssh pkgs.gnupg ];
+  packages = [
+    pkgs.openssh
+    pkgs.gnupg
+  ];
   files.".gnupg" = {
     type = "directory";
     permissions = "0700";

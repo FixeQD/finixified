@@ -1,53 +1,73 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 with lib;
 let
   cfg = config.modules.firewall;
 
-  ruleModule = types.submodule ({ name, ... }: {
-    options = {
-      enable = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Whether this rule is active. Set to false from another module to disable it.";
-      };
+  ruleModule = types.submodule (
+    { name, ... }: {
+      options = {
+        enable = mkOption {
+          type = types.bool;
+          default = true;
+          description = "Whether this rule is active. Set to false from another module to disable it.";
+        };
 
-      proto = mkOption {
-        type = types.enum [ "tcp" "udp" "tcp-udp" ];
-        default = "tcp";
-        description = "Protocol this rule accepts.";
-      };
+        proto = mkOption {
+          type = types.enum [
+            "tcp"
+            "udp"
+            "tcp-udp"
+          ];
+          default = "tcp";
+          description = "Protocol this rule accepts.";
+        };
 
-      ports = mkOption {
-        type = types.listOf types.port;
-        description = "Ports to accept.";
-      };
+        ports = mkOption {
+          type = types.listOf types.port;
+          description = "Ports to accept.";
+        };
 
-      interfaces = mkOption {
-        type = types.listOf types.str;
-        default = [ ];
-        example = [ "eth0" ];
-        description = "Restrict this rule to specific inbound interfaces. Empty = all interfaces.";
-      };
+        interfaces = mkOption {
+          type = types.listOf types.str;
+          default = [ ];
+          example = [ "eth0" ];
+          description = "Restrict this rule to specific inbound interfaces. Empty = all interfaces.";
+        };
 
-      comment = mkOption {
-        type = types.str;
-        default = name;
-        description = "Comment attached to the generated nftables rule.";
+        comment = mkOption {
+          type = types.str;
+          default = name;
+          description = "Comment attached to the generated nftables rule.";
+        };
       };
-    };
-  });
+    }
+  );
 
   enabledRules = filterAttrs (_: r: r.enable) cfg.rules;
 
-  protosOf = r: if r.proto == "tcp-udp" then [ "tcp" "udp" ] else [ r.proto ];
+  protosOf =
+    r:
+    if r.proto == "tcp-udp" then
+      [
+        "tcp"
+        "udp"
+      ]
+    else
+      [ r.proto ];
   portSet = r: "{ ${concatMapStringsSep ", " toString r.ports} }";
 
-  renderProto = r: proto:
+  renderProto =
+    r: proto:
     if r.interfaces == [ ] then
       ''${proto} dport ${portSet r} accept comment "${r.comment}"''
     else
-      concatMapStringsSep "\n          " (iface:
-        ''iifname "${iface}" ${proto} dport ${portSet r} accept comment "${r.comment}"''
+      concatMapStringsSep "\n          " (
+        iface: ''iifname "${iface}" ${proto} dport ${portSet r} accept comment "${r.comment}"''
       ) r.interfaces;
 
   renderRule = _: r: concatMapStringsSep "\n          " (renderProto r) (protosOf r);
@@ -119,6 +139,10 @@ in
       command = "${pkgs.nftables}/bin/nft -f /etc/nftables.conf";
     };
 
-    environment.systemPackages = with pkgs; [ nftables sbctl efibootmgr ];
+    environment.systemPackages = with pkgs; [
+      nftables
+      sbctl
+      efibootmgr
+    ];
   };
 }
