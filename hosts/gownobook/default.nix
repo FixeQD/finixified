@@ -13,7 +13,13 @@ let
 in
 {
   specialArgs = {
-    inherit disko community-modules finix nixcord inputs;
+    inherit
+      disko
+      community-modules
+      finix
+      nixcord
+      inputs
+      ;
   };
 
   modules = [
@@ -29,7 +35,7 @@ in
         ../../modules/minimal/mdevd.nix
         ../../modules/minimal/network.nix
         ../../modules/minimal/performance.nix
-        ../../modules/minimal/user.nix
+        ../../modules/minimal/ssh.nix
         ../../modules/minimal/zram.nix
 
         ../../modules/desktop/audio.nix
@@ -67,8 +73,8 @@ in
         mdevd.enable = true;
         network.enable = true;
 
-        network.openssh.enable = true;
-        network.openssh.permitRootLogin = "no";
+        ssh.openssh.enable = true;
+        ssh.openssh.permitRootLogin = "no";
 
         installer.requireSops = true;
 
@@ -96,7 +102,10 @@ in
 
         performance.enable = true;
         firewall.enable = true;
-        firewall.trustedInterfaces = [ "tailscale0" "br-metamcp" ];
+        firewall.trustedInterfaces = [
+          "tailscale0"
+          "br-metamcp"
+        ];
         fwupd.enable = true;
         tailscale.enable = true;
         user.enable = true;

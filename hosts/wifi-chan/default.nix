@@ -21,7 +21,7 @@
         ../../modules/minimal/mdevd.nix
         ../../modules/minimal/network.nix
         ../../modules/minimal/performance.nix
-        ../../modules/minimal/user.nix
+        ../../modules/minimal/ssh.nix
         ../../modules/minimal/zram.nix
 
         ../../modules/firewall/default.nix
@@ -40,8 +40,8 @@
         mdevd.enable = true;
 
         network.enable = true;
-        network.openssh.enable = true;
-        network.openssh.permitRootLogin = "no";
+        ssh.openssh.enable = true;
+        ssh.openssh.permitRootLogin = "no";
 
         cron.enable = true;
         performance.enable = true;

@@ -1,31 +1,22 @@
-{ pkgs, lib, config, finix, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  finix,
+  ...
+}:
 with lib;
-let cfg = config.modules.network; in
+let
+  cfg = config.modules.network;
+in
 {
   imports = [
     finix.nixosModules.iwd
     finix.nixosModules.dhcpcd
-    finix.nixosModules.openssh
   ];
 
   options.modules.network = {
     enable = mkEnableOption "iwd and dhcpcd networking";
-
-    openssh = {
-      enable = mkEnableOption "OpenSSH server";
-
-      permitRootLogin = mkOption {
-        type = types.enum [ "yes" "without-password" "prohibit-password" "forced-commands-only" "no" ];
-        default = "prohibit-password";
-        description = "Whether the root user can login using ssh.";
-      };
-
-      passwordAuthentication = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether password authentication is allowed.";
-      };
-    };
   };
 
   config = mkIf cfg.enable {
@@ -45,13 +36,5 @@ let cfg = config.modules.network; in
       iwd
       dhcpcd
     ];
-
-    services.openssh = mkIf cfg.openssh.enable {
-      enable = true;
-      settings = {
-        PermitRootLogin = cfg.openssh.permitRootLogin;
-        PasswordAuthentication = cfg.openssh.passwordAuthentication;
-      };
-    };
   };
 }

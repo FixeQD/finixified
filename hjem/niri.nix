@@ -54,17 +54,22 @@ let
     "Mod+Escape { quit; }"
 
     "Mod+Return { ${spawn terminal}; }"
-    "Mod+e { ${spawn (terminal ++ [ "-e" "yazi" ])}; }"
+    "Mod+e { ${
+      spawn (
+        terminal
+        ++ [
+          "-e"
+          "yazi"
+        ]
+      )
+    }; }"
     "Mod+b { ${spawn browser}; }"
     "Mod+c { ${spawn editor}; }"
   ];
 
-  workspaceBinds =
-    lib.concatMapStringsSep "\n" (
-      n: ''
-        Mod+${toString n} { focus-workspace ${toString n}; }
-        Mod+Shift+${toString n} { move-window-to-workspace ${toString n}; }''
-    ) (lib.range 1 9);
+  workspaceBinds = lib.concatMapStringsSep "\n" (n: ''
+    Mod+${toString n} { focus-workspace ${toString n}; }
+    Mod+Shift+${toString n} { move-window-to-workspace ${toString n}; }'') (lib.range 1 9);
 
   bindsKdl = ''
     binds {
@@ -218,6 +223,8 @@ in
     includes = [ "${config.directory}/.config/niri/exo.kdl" ];
 
     extraVariables = {
+      SSH_ASKPASS = "${lib.getExe pkgs.kdePackages.ksshaskpass}";
+      SSH_ASKPASS_REQUIRE = "force";
       _JAVA_AWT_WM_NONREPARENTING = "1";
       AWT_TOOLKIT = "MToolkit";
       NIXOS_OZONE_WL = "1";
@@ -233,11 +240,18 @@ in
       GTK_A11Y = "none";
     };
 
-    spawn-at-startup = map (cmd: [ "sh" "-c" cmd ]) [
-      "polkit-kde-authentication-agent-1"
-      "pgrep -x kdeconnectd || kdeconnectd"
-      "pgrep -x kwalletd6 || kwalletd6"
-    ];
+    spawn-at-startup =
+      map
+        (cmd: [
+          "sh"
+          "-c"
+          cmd
+        ])
+        [
+          "polkit-kde-authentication-agent-1"
+          "pgrep -x kdeconnectd || kdeconnectd"
+          "pgrep -x kwalletd6 || kwalletd6"
+        ];
 
     config = lib.concatStringsSep "\n" [
       bindsKdl
