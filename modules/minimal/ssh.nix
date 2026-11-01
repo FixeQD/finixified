@@ -45,15 +45,15 @@ with lib;
       group = config.users.users.${config.modules.user.name}.group;
       extra-groups = config.users.users.${config.modules.user.name}.extraGroups;
       command = pkgs.writeShellScript "ssh-agent-service" ''
-        agent_dir="/run/user/$(id -u)/ssh-agent"
-        mkdir -p "$agent_dir"
+        agent_dir="/run/user/$(${pkgs.coreutils}/bin/id -u)/ssh-agent"
         sock="$agent_dir/ssh-agent.sock"
         pid_file="$agent_dir/ssh-agent.pid"
-        rm -f "$sock" "$pid_file"
-        trap 'kill "$(cat "$pid_file" 2>/dev/null)" 2>/dev/null; exit 0' TERM INT
+        ${pkgs.coreutils}/bin/rm -f "$sock" "$pid_file"
+        ${pkgs.coreutils}/bin/mkdir -p "$agent_dir"
+        trap 'kill "$(${pkgs.coreutils}/bin/cat "$pid_file" 2>/dev/null)" 2>/dev/null; exit 0' TERM INT
         ${pkgs.openssh}/bin/ssh-agent -D -a "$sock" &
         agent_pid=$!
-        echo "$agent_pid" > "$pid_file"
+        ${pkgs.coreutils}/bin/echo "$agent_pid" > "$pid_file"
         wait "$agent_pid"
       '';
       log = { };
