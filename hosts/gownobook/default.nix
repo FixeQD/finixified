@@ -55,6 +55,7 @@ in
         ../../modules/services/fwupd.nix
         ../../modules/services/secrets.nix
         ../../modules/services/tailscale.nix
+        ../../modules/services/vnc-server.nix
 
         inputs.hjem.finixModules.default
       ];
@@ -122,12 +123,24 @@ in
         };
         cockpit = {
           enable = true;
+          package = pkgs.cockpit.overrideAttrs (old: {
+            postPatch = (old.postPatch or "") + ''
+              substituteInPlace src/cockpit/channels/dbus.py \
+                --replace-fail "if err.errno != errno.EBUSY:" \
+                               "if err.errno not in (errno.EBUSY, errno.EINVAL):"
+            '';
+          });
+
           plugins = with pkgs; [
             cockpit-machines
             cockpit-files
             cockpit-dockermanager
           ];
           allowedOrigins = [ "https://gownobook.rohu-tint.ts.net" ];
+        };
+        vncServer = {
+          enable = true;
+          output = "eDP-1";
         };
       };
 
