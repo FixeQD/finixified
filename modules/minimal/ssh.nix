@@ -6,6 +6,9 @@
   ...
 }:
 with lib;
+let
+  askpass = lib.getExe (pkgs.callPackage ../helpers/askpass.nix { });
+in
 {
   imports = [
     ./user.nix
@@ -37,6 +40,7 @@ with lib;
   config = mkIf config.modules.user.enable {
     environment.variables = {
       SSH_AUTH_SOCK = "/run/user/$(id -u)/ssh-agent/ssh-agent.sock";
+      SSH_ASKPASS = askpass;
     };
 
     finit.services.ssh-agent = {
@@ -45,6 +49,8 @@ with lib;
       group = config.users.users.${config.modules.user.name}.group;
       extra-groups = config.users.users.${config.modules.user.name}.extraGroups;
       command = pkgs.writeShellScript "ssh-agent-service" ''
+        export XDG_RUNTIME_DIR="/run/user/$(${pkgs.coreutils}/bin/id -u)"
+
         agent_dir="/run/user/$(${pkgs.coreutils}/bin/id -u)/ssh-agent"
         sock="$agent_dir/ssh-agent.sock"
         pid_file="$agent_dir/ssh-agent.pid"
@@ -56,6 +62,11 @@ with lib;
         ${pkgs.coreutils}/bin/echo "$agent_pid" > "$pid_file"
         wait "$agent_pid"
       '';
+      environment = {
+        SSH_ASKPASS = askpass;
+        SSH_ASKPASS_REQUIRE = "force";
+      };
+
       log = { };
 
       respawn = true;
