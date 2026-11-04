@@ -107,7 +107,11 @@ in
           "br-metamcp"
         ];
         fwupd.enable = true;
-        tailscale.enable = true;
+        tailscale = {
+          enable = true;
+          oauth = true;
+          tags = [ "tag:laptop" ];
+        };
         user.enable = true;
         user.name = userName;
         virt.enable = true;

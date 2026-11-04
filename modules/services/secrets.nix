@@ -23,5 +23,6 @@ in
       owner = user;
       mode = "0400";
     };
+    tailscale_oauth_secret.mode = "0400";
   };
 }

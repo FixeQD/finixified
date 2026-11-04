@@ -18,8 +18,17 @@ in
 
     authKeyFile = mkOption {
       type = with types; nullOr path;
-      default = null;
+      default = attrByPath [ "sops" "secrets" "tailscale_oauth_secret" "path" ] null config;
       description = "Path to a file containing the Tailscale auth key (e.g. an sops secret path). If unset, `tailscale up` must be run manually.";
+    };
+
+    oauth = mkEnableOption "treating authKeyFile as an OAuth client secret (tskey-client-...) that mints a fresh auth key on every `tailscale up`";
+
+    tags = mkOption {
+      type = with types; listOf str;
+      default = [ ];
+      example = [ "tag:laptop" ];
+      description = "Additional ACL tags for the device. tag:finixified is always included.";
     };
 
     extraUpFlags = mkOption {
@@ -35,10 +44,24 @@ in
 
   config = mkIf cfg.enable (mkMerge [
     {
+      assertions = [
+        {
+          assertion = cfg.oauth -> cfg.authKeyFile != null;
+          message = "modules.tailscale.oauth needs authKeyFile; OAuth clients can only register tagged devices";
+        }
+      ];
+
       services.tailscale = {
         enable = true;
         authKeyFile = cfg.authKeyFile;
-        extraUpFlags = cfg.extraUpFlags;
+        authKeyParameters = mkIf cfg.oauth {
+          preauthorized = true;
+          ephemeral = false;
+        };
+        extraUpFlags =
+          cfg.extraUpFlags ++ [
+            "--advertise-tags=${concatStringsSep "," ([ "tag:finixified" ] ++ cfg.tags)}"
+          ];
       };
     }
   ]);
