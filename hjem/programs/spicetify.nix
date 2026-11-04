@@ -90,7 +90,7 @@ in
               owner = "L3-N0X";
               repo = "spicetify-dj-info";
               rev = "main";
-              hash = "sha256-1ZpTpOhrIQHr1/cBzWJdW5nf08LPxaioLHkAeq6vsvs=";
+              hash = "sha256-ZRlw4rlpi+XTUYVDy/gc8TQRfb6HJNit8EAHvTPPhj8=";
             }
           }/dist";
         }
