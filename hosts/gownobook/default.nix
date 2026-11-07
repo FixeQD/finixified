@@ -53,6 +53,7 @@ in
         ../../modules/services/cloudflared.nix
         ../../modules/services/cockpit.nix
         ../../modules/services/fwupd.nix
+        ../../modules/services/ollama.nix
         ../../modules/services/secrets.nix
         ../../modules/services/tailscale.nix
         ../../modules/services/vnc-server.nix
@@ -108,6 +109,7 @@ in
           "br-metamcp"
         ];
         fwupd.enable = true;
+        ollama.enable = true;
         tailscale = {
           enable = true;
           oauth = true;
