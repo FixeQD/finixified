@@ -58,10 +58,9 @@ in
           preauthorized = true;
           ephemeral = false;
         };
-        extraUpFlags =
-          cfg.extraUpFlags ++ [
-            "--advertise-tags=${concatStringsSep "," ([ "tag:finixified" ] ++ cfg.tags)}"
-          ];
+        extraUpFlags = cfg.extraUpFlags ++ [
+          "--advertise-tags=${concatStringsSep "," ([ "tag:finixified" ] ++ cfg.tags)}"
+        ];
       };
     }
   ]);

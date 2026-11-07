@@ -23,8 +23,7 @@ let
     lemurs = config.services.lemurs.enable or false;
     sddm = config.services.displayManager.sddm.enable or config.services.sddm.enable or false;
     sddm-autologin =
-      config.services.displayManager.sddm.autoLogin.enable
-        or config.services.sddm.autoLogin.enable
+      config.services.displayManager.sddm.autoLogin.enable or config.services.sddm.autoLogin.enable
         or false;
     autologin = config.services.autologin.enable or false;
   };

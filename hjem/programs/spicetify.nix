@@ -11,7 +11,7 @@ let
     cp ${
       pkgs.fetchurl {
         url = "https://spicetify-lucid.sanooj.uk/spice/user.css";
-        hash = "sha256-na3bw52xqRYyLh+UHn67UupHhCiGhoqMtuWyY3Webto=";
+        hash = "sha256-2cdRiVcd7x3vcsuCsfTekhSRvez+HpZNq8cIcNPYa7Q=";
       }
     } $out/user.css
     cp ${
@@ -80,7 +80,7 @@ in
             owner = "FixeQD";
             repo = "spicetify-cat-jam-synced-reborn";
             rev = "build";
-            hash = "sha256-BgIobG9XbBn6TTb3jtkWjkF0Sba0oYgn61cpkHcxAOo=";
+            hash = "sha256-LldkNUgAHVcKzH+G3M2SQH9BupPLToO+I6xI9qOPIKM=";
           };
         }
         {
@@ -90,7 +90,7 @@ in
               owner = "L3-N0X";
               repo = "spicetify-dj-info";
               rev = "main";
-              hash = "sha256-ZRlw4rlpi+XTUYVDy/gc8TQRfb6HJNit8EAHvTPPhj8=";
+              hash = "sha256-B5/dE8GVsPbDSCGx0s8O2CMpOHLu/WPWIv1AAE8sObs=";
             }
           }/dist";
         }
@@ -148,5 +148,6 @@ in
     };
 
     colorScheme = "use-lucid";
+    alwaysEnableDevTools = true;
   };
 }
