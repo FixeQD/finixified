@@ -49,6 +49,7 @@ in
     kernelModules = [ "i915" ];
 
     supportedFilesystems.btrfs.enable = true;
+    compressor = "cat";
   };
 
   boot.kernelModules = [ "kvm-intel" ];

@@ -43,6 +43,7 @@ in
     ];
 
     supportedFilesystems.btrfs.enable = true;
+    compressor = "cat";
   };
 
   # AMD Jaguar-based SoC (GX-420GI) - has AMD-V, useful once containers/VMs land.
