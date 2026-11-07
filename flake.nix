@@ -129,39 +129,12 @@
           resume ? false,
         }:
         let
-          hostname = config.networking.hostName;
-          system = config.nixpkgs.pkgs.stdenv.hostPlatform.system;
-          pkgs = nixpkgs.legacyPackages.${system};
+          installer = if resume then config.system.build.resumeInstaller else config.system.build.installer;
         in
         {
           type = "app";
-          meta.description = "${if resume then "Resume installation" else "Install"} for ${hostname}";
-          program = toString (
-            pkgs.writeShellScript "${if resume then "resume-" else ""}install-${hostname}" ''
-              export DISKO_BIN="${disko.packages.${system}.disko}/bin/disko"
-              export DBUS_UUIDGEN_BIN="${pkgs.dbus}/bin/dbus-uuidgen"
-              export SBCTL_BIN="${pkgs.sbctl}/bin/sbctl"
-              export MKPASSWD_BIN="${pkgs.mkpasswd}/bin/mkpasswd"
-              export FLAKE_HOST="${hostname}"
-              export PRIMARY_USER="${config.modules.user.name}"
-              export REQUIRE_SOPS="${if config.modules.installer.requireSops then "true" else "false"}"
-              ${
-                if config.modules.installer.requireSops then
-                  ''
-                    export AGE_BIN="${pkgs.age}/bin/age"
-                    export AGE_PLUGIN_FIDO2_HMAC_BIN="${pkgs.age-plugin-fido2-hmac}/bin/age-plugin-fido2-hmac"
-                  ''
-                else
-                  ""
-              }
-              export PERSIST_DIR="${
-                if builtins.hasAttr "/persist" config.fileSystems then "/mnt/persist" else "/mnt"
-              }"
-              export RESUME_INSTALL="${if resume then "true" else "false"}"
-              ${if resume then ''export DISKO_MODE="mount"'' else ""}
-              source ${./install.sh}
-            ''
-          );
+          program = nixpkgs.lib.getExe installer;
+          meta.description = installer.meta.description;
         };
     in
     {
@@ -169,20 +142,12 @@
 
       formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
 
-      apps.x86_64-linux.install-wifi-chan = mkInstallApp {
-        config = hostConfigurations.wifi-chan.config;
-      };
-      apps.x86_64-linux.resume-install-wifi-chan = mkInstallApp {
-        config = hostConfigurations.wifi-chan.config;
-        resume = true;
-      };
-
-      apps.x86_64-linux.install-gownobook = mkInstallApp {
-        config = hostConfigurations.gownobook.config;
-      };
-      apps.x86_64-linux.resume-install-gownobook = mkInstallApp {
-        config = hostConfigurations.gownobook.config;
-        resume = true;
-      };
+      apps.x86_64-linux = nixpkgs.lib.concatMapAttrs (name: host: {
+        "install-${name}" = mkInstallApp { inherit (host) config; };
+        "resume-install-${name}" = mkInstallApp {
+          inherit (host) config;
+          resume = true;
+        };
+      }) hostConfigurations;
     };
 }
