@@ -89,7 +89,6 @@ in
         ];
         auto-optimise-store = true;
         warn-dirty = false;
-        max-jobs = "auto";
       };
     };
   };

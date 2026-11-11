@@ -117,7 +117,7 @@ in
       "nosuid"
       "nodev"
       "relatime"
-      "size=4G"
+      "size=8G"
       "mode=1777"
     ];
   };

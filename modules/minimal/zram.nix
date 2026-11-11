@@ -16,7 +16,7 @@ in
 
     memoryPercent = mkOption {
       type = types.ints.positive;
-      default = 50;
+      default = 100;
       description = "Size of the zram device as a percentage of total memory.";
     };
 

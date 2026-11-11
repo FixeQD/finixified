@@ -109,7 +109,12 @@ in
           "br-metamcp"
         ];
         fwupd.enable = true;
-        ollama.enable = true;
+
+        ollama = {
+          enable = true;
+          environment.OLLAMA_KEEP_ALIVE = "2m";
+        };
+
         tailscale = {
           enable = true;
           oauth = true;
