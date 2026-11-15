@@ -31,7 +31,6 @@ in
     tools = {
       pipewire.package = osConfig.programs.pipewire.package;
       wireplumber.package = osConfig.programs.wireplumber.package;
-      brightnessctl.package = osConfig.programs.brightnessctl.package;
     };
 
     terminal = {
@@ -65,6 +64,36 @@ in
       '';
     };
 
-    settings.appearance.wallcolors.wallpaper_path = "${config.directory}/.wallpaper.jpg";
+    settings = {
+      appearance.wallcolors.wallpaper_path = "${config.directory}/.wallpaper.jpg";
+      interface = {
+        bar = {
+          side = "top";
+          density = 3;
+          separation = true;
+          bar_background = false;
+        };
+        bar2 = {
+          side = "bottom";
+          density = 1;
+          bar_background = false;
+        };
+        modules = {
+          bar_id = {
+            launcher = 1;
+            tasks = 1;
+            clock = 1;
+          };
+          visibility = {
+            launcher = true;
+            tasks = true;
+          };
+          options = {
+            military_time = true;
+            workspaces_style = "dots";
+          };
+        };
+      };
+    };
   };
 }

@@ -1,10 +1,24 @@
 {
   inputs,
+  config,
   pkgs,
   ...
 }:
 let
   spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+
+  # `alwaysEnableDevTools` cannot work in the nix flow: the option only lands in the build-time config-xpui.ini
+  enableDevtoolsAtLaunch = ''
+    spotify_devtools_bnk="''${XDG_CACHE_HOME:-$HOME/.cache}/spotify/offline.bnk"
+    if [[ -f "$spotify_devtools_bnk" ]] && ! pgrep -f ".spotify-(wrapped|without-dbus)" > /dev/null; then
+      _dt_first="$(LC_ALL=C grep -abo "app-developer" "$spotify_devtools_bnk" | head -n1 | cut -d: -f1)"
+      _dt_last="$(LC_ALL=C grep -abo "app-developer" "$spotify_devtools_bnk" | tail -n1 | cut -d: -f1)"
+      if [[ -n "$_dt_first" && -n "$_dt_last" && "$_dt_first" -lt "$_dt_last" ]]; then
+        printf 2 | dd of="$spotify_devtools_bnk" bs=1 seek=$(( _dt_first + 14 )) conv=notrunc status=none
+        printf 2 | dd of="$spotify_devtools_bnk" bs=1 seek=$(( _dt_last + 15 )) conv=notrunc status=none
+      fi
+    fi
+  '';
 
   lucidTheme = pkgs.runCommand "spicetify-theme-lucid" { } ''
     mkdir -p $out
@@ -40,6 +54,7 @@ let
       makeShellWrapper ${pkgs.dbus}/bin/dbus-launch "$out/share/spotify/spotify" \
         --run '
           spotify_dbus_machine_id="$(cat /etc/machine-id)"
+          ${enableDevtoolsAtLaunch}
           case "''${XDG_SESSION_TYPE:-}" in
             wayland) spotify_ozone_platform=wayland ;;
             x11) spotify_ozone_platform=x11 ;;
@@ -59,8 +74,20 @@ let
         --add-flags "--autolaunch=\$spotify_dbus_machine_id --exit-with-session $out/share/spotify/.spotify-without-dbus --ozone-platform=\$spotify_ozone_platform"
     '';
   });
+
+  spotifyPath = "${pkgs.lib.head config.programs.spicetify.createdPackages}/share/spotify";
 in
 {
+  # `spicetify ...` CLI runs need a valid spotify_path
+  files.".config/spicetify/config-xpui.ini" = {
+    type = "copy";
+    source = pkgs.writeText "spicetify-config-xpui" ''
+      [Setting]
+      spotify_path           = ${spotifyPath}
+      always_enable_devtools = 1
+    '';
+  };
+
   programs.spicetify = {
     enable = true;
 
@@ -80,7 +107,7 @@ in
             owner = "FixeQD";
             repo = "spicetify-cat-jam-synced-reborn";
             rev = "build";
-            hash = "sha256-LldkNUgAHVcKzH+G3M2SQH9BupPLToO+I6xI9qOPIKM=";
+            hash = "sha256-VnPEeMTyAxZF+KhckSifpwcJKk16TZGlZlW4KrmmPMQ=";
           };
         }
         {
@@ -148,6 +175,5 @@ in
     };
 
     colorScheme = "use-lucid";
-    alwaysEnableDevTools = true;
   };
 }

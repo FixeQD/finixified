@@ -27,7 +27,7 @@ in
     kdePackages.polkit-kde-agent-1
     kdePackages.kdeconnect-kde
     zed-editor
-    mitmproxy
+#    mitmproxy
     android-tools
     opencode
     gnumake

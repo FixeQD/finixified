@@ -44,7 +44,7 @@
     };
 
     exo = {
-      url = "github:FixeQD/Exo";
+      url = "git+https://tangled.org/fixeq.dev/Exo";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
