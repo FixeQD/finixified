@@ -24,7 +24,7 @@ let
 
   id = lib.getExe' pkgs.coreutils "id";
   setpriv = lib.getExe' pkgs.util-linux "setpriv";
-  activationScripts = common.mkActivationScripts (script: ''
+  activation.scripts = common.mkActivationScripts (script: ''
     uid="$(${id} -u ${lib.escapeShellArg cfg.user})"
     gid="$(${id} -g ${lib.escapeShellArg cfg.user})"
     ${setpriv} --reuid="$uid" --regid="$gid" --init-groups ${pkgs.runtimeShell} -c ${lib.escapeShellArg script}
@@ -396,7 +396,7 @@ in
         "users"
         "nixcord-prepareHome"
       ];
-      text = activationScripts.disableDiscordUpdates;
+      text = activation.scripts.disableDiscordUpdates;
     };
 
     nixcord-fixDiscordModules = {
@@ -404,7 +404,7 @@ in
         "users"
         "nixcord-prepareHome"
       ];
-      text = activationScripts.fixDiscordModules;
+      text = activation.scripts.fixDiscordModules;
     };
 
     nixcord-writeFiles = {

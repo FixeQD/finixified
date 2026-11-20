@@ -1,7 +1,6 @@
-{ pkgs, lib, ... }:
-
+{ pkgs, ... }:
 let
-  applyScript = pkgs.writeShellScript "mdevd-no-turbo-power" ''
+  applyNoTurboPower = pkgs.writeShellScript "no-turbo-power" ''
     target=/sys/devices/system/cpu/intel_pstate/no_turbo
     [ -w "$target" ] || exit 0
 
@@ -20,22 +19,26 @@ let
     [ "$current" = "$want" ] && exit 0
 
     if echo "$want" >"$target" 2>/dev/null; then
-      logger -t no-turbo-power "''${MDEV:-start} adapter=$online -> no_turbo=$want"
+      logger -t no-turbo-power "''${POWER_SUPPLY_NAME:-start} adapter=$online -> no_turbo=$want"
     else
-      logger -t no-turbo-power "''${MDEV:-start} write no_turbo=$want rejected - bit 38 of MSR_IA32_MISC_ENABLE (0x1A0) is set by firmware"
+      logger -t no-turbo-power "''${POWER_SUPPLY_NAME:-start} write no_turbo=$want rejected, bit 38 of MSR_IA32_MISC_ENABLE (0x1A0) is set by firmware"
     fi
 
     exit 0
   '';
+
+  noTurboRule = pkgs.writeTextDir "lib/udev/rules.d/90-no-turbo-power.rules" ''
+    SUBSYSTEM=="power_supply", RUN+="${applyNoTurboPower}"
+  '';
 in
 {
-  services.mdevd.hotplugRules = lib.mkAfter "-DEVTYPE=power_supply;.* root:root 0600 *${applyScript}";
+  services.udev.packages = [ noTurboRule ];
 
   finit.run.no-turbo-power = {
     description = "set no_turbo from AC adapter state";
-    command = "${applyScript}";
+    command = "${applyNoTurboPower}";
     runlevel = "S";
-    conditions = "service/mdevd/ready";
+    conditions = "run/udevadm:5/success";
     cgroup.init = { };
     log = { };
   };

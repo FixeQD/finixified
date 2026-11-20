@@ -18,7 +18,7 @@
         ../../modules/minimal/base.nix
         ../../modules/minimal/cron.nix
         ../../modules/minimal/locale.nix
-        ../../modules/minimal/mdevd.nix
+        ../../modules/minimal/udev.nix
         ../../modules/minimal/network.nix
         ../../modules/minimal/performance.nix
         ../../modules/minimal/ssh.nix
@@ -37,7 +37,7 @@
       modules = {
         base.enable = true;
         locale.enable = true;
-        mdevd.enable = true;
+        udev.enable = true;
 
         network.enable = true;
         ssh.openssh.enable = true;

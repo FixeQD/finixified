@@ -213,6 +213,16 @@ let
             off
         }
     }
+
+    layer-rule {
+        match namespace="^launcher$"
+        background-effect {
+            xray false
+            blur true
+        }
+        geometry-corner-radius 24
+    }
+
   '';
 in
 {
