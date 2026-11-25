@@ -10,7 +10,8 @@ in
 {
   imports = [ sops-nix.finixModules.sops ];
 
-  # install.sh puts this file here by decrypting secrets/host-age-key.age
+  # the installer puts both keys here by decrypting secrets/age/*.age
+  # keys.txt contains both the host and infra identities
   sops.age.keyFile = "/persist/sops/age/keys.txt";
   sops.age.sshKeyPaths = [ ];
   sops.gnupg.sshKeyPaths = [ ];
@@ -24,5 +25,9 @@ in
       mode = "0400";
     };
     tailscale_oauth_secret.mode = "0400";
+    netbird_key = {
+      sopsFile = ../../secrets/infra.yaml;
+      mode = "0400";
+    };
   };
 }

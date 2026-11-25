@@ -14,6 +14,7 @@ let
   passwdDir = "${cfg.persistDir}/user-passwords";
   ageKeyDir = "${cfg.persistDir}/sops/age";
   ageKeyFile = "${ageKeyDir}/keys.txt";
+  infraKeyFile = "${ageKeyDir}/infra-keys.txt";
   passwdFile = user: "${passwdDir}/${user}";
 
   askpass = lib.getExe (pkgs.callPackage ./helpers/askpass.nix { });
@@ -109,14 +110,15 @@ let
 
         {
           enable = cfg.requireSops;
-          title = "sops: decrypting host age key with the FIDO2 token";
+          title = "sops: decrypting host and infra age keys with the FIDO2 token";
           run = ''
-            host_key_blob="$flake_dir/secrets/host-age-key.age"
+            host_key_blob="$flake_dir/secrets/age/host-age-key.age"
+            infra_key_blob="$flake_dir/secrets/age/infra-age-key.age"
             fido2_identity="$flake_dir/secrets/fido2-identity.txt"
             installed_age_key=false
 
             decrypt_age_key() {
-              for required_file in "$host_key_blob" "$fido2_identity"; do
+              for required_file in "$host_key_blob" "$infra_key_blob" "$fido2_identity"; do
                 [ -f "$required_file" ] || die "$required_file not found"
               done
 
@@ -126,40 +128,48 @@ let
                 age --decrypt \
                   --identity "$fido2_identity" \
                   --output ${q ageKeyFile} \
-                  "$host_key_blob"
+                  "$host_key_blob" &&
+                age --decrypt \
+                  --identity "$fido2_identity" \
+                  --output ${q infraKeyFile} \
+                  "$infra_key_blob"
               ); then
-                rm -f ${q ageKeyFile}
-                die "could not decrypt $host_key_blob with the FIDO2 token"
+                rm -f ${q ageKeyFile} ${q infraKeyFile}
+                die "could not decrypt age keys with the FIDO2 token"
               fi
-              chmod 600 ${q ageKeyFile}
+              chmod 600 ${q ageKeyFile} ${q infraKeyFile}
+              cat ${q infraKeyFile} >> ${q ageKeyFile}
+              installed_age_key=true
             }
 
             ${
               if resume then
                 ''
-                  if [ -s ${q ageKeyFile} ]; then
-                    echo "    age key already present, skipping installation"
+                  infra_public_key="$(grep '^# public key:' ${q infraKeyFile} 2>/dev/null || true)"
+                  if [ -s ${q ageKeyFile} ] && [ -s ${q infraKeyFile} ] &&
+                     [ -n "$infra_public_key" ] &&
+                     grep -qF "$infra_public_key" ${q ageKeyFile}; then
+                    echo "    age keys already present, skipping installation"
                   else
-                    installed_age_key=true
                     decrypt_age_key
                   fi
                 ''
               else
                 ''
-                  installed_age_key=true
                   decrypt_age_key
                 ''
             }
 
-            echo "    verifying key by decrypting secrets/secrets.yaml..."
-            if SOPS_AGE_KEY_FILE=${q ageKeyFile} sops -d "$flake_dir/secrets/secrets.yaml" >/dev/null; then
-              echo "    OK - key decrypts secrets.yaml successfully."
+            echo "    verifying keys by decrypting secrets/secrets.yaml and secrets/infra.yaml..."
+            if SOPS_AGE_KEY_FILE=${q ageKeyFile} sops -d "$flake_dir/secrets/secrets.yaml" >/dev/null &&
+               SOPS_AGE_KEY_FILE=${q ageKeyFile} sops -d "$flake_dir/secrets/infra.yaml" >/dev/null; then
+              echo "    OK - keys decrypt both sops files successfully."
             else
-              echo "    FAILED - this key cannot decrypt $flake_dir/secrets/secrets.yaml" >&2
+              echo "    FAILED - keys cannot decrypt $flake_dir/secrets/*.yaml" >&2
               grep -h '^# public key:' ${q ageKeyFile} >&2 || true
-              grep -h 'recipient:' "$flake_dir/secrets/secrets.yaml" >&2 || true
+              grep -h 'recipient:' "$flake_dir/secrets/secrets.yaml" "$flake_dir/secrets/infra.yaml" >&2 || true
               if [ "$installed_age_key" = "true" ]; then
-                rm -f ${q ageKeyFile}
+                rm -f ${q ageKeyFile} ${q infraKeyFile}
               fi
               exit 1
             fi
