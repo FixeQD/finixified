@@ -62,5 +62,24 @@ in
       "rootfstype=${rootFsType}"
       "zswap.enabled=0"
       "snd_intel_dspcfg.dsp_driver=1"
+    ]
+    ++ [
+      "slab_nomerge"
+      "init_on_alloc=1"
+      "page_alloc.shuffle=1"
+      "randomize_kstack_offset=on"
+      "vsyscall=none"
+      "debugfs=off"
+      "intel_iommu=on"
+      "iommu.strict=1"
+      "efi=disable_early_pci_dma"
+    ]
+    ++ [
+      "quiet"
+      "loglevel=3"
+      "cryptomgr.notests"
+      "tsc=reliable"
+      "rcupdate.rcu_expedited=1"
+      "rcupdate.rcu_normal_after_boot=1"
     ];
 }

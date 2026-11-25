@@ -128,7 +128,7 @@ in
               owner = "Spikerko";
               repo = "spicy-lyrics";
               rev = "main";
-              hash = "sha256-yUuDlxF7KrMTRuCt/4DCYe7X8L/pipzRduVb1F4wZlA=";
+              hash = "sha256-AtbSWgJyj8oJbUzCP5I94fQK28et/PW/uO0rMKyxB6E=";
             }
           }/builds";
         }

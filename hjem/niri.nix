@@ -240,6 +240,9 @@ in
       NIXOS_OZONE_WL = "1";
       MOZ_ENABLE_WAYLAND = "1";
       GDK_BACKEND = "wayland,x11";
+      # GTK4 4.24 ngl renderer emits dmabufs with stride 512 for the 25x25 corner surfaces
+      # niri/Smithay rejects them -> wl_display.error -> crash.
+      GSK_RENDERER = "gl";
       QT_QPA_PLATFORM = "wayland";
       QT_QPA_PLATFORMTHEME = "gtk4";
       QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";

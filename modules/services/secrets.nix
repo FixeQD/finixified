@@ -8,7 +8,7 @@ let
   user = config.modules.user.name;
 in
 {
-  imports = [ sops-nix.nixosModules.sops ];
+  imports = [ sops-nix.finixModules.sops ];
 
   # install.sh puts this file here by decrypting secrets/host-age-key.age
   sops.age.keyFile = "/persist/sops/age/keys.txt";
