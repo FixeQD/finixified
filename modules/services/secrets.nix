@@ -24,7 +24,6 @@ in
       owner = user;
       mode = "0400";
     };
-    tailscale_oauth_secret.mode = "0400";
     netbird_key = {
       sopsFile = ../../secrets/infra.yaml;
       mode = "0400";

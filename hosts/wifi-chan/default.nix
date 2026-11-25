@@ -29,7 +29,6 @@
 
         ../../modules/services/fwupd.nix
         ../../modules/services/pihole.nix
-        ../../modules/services/tailscale.nix
       ];
 
       networking.hostName = "wifi-chan";
@@ -46,10 +45,8 @@
         cron.enable = true;
         performance.enable = true;
         firewall.enable = true;
-        firewall.trustedInterfaces = [ "tailscale0" ];
         fwupd.enable = true;
         installer.requireSops = false;
-        tailscale.enable = true;
         zram.enable = true;
 
         user.enable = true;

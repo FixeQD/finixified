@@ -53,9 +53,9 @@ in
         ../../modules/services/cloudflared.nix
         ../../modules/services/cockpit.nix
         ../../modules/services/fwupd.nix
+        ../../modules/services/netbird
         ../../modules/services/ollama.nix
         ../../modules/services/secrets.nix
-        ../../modules/services/tailscale.nix
         ../../modules/services/vnc-server.nix
 
         inputs.hjem.finixModules.default
@@ -104,10 +104,6 @@ in
 
         performance.enable = true;
         firewall.enable = true;
-        firewall.trustedInterfaces = [
-          "tailscale0"
-          "br-metamcp"
-        ];
         fwupd.enable = true;
 
         ollama = {
@@ -115,10 +111,11 @@ in
           environment.OLLAMA_KEEP_ALIVE = "2m";
         };
 
-        tailscale = {
+        netbird = {
           enable = true;
-          oauth = true;
-          tags = [ "tag:laptop" ];
+          desktop = true;
+          allowServerSsh = true;
+          ssh.sftp = true;
         };
         user.enable = true;
         user.name = userName;

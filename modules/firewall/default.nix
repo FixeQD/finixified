@@ -79,7 +79,7 @@ in
     trustedInterfaces = mkOption {
       type = types.listOf types.str;
       default = [ ];
-      example = [ "tailscale0" ];
+      example = [ "wlan0" ];
       description = "Interfaces whose inbound traffic is fully trusted, bypassing all filtering.";
     };
 
