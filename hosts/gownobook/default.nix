@@ -51,6 +51,7 @@ in
         ../../modules/installer.nix
 
         ../../modules/services/cloudflared.nix
+        ../../modules/services/dbus-session.nix
         ../../modules/services/cockpit.nix
         ../../modules/services/fwupd.nix
         ../../modules/services/netbird
@@ -165,6 +166,8 @@ in
       };
 
       finit.runlevel = 3;
+
+      services.dbus-session.enable = true;
     }
   ];
 }

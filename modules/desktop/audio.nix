@@ -29,31 +29,28 @@ in
       pkgs.pavucontrol
     ];
 
-    services.sessiond-hooks = {
-      enable = true;
-      hooks = {
-        pipewire.settings = {
-          on_start = "${pipewire}/bin/pipewire";
-          restart = {
-            on = "Always";
-            delay = 2;
-          };
+    services.sessiond-hooks.hooks = {
+      pipewire.settings = {
+        on_start = "${pipewire}/bin/pipewire";
+        restart = {
+          on = "Always";
+          delay = 2;
         };
+      };
 
-        pipewire-pulse.settings = {
-          on_start = "${pipewire}/bin/pipewire-pulse";
-          restart = {
-            on = "Always";
-            delay = 2;
-          };
+      pipewire-pulse.settings = {
+        on_start = "${pipewire}/bin/pipewire-pulse";
+        restart = {
+          on = "Always";
+          delay = 2;
         };
+      };
 
-        wireplumber.settings = {
-          on_start = "${wireplumber}/bin/wireplumber";
-          restart = {
-            on = "Always";
-            delay = 2;
-          };
+      wireplumber.settings = {
+        on_start = "${wireplumber}/bin/wireplumber";
+        restart = {
+          on = "Always";
+          delay = 2;
         };
       };
     };

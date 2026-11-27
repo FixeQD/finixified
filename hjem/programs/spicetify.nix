@@ -10,7 +10,7 @@ let
   # `alwaysEnableDevTools` cannot work in the nix flow: the option only lands in the build-time config-xpui.ini
   enableDevtoolsAtLaunch = ''
     spotify_devtools_bnk="''${XDG_CACHE_HOME:-$HOME/.cache}/spotify/offline.bnk"
-    if [[ -f "$spotify_devtools_bnk" ]] && ! pgrep -f ".spotify-(wrapped|without-dbus)" > /dev/null; then
+    if [[ -f "$spotify_devtools_bnk" ]] && ! pgrep -f ".spotify-(wrapped|launcher)" > /dev/null; then
       _dt_first="$(LC_ALL=C grep -abo "app-developer" "$spotify_devtools_bnk" | head -n1 | cut -d: -f1)"
       _dt_last="$(LC_ALL=C grep -abo "app-developer" "$spotify_devtools_bnk" | tail -n1 | cut -d: -f1)"
       if [[ -n "$_dt_first" && -n "$_dt_last" && "$_dt_first" -lt "$_dt_last" ]]; then
@@ -49,11 +49,9 @@ let
     ];
 
     postFixup = (old.postFixup or "") + ''
-      # Reuse the desktop session bus so MPRIS is visible to playerctl and panels.
-      mv "$out/share/spotify/spotify" "$out/share/spotify/.spotify-without-dbus"
-      makeShellWrapper ${pkgs.dbus}/bin/dbus-launch "$out/share/spotify/spotify" \
+      mv "$out/share/spotify/spotify" "$out/share/spotify/.spotify-launcher"
+      makeShellWrapper "$out/share/spotify/.spotify-launcher" "$out/share/spotify/spotify" \
         --run '
-          spotify_dbus_machine_id="$(cat /etc/machine-id)"
           ${enableDevtoolsAtLaunch}
           case "''${XDG_SESSION_TYPE:-}" in
             wayland) spotify_ozone_platform=wayland ;;
@@ -71,7 +69,7 @@ let
             unset NIXOS_OZONE_WL
           fi
         ' \
-        --add-flags "--autolaunch=\$spotify_dbus_machine_id --exit-with-session $out/share/spotify/.spotify-without-dbus --ozone-platform=\$spotify_ozone_platform"
+        --add-flags "--ozone-platform=\$spotify_ozone_platform"
     '';
   });
 

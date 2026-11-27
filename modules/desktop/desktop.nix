@@ -36,6 +36,7 @@ in
     services.upower.enable = true;
 
     services.sessiond.enable = true;
+    services.sessiond-hooks.enable = true;
     services.sessiond-uaccess.enable = true;
     services.sessiond-power.enable = true;
 
