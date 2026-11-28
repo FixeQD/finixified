@@ -39,38 +39,22 @@ in
 
   config = mkIf config.modules.user.enable {
     environment.variables = {
-      SSH_AUTH_SOCK = "/run/user/$(id -u)/ssh-agent/ssh-agent.sock";
       SSH_ASKPASS = askpass;
     };
 
-    finit.services.ssh-agent = {
-      description = "SSH agent for ${config.modules.user.name}";
-      user = config.modules.user.name;
-      group = config.users.users.${config.modules.user.name}.group;
-      extra-groups = config.users.users.${config.modules.user.name}.extraGroups;
-      command = pkgs.writeShellScript "ssh-agent-service" ''
-        export XDG_RUNTIME_DIR="/run/user/$(${pkgs.coreutils}/bin/id -u)"
+    environment.systemPackages = [
+      pkgs.keychain
+      pkgs.openssh
+    ];
 
-        agent_dir="/run/user/$(${pkgs.coreutils}/bin/id -u)/ssh-agent"
-        sock="$agent_dir/ssh-agent.sock"
-        pid_file="$agent_dir/ssh-agent.pid"
-        ${pkgs.coreutils}/bin/rm -f "$sock" "$pid_file"
-        ${pkgs.coreutils}/bin/mkdir -p "$agent_dir"
-        trap 'kill "$(${pkgs.coreutils}/bin/cat "$pid_file" 2>/dev/null)" 2>/dev/null; exit 0' TERM INT
-        ${pkgs.openssh}/bin/ssh-agent -D -a "$sock" &
-        agent_pid=$!
-        ${pkgs.coreutils}/bin/echo "$agent_pid" > "$pid_file"
-        wait "$agent_pid"
-      '';
-      environment = {
-        SSH_ASKPASS = askpass;
-        SSH_ASKPASS_REQUIRE = "force";
-      };
+    environment.etc."ssh/ssh_config".text = ''
+      Include /etc/ssh/ssh_config.d/*.conf
 
-      log = { };
-
-      respawn = true;
-    };
+      Host *
+        AddKeysToAgent yes
+        ServerAliveInterval 60
+        ServerAliveCountMax 3
+    '';
 
     services.openssh = mkIf config.modules.ssh.openssh.enable {
       enable = true;

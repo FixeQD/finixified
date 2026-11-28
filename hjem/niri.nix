@@ -233,8 +233,6 @@ in
     includes = [ "${config.directory}/.config/niri/exo.kdl" ];
 
     extraVariables = {
-      SSH_ASKPASS = "${lib.getExe pkgs.kdePackages.ksshaskpass}";
-      SSH_ASKPASS_REQUIRE = "force";
       _JAVA_AWT_WM_NONREPARENTING = "1";
       AWT_TOOLKIT = "MToolkit";
       NIXOS_OZONE_WL = "1";

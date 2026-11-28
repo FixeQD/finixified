@@ -3,7 +3,7 @@
     ./exo.nix
     ./packages.nix
     ./programs
-    ./gpg-ssh.nix
+    ./gpg.nix
     ./niri.nix
     ./theme.nix
     ./xdg.nix

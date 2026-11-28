@@ -4,11 +4,6 @@
   ...
 }:
 {
-  files.".ssh/config".text = ''
-    AddKeysToAgent yes
-    ServerAliveInterval 60
-    ServerAliveCountMax 3
-  '';
   packages = [
     pkgs.openssh
     pkgs.gnupg
