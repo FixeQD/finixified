@@ -3,9 +3,6 @@
   pkgs,
   ...
 }:
-let
-  home = config.directory;
-in
 {
   xdg.mime-apps.default-applications = {
     "text/html" = "helium.desktop";
@@ -52,27 +49,37 @@ in
     "application/x-bzip2" = "org.kde.ark.desktop";
     "application/x-xz" = "org.kde.ark.desktop";
   };
-  xdg.config.files."user-dirs.dirs".text = ''
-    XDG_DESKTOP_DIR="$HOME/Desktop"
-    XDG_DOWNLOAD_DIR="$HOME/Downloads"
-    XDG_MUSIC_DIR="$HOME/Music"
-    XDG_PICTURES_DIR="$HOME/Pictures"
-    XDG_PUBLICSHARE_DIR="$HOME/Public"
-    XDG_TEMPLATES_DIR="$HOME/Templates"
-    XDG_VIDEOS_DIR="$HOME/Videos"
-  '';
-  environment.sessionVariables = {
-    XDG_DESKTOP_DIR = "${home}/Desktop";
-    XDG_DOWNLOAD_DIR = "${home}/Downloads";
-    XDG_MUSIC_DIR = "${home}/Music";
-    XDG_PICTURES_DIR = "${home}/Pictures";
-    XDG_PUBLICSHARE_DIR = "${home}/Public";
-    XDG_TEMPLATES_DIR = "${home}/Templates";
-    XDG_VIDEOS_DIR = "${home}/Videos";
-  };
   packages = [
     pkgs.desktop-file-utils
     pkgs.shared-mime-info
     pkgs.kdePackages.kservice
+
+    (pkgs.writeShellScriptBin "xdg-bookmarks" ''
+      set -eu
+      config_home="''${XDG_CONFIG_HOME:-$HOME/.config}"
+      user_dirs="$config_home/user-dirs.dirs"
+      bookmarks="$HOME/.gtk-bookmarks"
+      [ -f "$user_dirs" ] || exit 0
+
+      tmp="$(mktemp)"
+      trap 'rm -f "$tmp"' EXIT
+
+      while IFS= read -r line; do
+        case "$line" in
+          XDG_*_DIR=*)
+            key="''${line%%=*}"
+            [ "$key" = "XDG_DESKTOP_DIR" ] && continue
+            value="''${line#*=}"
+            value="''${value#\"}"; value="''${value%\"}"
+            value="''${value/\$HOME/$HOME}"
+            [ -n "$value" ] || continue
+            label="''${value##*/}"
+            printf 'file://%s %s\n' "$value" "$label" >> "$tmp"
+            ;;
+        esac
+      done < "$user_dirs"
+
+      mv "$tmp" "$bookmarks"
+    '')
   ];
 }

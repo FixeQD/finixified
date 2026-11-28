@@ -17,6 +17,7 @@ in
     finix.nixosModules.brightnessctl
     finix.nixosModules.niri
     finix.nixosModules.sddm
+    finix.nixosModules.gvfs
     finix.nixosModules.upower
     finix.nixosModules.xwayland-satellite
     finix.nixosModules.zzz
@@ -27,6 +28,8 @@ in
   options.modules.desktop.nvidia.enable = mkEnableOption "NVIDIA desktop environment variables";
 
   config = mkIf cfg.enable {
+    services.gvfs.enable = true;
+
     services.seatd.enable = true;
 
     programs.niri = {
@@ -73,6 +76,8 @@ in
         gtk4
         kdePackages.breeze-icons
         wrapGAppsHook4
+        xdg-user-dirs
+      ] ++ [
         (python3.withPackages (
           ps: with ps; [
             pygobject3
@@ -84,6 +89,7 @@ in
         "/share/icons"
         "/share/wayland-sessions"
         "/share/xdg-desktop-portal"
+        "/etc/xdg"
       ];
     };
 

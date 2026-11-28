@@ -262,6 +262,7 @@ in
           "polkit-kde-authentication-agent-1"
           "pgrep -x kdeconnectd || kdeconnectd"
           "pgrep -x kwalletd6 || kwalletd6"
+          "xdg-user-dirs-update && xdg-bookmarks"
         ];
 
     config = lib.concatStringsSep "\n" [
