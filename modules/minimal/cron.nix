@@ -20,10 +20,6 @@ in
     };
 
     environment.etc = {
-      "cron.d/btrfs-scrub".text = ''
-        @monthly root ${pkgs.btrfs-progs}/bin/btrfs scrub start -B /
-      '';
-
       "cron.d/fstrim".text = ''
         @monthly root ${pkgs.util-linux}/bin/fstrim -av
       '';

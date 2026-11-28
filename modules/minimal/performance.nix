@@ -46,11 +46,6 @@ in
     };
     finit.services.sessiond.cgroup.system."memory.low" = "3G";
 
-    #services.nix-daemon.settings = {
-    #  max-jobs = 2;
-    #  cores = 8;
-    #};
-
     services.earlyoom = {
       enable = true;
       extraArgs = [

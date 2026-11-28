@@ -1,4 +1,10 @@
-{ community-modules, pkgs, ... }:
+{
+  community-modules,
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 let
   btrfsOpts = [
@@ -122,12 +128,9 @@ in
     ];
   };
 
-  programs.modprobe.blacklist = [
-    #    "fjes"
-    #    "spi_nor"
-  ];
-
-  # ── GPU: Intel Arc Graphics (Meteor Lake, integrated only) ──────────────────
+  environment.etc."cron.d/btrfs-scrub".text = ''
+    @monthly root ${pkgs.btrfs-progs}/bin/btrfs scrub start -B ${lib.escapeShellArg config.disko.devices.disk.main.content.partitions.root.device}
+  '';
 
   hardware.cpu.intel.updateMicrocode = true;
 

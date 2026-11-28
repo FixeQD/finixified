@@ -9,6 +9,7 @@
 with lib;
 let
   cfg = config.modules.desktop;
+
 in
 {
   imports = [
@@ -16,7 +17,6 @@ in
 
     finix.nixosModules.brightnessctl
     finix.nixosModules.niri
-    finix.nixosModules.sddm
     finix.nixosModules.gvfs
     finix.nixosModules.upower
     finix.nixosModules.xwayland-satellite
@@ -25,7 +25,6 @@ in
   ];
 
   options.modules.desktop.enable = mkEnableOption "niri desktop and seatd";
-  options.modules.desktop.nvidia.enable = mkEnableOption "NVIDIA desktop environment variables";
 
   config = mkIf cfg.enable {
     services.gvfs.enable = true;
@@ -59,12 +58,6 @@ in
         QT_QPA_PLATFORM = "wayland";
         QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
         ELECTRON_OZONE_PLATFORM_HINT = "auto";
-      }
-      // mkIf cfg.nvidia.enable {
-        LIBVA_DRIVER_NAME = "nvidia";
-        GBM_BACKEND = "nvidia-drm";
-        __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-        NVD_BACKEND = "direct";
       };
 
       systemPackages = with pkgs; [
@@ -99,33 +92,6 @@ in
         pkgs.kdePackages.xdg-desktop-portal-kde
         pkgs.xdg-desktop-portal-gtk
       ];
-    };
-
-    services.sddm = {
-      enable = true;
-      extraPackages = [
-        pkgs.kdePackages.qtdeclarative
-        pkgs.kdePackages.qtsvg
-        pkgs.kdePackages.qt5compat
-        (pkgs.stdenv.mkDerivation {
-          name = "glyph-sddm";
-          src = pkgs.fetchFromGitHub {
-            owner = "xCaptaiN09";
-            repo = "glyph-sddm";
-            rev = "main";
-            hash = "sha256-A2uncMbcu1+jqCaaEYMV8CICW485XkpbSj2UUs0QeMU=";
-          };
-          installPhase = "
-            mkdir -p $out/share/sddm/themes/glyph
-            cp -r * $out/share/sddm/themes/glyph/
-          ";
-        })
-      ];
-      settings = {
-        Theme = {
-          Current = "glyph";
-        };
-      };
     };
 
     services.dbus.packages = [ pkgs.dconf ];

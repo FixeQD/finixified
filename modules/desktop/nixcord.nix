@@ -103,7 +103,6 @@ in
         fakeProfileThemes.enable = true;
         fixCodeblockGap.enable = true;
         fixSpotifyEmbeds.enable = true;
-        fixYoutubeEmbeds.enable = true;
         followVoiceUser.enable = true;
         forceOwnerCrown.enable = true;
         friendCodes.enable = true;
@@ -259,7 +258,6 @@ in
         voiceDownload.enable = true;
         webKeybinds.enable = true;
         whoReacted.enable = true;
-        youtubeAdblock.enable = true;
       };
     };
 

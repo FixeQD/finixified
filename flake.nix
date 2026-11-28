@@ -5,6 +5,12 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     finix.url = "github:finix-community/finix";
+
+    finit-src = {
+      url = "github:finit-project/finit";
+      flake = false;
+    };
+
     community-modules.url = "github:finix-community/community-modules";
 
     nixcord.url = "github:4evy/nixcord";

@@ -5,6 +5,7 @@
   disko,
   community-modules,
   finix,
+  inputs,
   ...
 }:
 with lib;
@@ -51,10 +52,12 @@ in
         fish
         starship
         ghostty
+
         nixd
         nixos-rebuild-ng
         nil
         nh
+
         glib
         pkg-config
         libxkbcommon.dev
@@ -77,6 +80,11 @@ in
     services.getty.enable = true;
 
     services.sysklogd.enable = true;
+
+    finit.package = pkgs.finit.overrideAttrs (old: {
+      src = inputs.finit-src;
+      version = "5.0-src";
+    });
 
     services.nix-daemon = {
       enable = true;

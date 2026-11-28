@@ -43,7 +43,6 @@ in
         ../../modules/desktop/dconf.nix
         ../../modules/desktop/desktop.nix
         ../../modules/desktop/fonts.nix
-        ../../modules/desktop/nix-ld.nix
         ../../modules/desktop/nixcord.nix
         ../../modules/desktop/virt.nix
 
@@ -71,7 +70,6 @@ in
         dconf.enable = true;
         cron.enable = true;
         desktop.enable = true;
-        desktop.nvidia.enable = false;
         locale.enable = true;
         udev.enable = true;
         network.enable = true;
@@ -80,28 +78,6 @@ in
         ssh.openssh.permitRootLogin = "no";
 
         installer.requireSops = true;
-
-        nix-ld.enable = true;
-        nix-ld.libraries = with pkgs; [
-          stdenv.cc.cc.lib
-          icu
-          openssl
-          gtk3
-          zlib
-          pango
-          harfbuzz
-          atk
-          cairo
-          gdk-pixbuf
-          glib
-          curl
-          libepoxy
-          fontconfig
-          openvino
-          ocl-icd
-          level-zero
-          intel-compute-runtime
-        ];
 
         performance.enable = true;
         firewall.enable = true;

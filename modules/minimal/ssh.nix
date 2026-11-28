@@ -6,9 +6,6 @@
   ...
 }:
 with lib;
-let
-  askpass = lib.getExe (pkgs.callPackage ../helpers/askpass.nix { });
-in
 {
   imports = [
     ./user.nix
@@ -39,7 +36,7 @@ in
 
   config = mkIf config.modules.user.enable {
     environment.variables = {
-      SSH_ASKPASS = askpass;
+      SSH_ASKPASS = lib.getExe (pkgs.callPackage ../helpers/askpass.nix { });
     };
 
     environment.systemPackages = [

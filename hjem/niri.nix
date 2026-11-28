@@ -10,6 +10,7 @@ let
   ];
   browser = [ "helium" ];
   editor = [ "zeditor" ];
+  fileManager = [ "thunar" ];
 
   terminalAppId = "com.mitchellh.ghostty";
   browserAppId = "Helium";
@@ -54,15 +55,7 @@ let
     "Mod+Escape { quit; }"
 
     "Mod+Return { ${spawn terminal}; }"
-    "Mod+e { ${
-      spawn (
-        terminal
-        ++ [
-          "-e"
-          "yazi"
-        ]
-      )
-    }; }"
+    "Mod+e { ${spawn fileManager}; }"
     "Mod+b { ${spawn browser}; }"
     "Mod+c { ${spawn editor}; }"
   ];
